@@ -1,0 +1,1 @@
+in the given shape draws a circle that the base line of the triangles is its diameter.

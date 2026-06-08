@@ -1,0 +1,7 @@
+clear()
+setSpeed(fast)
+setHeading(72)
+repeat(5) {
+  forward(2 * pentagon_side * math.cos(math.Pi / 5))
+  right(180 - 36)
+}

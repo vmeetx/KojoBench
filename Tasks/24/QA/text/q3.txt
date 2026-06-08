@@ -1,0 +1,1 @@
+in the given shape replaces the smaller triangle with a square of a similar side length.

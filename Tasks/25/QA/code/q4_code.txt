@@ -1,0 +1,20 @@
+clear()
+setSpeed(fast)
+def draw_polygon(sides: Int, length: Double) {
+  val outer_turn = 360 / sides
+  repeat(sides.toInt) {
+    forward(length)
+    right(-outer_turn)
+  }
+}
+forward(2 * triangle_side)
+repeatFor(0 until 3) { i =>
+  forward(-triangle_side)
+  if (i == 1) {
+    right(60)
+  }
+  draw_polygon(3, triangle_side)
+  if (i == 1) {
+    left(60)
+  }
+}

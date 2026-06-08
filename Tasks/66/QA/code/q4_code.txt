@@ -1,0 +1,13 @@
+clear()
+setSpeed(fast)
+repeat(36) { forward(math.Pi * large_circle_radius / 18); right(10) }
+left(90)
+hop(large_circle_radius - small_circle_radius)
+right(90)
+repeat(4) {
+  right(90, small_circle_radius)
+  left(90)
+  forward(small_circle_radius)
+  forward(-small_circle_radius)
+  right(90)
+}

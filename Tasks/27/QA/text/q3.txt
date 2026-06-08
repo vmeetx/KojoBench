@@ -1,0 +1,1 @@
+in the given shape removes the quarter circles on the left and the right of the square.

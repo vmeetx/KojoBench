@@ -1,0 +1,1 @@
+creates the given shape without the hexagon at the bottom.

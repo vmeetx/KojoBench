@@ -1,0 +1,6 @@
+clear()
+setSpeed(fast)
+repeat(4) {
+  right(90)
+  right(-180, semicircle_radius)
+}

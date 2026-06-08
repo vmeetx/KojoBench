@@ -1,0 +1,21 @@
+# Claude Code session files (contain local permissions/paths)
+.claude/
+
+# Renderer work dirs and cache
+.render_cache/
+.render_work/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Dataset and responses (generated, not source)
+dataset.jsonl
+.responses/
+reports/
+
+# Test output
+test_*.png

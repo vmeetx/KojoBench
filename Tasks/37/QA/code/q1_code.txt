@@ -1,0 +1,7 @@
+clear()
+setSpeed(fast)
+forward(half_lines_length)
+right(90)
+right(-180, semicircle_radius)
+right(90)
+forward(half_lines_length)

@@ -1,0 +1,12 @@
+clear()
+setSpeed(fast)
+repeat(4) {
+  forward(square_side)
+  right(90)
+}
+forward(square_side / 2)
+right(45)
+repeat(4) {
+  forward(square_side * math.sqrt(2) / 2)
+  right(90)
+}

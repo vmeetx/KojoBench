@@ -1,0 +1,20 @@
+clear()
+setSpeed(fast)
+def draw_polygon(sides: Int, length: Double) {
+  val outer_turn = 360 / sides
+  repeat(sides.toInt) {
+    forward(length)
+    right(-outer_turn)
+  }
+}
+draw_polygon(4, small_square_side)
+forward(small_square_side)
+left(90)
+forward(small_square_side)
+right(90)
+draw_polygon(4, small_square_side)
+forward(small_square_side)
+right(90)
+forward(small_square_side)
+left(90)
+draw_polygon(4, small_square_side)

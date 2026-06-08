@@ -1,0 +1,11 @@
+clear()
+setSpeed(fast)
+setHeading(36)
+penUp()
+repeatFor(0 until 5) { i =>
+  if (i == 2) {
+    penDown()
+  }
+  forward(pentagon_side)
+  right(72)
+}

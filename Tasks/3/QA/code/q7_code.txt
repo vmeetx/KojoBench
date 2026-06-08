@@ -1,0 +1,11 @@
+clear()
+setSpeed(fast)
+repeatFor(0 until 4) { i =>
+  if (i % 2 == 1) {
+    penUp()
+  } else {
+    penDown()
+  }
+  forward(square_side)
+  right(90)
+}

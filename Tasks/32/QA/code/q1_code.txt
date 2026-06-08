@@ -1,0 +1,7 @@
+clear()
+setSpeed(fast)
+repeat(36) { forward(math.Pi * radius / 18); right(10) }
+right(180)
+repeat(36) { forward(math.Pi * radius / 18); right(10) }
+right(90)
+forward(2 * radius)

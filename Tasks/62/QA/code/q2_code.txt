@@ -1,0 +1,6 @@
+clear()
+setSpeed(fast)
+hop(radius)
+repeat(36) { forward(math.Pi * radius / 18); right(10) }
+hop((rectangle_length - 2 * radius))
+repeat(36) { forward(math.Pi * radius / 18); right(10) }

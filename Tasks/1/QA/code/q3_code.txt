@@ -1,0 +1,10 @@
+clear()
+setSpeed(fast)
+repeatFor(0 until 4) { i =>
+        if (i % 2 == 0) {
+          penUp()
+        } else {
+          penDown()
+        }
+        right(90, radius)
+}

@@ -1,0 +1,1 @@
+adds two triangles to the right of the existing shape to make it vertically symmetrical.

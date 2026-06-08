@@ -1,0 +1,9 @@
+clear()
+setSpeed(fast)
+repeat(4) {
+  right(90)
+  repeat(4) {
+    forward(square_side / 2)
+    right(90)
+  }
+}

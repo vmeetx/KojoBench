@@ -1,0 +1,7 @@
+t.setheading(36)
+t.penup()
+for i in range(5):
+  if i == 2:
+    t.pendown()
+  t.forward(pentagon_side)
+  t.right(72)

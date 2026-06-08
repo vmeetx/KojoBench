@@ -1,0 +1,7 @@
+clear()
+setSpeed(fast)
+setHeading(36)
+repeat(5) {
+  forward(pentagon_side)
+  right(72)
+}

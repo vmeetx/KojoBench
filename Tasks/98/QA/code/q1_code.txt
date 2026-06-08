@@ -1,0 +1,10 @@
+clear()
+setSpeed(fast)
+repeatFor(0 until 5) { i =>
+  forward(side)
+  if (i % 2 == 0) {
+    right(90)
+  } else {
+    right(-90)
+  }
+}

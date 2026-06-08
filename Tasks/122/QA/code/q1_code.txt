@@ -1,0 +1,11 @@
+clear()
+setSpeed(fast)
+repeat(6) {
+  repeat(2) {
+    forward(small_diamond_side)
+    right(60)
+    forward(small_diamond_side)
+    right(120)
+  }
+  right(60)
+}

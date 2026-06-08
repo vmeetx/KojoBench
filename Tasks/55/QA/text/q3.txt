@@ -1,0 +1,1 @@
+creates the given shape without the two pentagons at the bottom.

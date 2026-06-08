@@ -1,0 +1,12 @@
+def branch(side, level):
+  if level == 0:
+    return
+  t.forward(side)
+  t.left(angles_between_branches/2)
+  branch(side / 2, level - 1)
+  t.right(angles_between_branches)
+  branch(side / 2, level - 1)
+  t.left(angles_between_branches/2)
+  t.forward(- side)
+t.left(90)
+branch(root_length, 5)

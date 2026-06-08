@@ -1,0 +1,1 @@
+in the given shape removes all horizontal small squares but keeps all the other small squares.

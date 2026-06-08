@@ -1,0 +1,1 @@
+creates the given shape without the semicircles on the left and the right.

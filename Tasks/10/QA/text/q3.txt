@@ -1,0 +1,1 @@
+in the given shape, draws two diameters of the circle that parallel the sides of the square.

@@ -1,0 +1,10 @@
+clear()
+setSpeed(fast)
+repeat(4) {
+  forward(side)
+  left(90)
+  forward(side)
+  right(90)
+  forward(side)
+  right(90)
+}

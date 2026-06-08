@@ -1,0 +1,22 @@
+clear()
+setSpeed(fast)
+def draw_square_and_diagonals(sides: Int, length: Double) {
+  val outer_turn = 360 / sides
+  repeat(sides.toInt) {
+    forward(length)
+    right(outer_turn)
+  }
+  right(45)
+  forward(length * math.sqrt(2))
+  right(135)
+  forward(length)
+  right(135)
+  forward(length * math.sqrt(2))
+  right(45)
+  forward(-length)
+}
+val x = 4
+repeat(x.toInt) {
+  draw_square_and_diagonals(4, small_square_side)
+  right(360 / x)
+}

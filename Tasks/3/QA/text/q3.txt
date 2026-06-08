@@ -1,0 +1,1 @@
+removes the bottom side of the shape.

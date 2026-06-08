@@ -1,0 +1,17 @@
+clear()
+setSpeed(fast)
+
+def draw_polygon(sides: Int, length: Double) {
+  val outer_turn = 360 / sides
+  repeat(sides.toInt) {
+    forward(length)
+    right(outer_turn)
+  }
+}
+draw_polygon(4, square_side)
+right(math.atan(0.5) * 180 / math.Pi)
+forward(square_side/2* math.sqrt(5))
+setHeading(-135)
+forward(square_side/2 * math.sqrt(2))
+right(45 + math.atan(2) * 180 / math.Pi)
+forward(square_side/2* math.sqrt(5))

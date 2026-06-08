@@ -1,0 +1,16 @@
+clear()
+setSpeed(fast)
+def branch(side: Double, level: Int) {
+  if (level == 0) {
+    return
+  }
+  forward(side)
+  left(angles_between_branches/2)
+  branch(side / 2, level - 1)
+  right(angles_between_branches)
+  branch(side / 2, level - 1)
+  left(angles_between_branches/2)
+  forward(- side)
+}
+left(90)
+branch(root_length, 5)

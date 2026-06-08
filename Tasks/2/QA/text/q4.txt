@@ -1,0 +1,1 @@
+in the given shape connects the midpoints of each side.

@@ -1,0 +1,7 @@
+clear()
+setSpeed(fast)
+repeat(4) {
+  right(-180, semicircle_radius)
+  left(90)
+  forward(2 * semicircle_radius)
+}

@@ -1,0 +1,1 @@
+creates the given shape without the lines between the segments and also inserts horizontal and vertical diameters of the smaller circle.

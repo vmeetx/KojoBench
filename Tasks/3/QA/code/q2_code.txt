@@ -1,0 +1,9 @@
+clear()
+setSpeed(fast)
+setHeading(90)
+repeat(3) {
+  forward(square_side)
+  right(90)
+}
+right(90)
+right(180, square_side / 2)

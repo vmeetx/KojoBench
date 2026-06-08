@@ -1,0 +1,1 @@
+creates the given pattern but with eight petals that are evenly spaced around the central point to maintain symmetry.

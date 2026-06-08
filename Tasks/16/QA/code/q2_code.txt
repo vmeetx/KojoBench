@@ -1,0 +1,13 @@
+clear()
+setSpeed(fast)
+def draw_right_isoceles(side_length: Double) {
+  forward(side_length)
+  left(90)
+  forward(side_length)
+  left(135)
+  forward(side_length * math.sqrt(2))
+}
+repeatFor(0 until 6) { i =>
+        draw_right_isoceles(smallest_triangle_legs * math.sqrt(math.pow(2, (i))))
+        right(180)
+}

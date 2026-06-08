@@ -1,0 +1,7 @@
+clear()
+setSpeed(fast)
+forward(square_side)
+right(135)
+forward(square_side * math.sqrt(2))
+right(135)
+forward(square_side)

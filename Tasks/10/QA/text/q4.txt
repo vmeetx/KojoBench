@@ -1,0 +1,1 @@
+in the given shape, adds a new circle that circumscribes the squares.

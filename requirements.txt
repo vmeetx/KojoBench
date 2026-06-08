@@ -1,0 +1,17 @@
+# KojoBench dependencies
+
+# Image comparison
+Pillow>=10.0.0
+numpy>=1.24.0
+
+# HTTP (Kojo online renderer + HF API)
+requests>=2.31.0
+
+# Progress bar
+tqdm>=4.66.0
+
+# Reporting
+pandas>=2.0.0
+
+# Optional: load .env for API keys
+python-dotenv>=1.0.0

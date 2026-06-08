@@ -1,0 +1,1 @@
+in the given shape adds three triangles to make a horizontally symmetrical shape.

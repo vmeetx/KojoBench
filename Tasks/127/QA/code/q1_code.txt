@@ -1,0 +1,13 @@
+clear()
+setSpeed(fast)
+repeat(2) {
+  forward(circle_radius * 2)
+  right(450, circle_radius)
+  left(90)
+  forward(circle_radius * 2)
+  left(90)
+  right(90, circle_radius)
+  left(90)
+  forward(circle_radius * 2)
+  left(90)
+}

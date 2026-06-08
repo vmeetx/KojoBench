@@ -1,0 +1,6 @@
+clear()
+setSpeed(fast)
+forward(circle_radius * 2)
+right(540, circle_radius)
+forward(circle_radius * 2)
+right(540, circle_radius)

@@ -1,0 +1,1 @@
+in the given shape removes the small circles on top and the bottom.
