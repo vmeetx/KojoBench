@@ -1,41 +1,28 @@
-﻿import hashlib
-import os
+﻿"""
+utils/kojo_renderer.py
+Renders Kojo code to PNG by calling run-kojo-headless.sh via WSL.
+"""
+
+import hashlib
 import shutil
 import subprocess
+import uuid
 from pathlib import Path
 
-_ROOT    = Path(__file__).parent.parent
-_SCALA_HOME = os.environ.get("SCALA_HOME", "")
-SCALA    = str(Path(_SCALA_HOME) / "bin" / "scala.bat") if _SCALA_HOME else "scala"
-SCALAC   = str(Path(_SCALA_HOME) / "bin" / "scalac.bat") if _SCALA_HOME else "scalac"
-JAR      = _ROOT / "renderer" / "kojo-lib-assembly-0.3.3.jar"
-CACHE    = _ROOT / ".render_cache"
-WORK_DIR = _ROOT / ".render_work"
+KOJO_HEADLESS_DIR = Path(r"D:\KojoBench\kojo-headless")
+CACHE             = Path(r"D:\KojoBench\.render_cache")
 
-WRAPPER_TOP = """\
-package p1
-
-object KojoHeadless {
-  def main(args: Array[String]): Unit = {
-    val kojo = net.kogics.kojo.lite.KojoHeadless.create(500, 500)
-    val builtins = kojo.builtins
-
-    import builtins._
-    import DCanvas._
-    import TurtleWorld._
-
-"""
-
-WRAPPER_BOT = """
-    exportImageToFile("{output_png}")
-  }
-}
-"""
+# WSL path equivalent of KOJO_HEADLESS_DIR
+WSL_WORK_DIR = "/mnt/d/KojoBench/kojo-headless"
 
 
 def render(kojo_code: str, output_png: str) -> tuple[bool, str]:
+    """
+    Render kojo_code and write PNG to output_png.
+    Returns (True, "") on success or (False, error_message) on failure.
+    Results are cached by SHA-256 of the code.
+    """
     CACHE.mkdir(exist_ok=True)
-    WORK_DIR.mkdir(exist_ok=True)
 
     h = hashlib.sha256(kojo_code.encode()).hexdigest()[:16]
     cached = CACHE / f"{h}.png"
@@ -43,56 +30,52 @@ def render(kojo_code: str, output_png: str) -> tuple[bool, str]:
         shutil.copy(cached, output_png)
         return True, ""
 
-    work = WORK_DIR / h
-    work.mkdir(exist_ok=True)
-    p1_dir = work / "p1"
-    p1_dir.mkdir(exist_ok=True)
+    # Write .kojo file into the kojo-headless dir (where the JAR and script live)
+    kojo_filename = f"_render_{uuid.uuid4().hex[:8]}.kojo"
+    kojo_file     = KOJO_HEADLESS_DIR / kojo_filename
+    kojo_file.write_text(kojo_code, encoding="utf-8")
 
-    output_abs = str(Path(output_png).resolve()).replace("\\", "/")
-    indented = "\n".join("    " + line for line in kojo_code.splitlines())
-    scala_src = WRAPPER_TOP + indented + WRAPPER_BOT.replace("{output_png}", output_abs)
+    # Expected PNG: run-kojo-headless.sh writes <stem>.png next to the .kojo file
+    produced_png = KOJO_HEADLESS_DIR / kojo_filename.replace(".kojo", ".png")
 
-    src_file = p1_dir / "KojoHeadless.wrapped.scala"
-    src_file.write_text(scala_src, encoding="utf-8")
+    try:
+        result = subprocess.run(
+            ["wsl", "bash", "-c",
+             f"cd {WSL_WORK_DIR} && ./run-kojo-headless.sh {kojo_filename}"],
+            capture_output=True, text=True, timeout=120,
+        )
 
-    jar_copy = work / JAR.name
-    if not jar_copy.exists():
-        shutil.copy(JAR, jar_copy)
+        stdout = result.stdout + "\n" + result.stderr
+        print(f"[kojo_renderer] output:\n{stdout.strip()}")
 
-    compile_result = subprocess.run(
-        [SCALAC, "-cp", JAR.name, str(src_file)],
-        capture_output=True, text=True, timeout=120,
-        cwd=str(work),
-    )
-    if compile_result.returncode != 0:
-        return False, f"compile error:\n{compile_result.stderr.strip()}"
+        if result.returncode != 0:
+            return False, f"shell error:\n{result.stderr.strip()}"
 
-    run_result = subprocess.run(
-        [SCALA, "-cp", f".{os.pathsep}{JAR.name}", "p1.KojoHeadless"],
-        capture_output=True, text=True, timeout=60,
-        cwd=str(work),
-    )
+        if not produced_png.exists():
+            return False, f"no PNG produced.\n{stdout.strip()}"
 
-    stdout = run_result.stdout + "\n" + run_result.stderr
-    print(f"[kojo_renderer] scala output:\n{stdout.strip()}")
+        shutil.copy(produced_png, output_png)
+        shutil.copy(produced_png, cached)
+        return True, ""
 
-    if run_result.returncode != 0:
-        return False, f"runtime error:\n{run_result.stderr.strip()}"
-
-    if not Path(output_png).exists():
-        return False, f"no PNG produced. stdout:\n{stdout.strip()}"
-
-    shutil.copy(output_png, cached)
-    return True, ""
+    finally:
+        # Clean up temp files
+        if kojo_file.exists():
+            kojo_file.unlink()
+        if produced_png.exists():
+            produced_png.unlink()
 
 
 def code_to_image(kojo_code: str, task_name: str, save_path: str) -> bool:
+    """Wrapper used by eval_kojo.py / calculate_score_kojo.py."""
     if not kojo_code.strip():
         print(f"[kojo_renderer] {task_name}: empty code, skipping")
         return False
+
     dest_dir = Path(save_path)
     dest_dir.mkdir(parents=True, exist_ok=True)
     dest_png = str(dest_dir / f"{task_name}.png")
+
     ok, err = render(kojo_code, dest_png)
     if ok:
         print(f"[kojo_renderer] {task_name}: rendered OK -> {dest_png}")
