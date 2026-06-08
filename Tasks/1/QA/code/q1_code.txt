@@ -1,3 +1,4 @@
 clear()
 setSpeed(fast)
-repeat(36) { forward(math.Pi * radius / 18); right(10) }
+setHeading(0)
+left(360, radius)

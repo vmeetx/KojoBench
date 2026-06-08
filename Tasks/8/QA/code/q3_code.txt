@@ -1,5 +1,6 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 setHeading(60)
 repeat(4) {
   repeat(2) {

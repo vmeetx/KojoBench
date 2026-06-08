@@ -1,7 +1,8 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 repeatFor(1 until 3) { i =>
-  repeat(36) { forward(math.Pi * (circles_radi(2 - i)) / 18); right(10) }
+  left(360, circles_radi(2 - i))
   penUp()
   right(90)
   forward(40)

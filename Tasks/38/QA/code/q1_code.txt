@@ -1,5 +1,6 @@
 clear()
 setSpeed(fast)
-repeat(36) { forward(math.Pi * (circles_radi(2)) / 18); right(10) }
-repeat(36) { forward(math.Pi * (circles_radi(1)) / 18); right(10) }
-repeat(36) { forward(math.Pi * (circles_radi(0)) / 18); right(10) }
+setHeading(0)
+left(360, circles_radi(2))
+left(360, circles_radi(1))
+left(360, circles_radi(0))

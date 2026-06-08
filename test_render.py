@@ -15,7 +15,7 @@ def load(task_num, q_num=1):
                 code = code.replace("setSpeed(fast)", f"setSpeed(fast)\nval {name.strip()} = {val.strip()}")
     return code
 
-TASK = 1
+TASK = 17    
 
 code = load(TASK)
 render(code, "test_generated.png")

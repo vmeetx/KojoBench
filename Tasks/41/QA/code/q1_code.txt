@@ -1,9 +1,10 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 repeat(3) {
   forward((triangle_side-semicircle_radius)/2)
   right(90)
-  right(-180, semicircle_radius)
+  left(-180, semicircle_radius)
   right(90)
   forward((triangle_side-semicircle_radius)/2)
   left(120)

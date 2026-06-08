@@ -1,5 +1,6 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 setHeading(36)
 repeat(5) {
   forward(pentagon_side)

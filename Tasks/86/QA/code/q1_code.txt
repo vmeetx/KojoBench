@@ -1,15 +1,16 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 def draw_polygon(sides: Int, length: Double) {
-  val outer_turn = 360 / sides
+  var outer_turn = 360 / sides
   repeat(sides.toInt) {
     forward(length)
     right(outer_turn)
   }
 }
-val n_sides = 5
-val inner_angle = (n_sides - 2) * 180 / n_sides
-val side_turn = 180 - inner_angle
+var n_sides = 5
+var inner_angle = (n_sides - 2) * 180 / n_sides
+var side_turn = 180 - inner_angle
 forward(triangle_sides(0))
 right(side_turn)
 draw_polygon(n_sides, triangle_sides(0))

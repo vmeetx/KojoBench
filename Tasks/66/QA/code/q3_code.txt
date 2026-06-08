@@ -1,7 +1,8 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 repeat(8) {
-  right(45, large_circle_radius)
+  left(45, large_circle_radius)
   left(90)
   forward(large_circle_radius - small_circle_radius)
   forward(-(large_circle_radius - small_circle_radius))
@@ -10,4 +11,4 @@ repeat(8) {
 left(90)
 forward(large_circle_radius - small_circle_radius)
 right(90)
-repeat(36) { forward(math.Pi * small_circle_radius / 18); right(10) }
+left(360, small_circle_radius)

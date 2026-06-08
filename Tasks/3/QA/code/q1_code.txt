@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setHeading(0)
 repeat(4) {
   forward(square_side)
   right(90)

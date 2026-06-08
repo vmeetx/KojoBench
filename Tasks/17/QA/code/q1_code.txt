@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 repeat(4) {
   right(90)
-  right(-180, semicircle_radius)
+  left(-180, semicircle_radius)
 }

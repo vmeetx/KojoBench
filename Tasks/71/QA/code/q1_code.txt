@@ -1,4 +1,5 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 setHeading(90)
-right(180, radius)
+left(180, radius)

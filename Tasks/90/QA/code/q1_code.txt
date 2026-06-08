@@ -1,5 +1,6 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 def draw_right_isoceles(side_length: Double) {
   forward(side_length)
   left(90)

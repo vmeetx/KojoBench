@@ -1,5 +1,6 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 setHeading(36)
 penUp()
 repeatFor(0 until 5) { i =>

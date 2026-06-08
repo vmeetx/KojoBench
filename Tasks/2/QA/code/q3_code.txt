@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setHeading(0)
 repeat(3) {
   forward(triangle_side)
   right(120)

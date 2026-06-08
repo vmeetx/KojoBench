@@ -25,24 +25,29 @@ memorised Python Turtle syntax and must reason from the spec.
 ## File map
 
 ```
-kojobench/
-├── eval_kojo.py            ← main entry point (mirrors eval.py)
-├── calculate_score_kojo.py ← rescore saved responses (mirrors calculate_score.py)
-├── crawl_tasks.py          ← rebuild dataset.jsonl from Tasks/
-├── prompts_kojo.py         ← all prompts with Kojo API reference embedded
+KojoBench/
+├── eval_kojo.py              ← main evaluation entry point
+├── calculate_score_kojo.py   ← rescore saved responses after interruption
+├── crawl_tasks.py            ← rebuild dataset.jsonl from Tasks/
+├── convert_to_kojo.py        ← converts Python Turtle reference code → Kojo
+├── audit_tasks.py            ← renders all tasks, reports IoU failures
+├── test_render.py            ← visual smoke test: side-by-side ground truth vs generated
+├── prompts_kojo.py           ← prompts with embedded Kojo syntax reference
 ├── requirements.txt
 │
 ├── models/
-│   └── hf_model.py         ← ★ CONFIGURE THIS — your HF token + model URL
+│   └── hf_model.py           ← ★ CONFIGURE THIS — your HF token + model URL
 │
 ├── utils/
-│   ├── kojo_runner.py      ← renders Kojo code → PNG via kojo.in API
-│   ├── kojo_preprocess.py  ← extracts Kojo code from raw LLM response
-│   └── shape_similarity.py ← pixel IoU evaluation (unchanged logic)
+│   ├── kojo_renderer.py      ← renders Kojo code → PNG via WSL + local JAR
+│   ├── kojo_preprocess.py    ← extracts Kojo code block from raw LLM response
+│   └── shape_similarity.py   ← pixel IoU metric
 │
-├── Tasks/                  ← your task data (same structure as TurtleBench)
-├── autotest/source/        ← ground-truth PNGs named {id}_{q}.png
-└── reports/report.csv      ← auto-created results file
+├── kojo-headless/            ← place kojo-lib-assembly-0.3.3.jar and
+│                                run-kojo-headless.sh here
+├── Tasks/                    ← task data (same structure as TurtleBench)
+├── autotest/source/          ← ground-truth PNGs named {id}_{q}.png
+└── reports/report.csv        ← auto-created results file
 ```
 
 ---
@@ -215,17 +220,6 @@ with:
 from models.my_model import MyModel
 model = MyModel()
 ```
-
----
-
-## Notes on the Kojo online renderer
-
-`utils/kojo_runner.py` sends code to `https://kojo.in/api/run`.  The renderer:
-- Wraps user code in `cleari(); setSpeed(superFast); ... invisible()`
-- Returns a base64 PNG
-- Has a 60 s timeout with 3 retries
-
-If the Kojo API changes, update `KOJO_API_URL` in `kojo_runner.py` only.
 
 ---
 

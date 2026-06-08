@@ -1,7 +1,8 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 repeat(4) {
-        repeat(36) { forward(math.Pi * small_circle_radius / 18); right(10) }
+        left(360, small_circle_radius)
         right(90)
 }
-right(180, small_circle_radius)
+left(180, small_circle_radius)

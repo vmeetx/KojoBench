@@ -1,10 +1,11 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 repeatFor(0 until 4) { i =>
         if (i % 2 == 0) {
           penUp()
         } else {
           penDown()
         }
-        right(90, radius)
+        left(90, radius)
 }

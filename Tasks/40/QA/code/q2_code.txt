@@ -1,9 +1,10 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 right(90)
 repeat(2) {
-        repeat(36) { forward(math.Pi * (large_semicircle_radius / 2) / 18); right(10) }
+        left(360, large_semicircle_radius / 2)
         right(180)
 }
-right(180, large_semicircle_radius / 2)
-repeat(36) { forward(math.Pi * large_semicircle_radius / 18); right(10) }
+left(180, large_semicircle_radius / 2)
+left(360, large_semicircle_radius)

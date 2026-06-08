@@ -1,7 +1,8 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 def draw_polygon(sides: Int, length: Double) {
-  val outer_turn = 360 / sides
+  var outer_turn = 360 / sides
   repeat(sides.toInt) {
     forward(length)
     right(outer_turn)
@@ -13,4 +14,4 @@ repeat(6) {
 }
 hop(2 * small_hexagon_side)
 left(90)
-repeat(36) { forward(math.Pi * (2 * small_hexagon_side) / 18); right(10) }
+left(360, 2 * small_hexagon_side)

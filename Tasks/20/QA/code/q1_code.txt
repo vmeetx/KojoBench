@@ -1,5 +1,6 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 def poly(side: Double, angle: Double) {
   repeat(8) {
     forward(side)

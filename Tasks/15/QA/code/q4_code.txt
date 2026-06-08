@@ -1,14 +1,15 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 def draw_polygon(sides: Int, length: Double) {
-  val outer_turn = 360 / sides
+  var outer_turn = 360 / sides
   repeat(sides.toInt) {
     forward(length)
     right(outer_turn)
   }
 }
 right(45)
-val x = 4
+var x = 4
 repeat(x.toInt) {
   draw_polygon(4, large_square_side / 2)
   right(360 / x)

@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
-right(270, radius)
+setHeading(0)
+left(270, radius)
 left(90)
 forward(radius)
 right(90)

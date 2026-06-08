@@ -9,11 +9,18 @@ import subprocess
 import uuid
 from pathlib import Path
 
-KOJO_HEADLESS_DIR = Path(r"D:\KojoBench\kojo-headless")
-CACHE             = Path(r"D:\KojoBench\.render_cache")
+_ROOT             = Path(__file__).parent.parent
+KOJO_HEADLESS_DIR = _ROOT / "kojo-headless"
+CACHE             = _ROOT / ".render_cache"
 
-# WSL path equivalent of KOJO_HEADLESS_DIR
-WSL_WORK_DIR = "/mnt/d/KojoBench/kojo-headless"
+def _to_wsl_path(p: Path) -> str:
+    """Convert a Windows absolute path to its WSL /mnt/X/... equivalent."""
+    s = str(p.resolve())
+    if len(s) >= 2 and s[1] == ":":
+        return "/mnt/" + s[0].lower() + "/" + s[3:].replace("\\", "/")
+    return s.replace("\\", "/")
+
+WSL_WORK_DIR = _to_wsl_path(KOJO_HEADLESS_DIR)
 
 
 def render(kojo_code: str, output_png: str) -> tuple[bool, str]:

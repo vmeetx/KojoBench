@@ -17,7 +17,8 @@ TASKS_DIR = ROOT / "Tasks"
 
 INT_PARAM_NAMES = {"sides", "n", "count", "level", "depth", "times", "num", "steps"}
 
-HEADER = "clear()\nsetSpeed(fast)\n"
+# setHeading(0) = East, matching Python turtle's default heading
+HEADER = "clear()\nsetSpeed(fast)\nsetHeading(0)\n"
 
 # ── Patterns for lines to drop entirely ───────────────────────────────────────
 
@@ -124,18 +125,24 @@ def convert_turtle_call(content: str) -> str | None:
                 r"speed|colormode|setup|title|exitonclick)\s*\(", content):
         return None
 
-    # circle(r, extent) → right(extent, r)
-    # circle(r)         → repeat(36) { forward(math.Pi * <r> / 18); right(10) }
+    # circle(r, extent) → left(extent, r)   positive extent = counterclockwise
+    # circle(r, -extent)→ right(extent, r)  negative extent = clockwise
+    # circle(r)         → left(360, r)
     if re.match(r"circle\s*\(", content):
         raw = extract_call_args(content, "circle")
         parts = split_top_comma(raw)
         r_expr = convert_expr(parts[0])
         if len(parts) >= 2:
-            ext = convert_expr(parts[1])
-            return f"right({ext}, {r_expr})"
+            ext_raw = parts[1].strip()
+            # Check for a literal negative number e.g. -180, -90
+            neg = re.match(r"^-(\d+(?:\.\d+)?)$", ext_raw)
+            if neg:
+                return f"right({neg.group(1)}, {r_expr})"
+            else:
+                ext = convert_expr(ext_raw)
+                return f"left({ext}, {r_expr})"
         else:
-            r_factor = r_expr if is_simple(r_expr) else f"({r_expr})"
-            return f"repeat(36) {{ forward(math.Pi * {r_factor} / 18); right(10) }}"
+            return f"left(360, {r_expr})"
 
     # forward / backward / back
     if m := re.match(r"(forward|fd)\s*\((.+)\)$", content):
@@ -199,7 +206,7 @@ def convert_turtle_call(content: str) -> str | None:
 
 # ── Hop collapsing ─────────────────────────────────────────────────────────────
 
-_PENUP_RE  = re.compile(r"^\s*t\.(penup|pu|up)\s*\(\)\s*$")
+_PENUP_RE   = re.compile(r"^\s*t\.(penup|pu|up)\s*\(\)\s*$")
 _FORWARD_RE = re.compile(r"^\s*t\.(forward|fd)\s*\((.+)\)\s*$")
 _PENDOWN_RE = re.compile(r"^\s*t\.(pendown|pd|down)\s*\(\)\s*$")
 
@@ -216,9 +223,7 @@ def collapse_hops(lines: list[str]) -> list[str]:
         line = lines[i]
         if _PENUP_RE.match(line):
             indent = len(line) - len(line.lstrip())
-            # Look ahead for forward then pendown at the same indent
             j = i + 1
-            # skip blank lines
             while j < len(lines) and not lines[j].strip():
                 j += 1
             if j < len(lines) and _FORWARD_RE.match(lines[j]):
@@ -235,7 +240,6 @@ def collapse_hops(lines: list[str]) -> list[str]:
                             out.append(" " * indent + f"hop({dist})")
                             i = k + 1
                             continue
-            # No collapse — keep penup as-is (will convert to penUp() later)
         out.append(line)
         i += 1
     return out
@@ -292,9 +296,12 @@ def convert_code(python_code: str) -> str:
     # ── Pass 1: hop collapsing ────────────────────────────────────────────────
     raw = collapse_hops(raw)
 
-    result  = [HEADER.rstrip()]  # prepend clear() + setSpeed(fast)
+    result  = [HEADER.rstrip()]  # prepend clear() + setSpeed(fast) + setHeading(0)
     stack   = [0]
     after_block = False
+
+    # Track declared names: first assignment → var, subsequent → bare reassignment
+    declared_vars: set[str] = set()
 
     i = 0
     while i < len(raw):
@@ -394,11 +401,9 @@ def convert_code(python_code: str) -> str:
             continue
 
         # ── turtle call (t.xxx or bare after stripping) ───────────────────────
-        # Strip leading t. for recognised turtle calls
         bare = re.sub(r"^t\.", "", content)
         kojo_line = convert_turtle_call(bare)
         if kojo_line is None and bare != content:
-            # It was a t.xxx call but not recognised — try generic expr convert
             kojo_line = convert_expr(bare)
         if kojo_line is not None and bare != content:
             result.append(" " * curr + kojo_line)
@@ -409,12 +414,15 @@ def convert_code(python_code: str) -> str:
         if m := re.match(r"^([A-Za-z_]\w*)\s*=(?!=)\s*(.+)", content):
             lhs = m.group(1)
             rhs = convert_expr(m.group(2).rstrip())
-            result.append(" " * curr + f"val {lhs} = {rhs}")
+            if lhs in declared_vars:
+                result.append(" " * curr + f"{lhs} = {rhs}")
+            else:
+                declared_vars.add(lhs)
+                result.append(" " * curr + f"var {lhs} = {rhs}")
             i += 1
             continue
 
         # ── bare function call (no t. prefix) ────────────────────────────────
-        # e.g. draw_polygon(4, side) or hop(n) already converted
         kojo_line = convert_turtle_call(content)
         if kojo_line is not None:
             if kojo_line:  # not dropped
@@ -443,7 +451,6 @@ def process_task(task_dir: Path) -> int:
         source = orig if orig.exists() else txt_file
         python_code = source.read_text(encoding="utf-8")
 
-        # Back up original once
         if not orig.exists():
             orig.write_text(python_code, encoding="utf-8")
 

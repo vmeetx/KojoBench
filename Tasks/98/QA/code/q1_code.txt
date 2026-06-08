@@ -1,5 +1,6 @@
 clear()
 setSpeed(fast)
+setHeading(0)
 repeatFor(0 until 5) { i =>
   forward(side)
   if (i % 2 == 0) {
