@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 repeat(6) {
   repeat(2) {
     forward(small_diamond_side)

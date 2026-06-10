@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 repeat(4) {
   left(180, semicircle_radius)
   right(90)
@@ -10,5 +11,5 @@ repeat(4) {
   forward(2 * semicircle_radius)
   left(90)
 }
-left(-90, semicircle_radius)
+right(90, semicircle_radius)
 left(360, 2 * semicircle_radius)

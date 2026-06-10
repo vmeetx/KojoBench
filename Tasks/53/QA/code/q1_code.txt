@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 left(270, radius)
 left(90)
 forward(radius)

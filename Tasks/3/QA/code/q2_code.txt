@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 setHeading(90)
 repeat(3) {
   forward(square_side)

@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 repeat(4) {
   right(90)
   repeat(4) {

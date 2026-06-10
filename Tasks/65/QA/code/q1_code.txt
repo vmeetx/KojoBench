@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 left(90)
 repeat(3) {
   left(180, semicircle_radius)

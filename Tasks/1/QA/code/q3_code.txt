@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 repeatFor(0 until 4) { i =>
         if (i % 2 == 0) {
           penUp()

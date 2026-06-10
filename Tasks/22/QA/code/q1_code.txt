@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 repeatFor(0 until 7) { i =>
   forward(side)
   if (i % 2 == 0) {

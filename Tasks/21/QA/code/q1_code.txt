@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 def branch(side: Double, level: Int) {
   if (level == 0) {
     return

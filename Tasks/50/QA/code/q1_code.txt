@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 repeat(4) {
         left(360, small_circle_radius)
         right(90)

@@ -3,8 +3,16 @@ HuggingFace Inference API model for KojoBench.
 
 === HOW TO CONFIGURE ===
 
-1. Set HF_TOKEN to your HuggingFace token (read token is enough for public endpoints).
+1. Set the HF_TOKEN environment variable to your HuggingFace token.
 2. Set HF_API_URL to the Inference API endpoint for your chosen model.
+
+   Either export them in your shell before running:
+     export HF_TOKEN=hf_...
+     export HF_API_URL=https://...
+
+   Or create a .env file in the repo root (it is gitignored):
+     HF_TOKEN=hf_...
+     HF_API_URL=https://...
 
    Standard HF Inference API format:
      https://api-inference.huggingface.co/models/<org>/<model-name>
@@ -39,12 +47,16 @@ import base64
 import requests
 from pathlib import Path
 
-# ============================================================
-#  CONFIGURE THESE TWO LINES
-# ============================================================
-HF_TOKEN  = "hf_YOUR_TOKEN_HERE"       # ← paste your token
-HF_API_URL = "https://api-inference.huggingface.co/models/meta-llama/Llama-3.1-8B-Instruct"
-# ============================================================
+_DEFAULT_API_URL = "https://api-inference.huggingface.co/models/meta-llama/Llama-3.1-8B-Instruct"
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
+HF_TOKEN   = os.environ.get("HF_TOKEN", "")
+HF_API_URL = os.environ.get("HF_API_URL", _DEFAULT_API_URL)
 
 USE_MESSAGES_API = True   # True for instruction-tuned models; False for raw completion
 
@@ -76,9 +88,9 @@ class HFModel:
     """
 
     def __init__(self, token: str = HF_TOKEN, api_url: str = HF_API_URL):
-        if token == "hf_YOUR_TOKEN_HERE":
+        if not token:
             raise ValueError(
-                "Set HF_TOKEN in models/hf_model.py before running evaluation."
+                "HF_TOKEN is not set. Export it as an environment variable or add it to a .env file."
             )
         self.headers = {
             "Authorization": f"Bearer {token}",

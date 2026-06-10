@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 setHeading(0)
 repeat(3) {
   forward(triangle_side)

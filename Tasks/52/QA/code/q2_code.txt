@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 repeat(8) {
   forward(math.sqrt(2) * square_side / (2 + math.sqrt(2)))
   right(45)

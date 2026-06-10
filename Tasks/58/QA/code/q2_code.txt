@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 forward(circle_radius * 2)
 left(360, circle_radius)
 left(90)

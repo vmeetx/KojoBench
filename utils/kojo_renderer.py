@@ -6,6 +6,7 @@ Renders Kojo code to PNG by calling run-kojo-headless.sh via WSL.
 import hashlib
 import shutil
 import subprocess
+import time
 import uuid
 from pathlib import Path
 
@@ -29,9 +30,8 @@ def render(kojo_code: str, output_png: str) -> tuple[bool, str]:
     Returns (True, "") on success or (False, error_message) on failure.
     Results are cached by SHA-256 of the code.
     """
-    CACHE.mkdir(exist_ok=True)
-
     h = hashlib.sha256(kojo_code.encode()).hexdigest()[:16]
+    CACHE.mkdir(parents=True, exist_ok=True)
     cached = CACHE / f"{h}.png"
     if cached.exists():
         shutil.copy(cached, output_png)
@@ -52,6 +52,9 @@ def render(kojo_code: str, output_png: str) -> tuple[bool, str]:
             capture_output=True, text=True, timeout=120,
         )
 
+        # Let WSL filesystem settle before next render touches p1/
+        time.sleep(1)
+
         stdout = result.stdout + "\n" + result.stderr
         print(f"[kojo_renderer] output:\n{stdout.strip()}")
 
@@ -62,6 +65,7 @@ def render(kojo_code: str, output_png: str) -> tuple[bool, str]:
             return False, f"no PNG produced.\n{stdout.strip()}"
 
         shutil.copy(produced_png, output_png)
+        CACHE.mkdir(parents=True, exist_ok=True)
         shutil.copy(produced_png, cached)
         return True, ""
 

@@ -1,9 +1,15 @@
+# Secrets — never commit
+.env
+.env.*
+
 # Claude Code session files (contain local permissions/paths)
 .claude/
 
 # Renderer work dirs and cache
 .render_cache/
 .render_work/
+.audit_tmp/
+kojo-headless/p1/
 
 # Python
 __pycache__/

@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 setHeading(180)
 left(180, semicircle_radius)
 left(90)

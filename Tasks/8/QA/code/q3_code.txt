@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 setHeading(60)
 repeat(4) {
   repeat(2) {

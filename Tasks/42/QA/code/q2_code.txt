@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 forward((triangle_side-2 * semicircle_radius)/2)
 right(90)
 left(180, semicircle_radius)

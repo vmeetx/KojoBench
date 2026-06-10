@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 setHeading(180)
 def draw_polygon(sides: Int, length: Double) {
   left(60)

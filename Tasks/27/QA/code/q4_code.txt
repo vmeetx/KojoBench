@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 def draw_polygon(sides: Int, length: Double) {
   var outer_turn = 360 / sides
   repeat(sides.toInt) {
@@ -11,10 +12,10 @@ def draw_polygon(sides: Int, length: Double) {
 draw_polygon(4, square_side)
 left(-135)
 penUp()
-left(-90, square_side/2 * math.sqrt(2))
+right(90, square_side/2 * math.sqrt(2))
 penDown()
-left(-90, square_side/2 * math.sqrt(2))
+right(90, square_side/2 * math.sqrt(2))
 penUp()
-left(-90, square_side/2 * math.sqrt(2))
+right(90, square_side/2 * math.sqrt(2))
 penDown()
-left(-90, square_side/2 * math.sqrt(2))
+right(90, square_side/2 * math.sqrt(2))

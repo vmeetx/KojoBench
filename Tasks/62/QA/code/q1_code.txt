@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 forward(radius)
 left(360, radius)
 forward((rectangle_length - 2 * radius))

@@ -1,6 +1,7 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 left(360, large_circle_radius)
 left(90)
 hop(large_circle_radius - small_circle_radius)

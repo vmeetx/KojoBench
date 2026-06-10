@@ -1,10 +1,11 @@
 clear()
 setSpeed(fast)
 setHeading(0)
+setPenColor(black)
 repeat(6) {
   forward((hexagon_side- 2 * semicircle_radius)/2)
   right(90)
-  left(-180, semicircle_radius)
+  right(180, semicircle_radius)
   right(90)
   forward((hexagon_side- 2 * semicircle_radius)/2)
   left(60)
