@@ -25,34 +25,43 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from utils.kojo_renderer import render
-from utils.shape_similarity import compute_iou_score
+from utils.shape_similarity import compute_iou_score, NSS_THRESHOLD
 
 SOURCE    = Path("autotest/source")
 TASKS     = Path("Tasks")
 TMP       = Path(".audit_tmp")
-THRESHOLD = 0.95
+THRESHOLD = NSS_THRESHOLD
 
 
 def inject_vars(code: str, var_file: Path) -> str:
     """
-    Inject variables from variables.txt into the code, exactly matching
-    test_render.py's injection logic. Converts Python list syntax to Scala Array.
+    Prepend val declarations from variables.txt after the setSpeed(fast) header line.
+    Also injects invisible() so the turtle sprite doesn't appear in renders.
+    Converts Python list syntax to Scala Array.
     """
-    if not var_file.exists():
-        return code
-    for line in var_file.read_text().splitlines():
-        line = line.strip()
-        if "=" in line:
-            name, val = line.split("=", 1)
-            name = name.strip()
-            val  = val.strip()
-            # Python list → Scala Array
-            if val.startswith("[") and val.endswith("]"):
-                val = "Array(" + val[1:-1] + ")"
-            code = code.replace(
-                "setAnimationDelay(0)",
-                f"setAnimationDelay(0)\nval {name} = {val}"
-            )
+    var_lines = []
+    if var_file.exists():
+        for line in var_file.read_text().splitlines():
+            line = line.strip()
+            if "=" in line:
+                name, val = line.split("=", 1)
+                name = name.strip()
+                val  = val.strip()
+                if val.startswith("[") and val.endswith("]"):
+                    val = "Array(" + val[1:-1] + ")"
+                var_lines.append(f"val {name} = {val}")
+
+    # Inject after setSpeed(fast) line; also add invisible() if missing
+    injection = "\n".join(var_lines)
+    if "invisible()" not in code:
+        injection = injection + "\ninvisible()" if injection else "invisible()"
+
+    if "setSpeed(fast)" in code:
+        code = code.replace("setSpeed(fast)", "setSpeed(fast)\n" + injection, 1)
+    elif var_lines or "invisible()" not in code:
+        # Fallback: prepend after clear()
+        code = code.replace("clear()", "clear()\n" + injection, 1)
+
     return code
 
 
@@ -128,7 +137,7 @@ def print_report(failures, passes, total):
     print(f"{'='*60}")
 
     if not failures:
-        print("ALL TASKS PASS ✓")
+        print("ALL TASKS PASS")
         return
 
     # Split into render failures and low-IoU

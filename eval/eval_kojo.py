@@ -16,7 +16,7 @@ Usage:
       --save_responses               # keep raw LLM responses on disk
 
 Before running:
-  1. Edit models/hf_model.py — set HF_TOKEN and HF_API_URL.
+  1. Start LM Studio and load a model, or set LM_STUDIO_BASE_URL/LM_STUDIO_MODEL env vars.
   2. Run crawl_tasks.py to build dataset.jsonl from your Tasks/ directory.
   3. Make sure autotest/source/ contains ground-truth PNGs named {id}_{q}.png
 
@@ -37,7 +37,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from tqdm import tqdm
 
-from models.hf_model import HFModel
+from models.lm_studio import LMStudioModel
 from utils.prompts_kojo import system_prompts, user_prompts, user_prompt_final_piece
 from utils.kojo_renderer import code_to_image
 from utils.kojo_preprocess import preprocess_response
@@ -65,18 +65,22 @@ def _filter_subset(
     config: list[dict],
     task_type: str,
     modalities: str,
+    task_ids: list[int] | None = None,
 ) -> list[dict]:
     """
     Filter dataset rows to the relevant subset, exactly as TurtleBench does.
+    task_ids: if set, only include rows whose 'id' is in this list.
     """
     if task_type == "scratch" and "text" in modalities:
-        # Only tasks that have a description
-        return [c for c in config
-                if c["question_number"] == 1 and c.get("description")]
+        rows = [c for c in config if c["question_number"] == 1 and c.get("description")]
     elif task_type == "scratch":
-        return [c for c in config if c["question_number"] == 1]
+        rows = [c for c in config if c["question_number"] == 1]
     else:  # tweak
-        return [c for c in config if c["question_number"] != 1]
+        rows = [c for c in config if c["question_number"] != 1]
+
+    if task_ids:
+        rows = [c for c in rows if c["id"] in task_ids]
+    return rows
 
 
 # ── Prompt construction ───────────────────────────────────────────────────────
@@ -183,11 +187,12 @@ def eval(
     modalities:     str = "image_only",
     prompting_mode: str = "cot",
     save_responses: bool = False,
+    task_ids:       list[int] | None = None,
 ) -> None:
 
     _init_report()
     config = _load_dataset()
-    subset = _filter_subset(config, task_type, modalities)
+    subset = _filter_subset(config, task_type, modalities, task_ids)
 
     print(
         f"\n[eval] Running KojoBench\n"
@@ -198,7 +203,7 @@ def eval(
         f"  subset size    = {len(subset)}\n"
     )
 
-    model = HFModel()   # reads HF_TOKEN / HF_API_URL from models/hf_model.py
+    model = LMStudioModel()
 
     timestamp = datetime.datetime.now().strftime("%d-%m_%H:%M")
     run_name  = "|".join([
@@ -339,6 +344,10 @@ def main() -> None:
         "--save_responses", action="store_true",
         help="Save raw LLM responses to .responses/<run_name>/",
     )
+    parser.add_argument(
+        "--tasks", type=int, nargs="+", metavar="N", default=None,
+        help="Only evaluate these task IDs (e.g. --tasks 1 2 3)",
+    )
     args = parser.parse_args()
 
     eval(
@@ -347,6 +356,7 @@ def main() -> None:
         modalities=args.modalities,
         prompting_mode=args.prompting_mode,
         save_responses=args.save_responses,
+        task_ids=args.tasks,
     )
 
 

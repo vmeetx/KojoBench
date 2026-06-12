@@ -108,19 +108,38 @@ def _edge_density_hist(thumb: np.ndarray, bins: int = 16) -> np.ndarray:
     return flat / norm if norm > 0 else flat
 
 
-DILATE_PX = 9    # both outlines are fattened to this band width before IoU
+CHAMFER_MAX = 20.0  # px on 256×256 thumbnail; chamfer >= this → score 0
 
 
-def _dilate(thumb: np.ndarray) -> np.ndarray:
+def _chamfer_score(thumb_a: np.ndarray, thumb_b: np.ndarray) -> float:
     """
-    Fatten the drawn lines by DILATE_PX pixels so that a thick hand-drawn
-    stroke and a thin computer-drawn stroke overlap meaningfully.
-    Uses PIL MaxFilter (no extra dependencies).
+    Normalised Chamfer distance between two shape thumbnails.
+
+    For each drawn pixel in A, find the nearest drawn pixel in B (and vice
+    versa). Average those distances, then normalise to [0, 1].
+
+    Why this beats IoU / soft-IoU:
+    - Completely stroke-width invariant: a 7px thick GT stroke and a 2px
+      thin Kojo stroke of the same circle score ~95% because the Kojo pixels
+      sit inside the GT band (avg distance ≈ 1-2px out of CHAMFER_MAX).
+    - Measures geometric proximity, not pixel overlap area.
+    - Standard metric in computer vision for shape matching.
     """
-    from PIL import ImageFilter
-    img = Image.fromarray((thumb * 255).astype(np.uint8))
-    img = img.filter(ImageFilter.MaxFilter(size=DILATE_PX))
-    return np.array(img, dtype=np.float32) / 255.0
+    from scipy.ndimage import distance_transform_edt
+
+    bin_a = thumb_a > 0.3
+    bin_b = thumb_b > 0.3
+    if not bin_a.any() or not bin_b.any():
+        return 0.0
+
+    dist_to_b = distance_transform_edt(~bin_b)
+    dist_to_a = distance_transform_edt(~bin_a)
+
+    a_to_b = float(dist_to_b[bin_a].mean())
+    b_to_a = float(dist_to_a[bin_b].mean())
+    chamfer = (a_to_b + b_to_a) / 2.0
+
+    return max(0.0, 1.0 - chamfer / CHAMFER_MAX)
 
 
 def normalised_shape_score(gt_path: Path, gen_path: Path) -> dict:
@@ -137,17 +156,7 @@ def normalised_shape_score(gt_path: Path, gen_path: Path) -> dict:
     gt_thumb  = _normalise_to_thumb(gt_mask)
     gen_thumb = _normalise_to_thumb(gen_mask)
 
-    # Dilate both to the same stroke width before comparing
-    gt_fat  = _dilate(gt_thumb)
-    gen_fat = _dilate(gen_thumb)
-
-    # 1. Normalised IoU on dilated thumbnails
-    t = 0.3
-    gt_bin  = gt_fat  > t
-    gen_bin = gen_fat > t
-    intersection = (gt_bin & gen_bin).sum()
-    union        = (gt_bin | gen_bin).sum()
-    nss_iou = float(intersection) / float(union) if union > 0 else 1.0
+    nss_iou = _chamfer_score(gt_thumb, gen_thumb)
 
     # 2. Spatial layout correlation (Pearson r on coarse grid histogram)
     gt_hist  = _edge_density_hist(gt_thumb)
