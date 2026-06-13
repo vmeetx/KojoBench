@@ -152,7 +152,7 @@ def _save_prompt(task_dir: Path, system_message: str, user_message: str) -> None
 def run_task(task_id: int, model: LMStudioModel) -> dict:
     task_dir   = DATASET_DIR / f"Task{task_id}"
     query_path = task_dir / f"KojoQuery{task_id}.md"
-    gt_path    = task_dir / "generated.png"
+    gt_path    = task_dir / "ground_truth_kojo.png"
     out_path   = task_dir / "llm_generated.png"
 
     result = {

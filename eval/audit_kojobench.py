@@ -175,8 +175,8 @@ def normalised_shape_score(gt_path: Path, gen_path: Path) -> dict:
 
 def load_task(task_id: int) -> dict | None:
     task_dir = DATASET_DIR / f"Task{task_id}"
-    gt_path  = task_dir / "ground_truth.png"
-    gen_path = task_dir / "generated.png"
+    gt_path  = task_dir / "ground_truth_python.png"
+    gen_path = task_dir / "ground_truth_kojo.png"
     prompt_path = task_dir / f"KojoQuery{task_id}.md"
 
     if not gt_path.exists() or not gen_path.exists():
@@ -315,7 +315,7 @@ def main():
     tasks = [t for i in task_ids if (t := load_task(i)) is not None]
 
     if not tasks:
-        print("No tasks found. Check KojoNewDataset/ exists and has ground_truth.png + generated.png.")
+        print("No tasks found. Check KojoNewDataset/ exists and has ground_truth_python.png + ground_truth_kojo.png.")
         sys.exit(1)
 
     # Print summary table

@@ -2,10 +2,9 @@
 Builds KojoNewDataset/ for tasks 1-10.
 
 Each Task subfolder contains:
-  TurtleTask{N}.py   — complete, runnable Python turtle code
-  KojoTask{N}.kojo   — Kojo code (with variables prepended)
-  ground_truth.png   — canonical shape image
-  generated.png      — image rendered from KojoTask{N}.kojo
+  KojoTask{N}.kojo        — Kojo code (with variables prepended)
+  ground_truth_python.png — Python turtle rendered reference (copied from Tasks/)
+  ground_truth_kojo.png   — image rendered from KojoTask{N}.kojo via headless
 
 Run from the repo root:
   python scripts/build_new_dataset.py
@@ -138,12 +137,12 @@ def build_task(task_id: int):
     # ── ground truth image ─────────────────────────────────────────────────────
     gt_src = task_dir / "image" / f"{task_id}.png"
     if gt_src.exists():
-        shutil.copy2(gt_src, out_dir / "ground_truth.png")
+        shutil.copy2(gt_src, out_dir / "ground_truth_python.png")
     else:
         print(f"  WARNING: ground truth missing for Task {task_id}: {gt_src}")
 
     # ── generated image ────────────────────────────────────────────────────────
-    gen_out = str(out_dir / "generated.png")
+    gen_out = str(out_dir / "ground_truth_kojo.png")
     ok, err = render(kojo_content, gen_out)
     if not ok:
         print(f"  WARNING: Task {task_id} render failed: {err}")
