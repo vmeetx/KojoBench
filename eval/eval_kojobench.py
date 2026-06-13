@@ -12,6 +12,7 @@ Usage (from repo root):
 """
 
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -28,23 +29,124 @@ DATASET_DIR = BASE / "KojoNewDataset"
 
 KOJO_HEADER = "clear()\nsetSpeed(fast)\nsetHeading(0)\nsetPenColor(black)\ninvisible()\n"
 
+_KOJO_EXAMPLES = """\
+--- KOJO CODE EXAMPLES ---
+These are real working Kojo scripts. Study the style: short, direct, no classes,
+no imports, no main method. Use `def` only when you genuinely reuse a command.
+
+// Example A — regular hexagon, side 80
+repeat(6) {
+  forward(80)
+  right(60)
+}
+
+// Example B — reusable polygon helper
+// Note: use 360.0 (Double) so division is never truncated
+def drawPolygon(sides: Int, length: Double) {
+  val turn = 360.0 / sides
+  repeat(sides) {
+    forward(length)
+    right(turn)
+  }
+}
+drawPolygon(8, 60)   // octagon, side 60
+
+// WRONG — never wrap code like this:
+// object MyShape {
+//   def main(args: Array[String]) {
+//     repeat(6) { forward(80); right(60) }
+//   }
+// }
+// RIGHT — write drawing commands at the top level only.
+
+--- END EXAMPLES ---
+
+RULES:
+- The environment is already initialised — do NOT call clear().
+- right() turns CLOCKWISE; left() turns COUNTER-CLOCKWISE.
+- setHeading(0)=East, setHeading(90)=North(up), setHeading(180)=West, setHeading(270)=South.
+- Use hop(n) or penUp()/penDown() only when repositioning between separate sub-shapes.
+- Keep all shapes within roughly ±300 px of the origin.
+- NEVER wrap code in object/class/def main. Write drawing commands at the top level only.
+"""
+
 SYSTEM_PROMPT = (
     "You are a Kojo turtle graphics programmer.\n"
-    "Given a description of a shape to draw, write Kojo code to draw it.\n"
-    "Use ONLY the commands in the API reference below.\n"
-    "Keep the code simple and direct — no classes, no objects, no main method.\n"
-    "Output ONLY the Kojo code inside a ```scala ... ``` code fence. Nothing else.\n\n"
+    "Write Kojo code that draws exactly what the description asks for.\n"
+    "Keep code short and direct — no classes, no objects, no main method.\n"
+    "Output ONLY the Kojo code inside a ```scala ... ``` fence. Nothing else.\n\n"
     + KOJO_API_REF
+    + "\n"
+    + _KOJO_EXAMPLES
 )
 
 
+_REDUNDANT_HEADER_RE = re.compile(
+    r'^[ \t]*(clear\(\)|setSpeed\([^)]*\)|setHeading\([^)]*\)|setPenColor\([^)]*\)|invisible\(\))[ \t]*\n',
+    re.MULTILINE,
+)
+
 def _ensure_header(code: str) -> str:
-    """Prepend standard boilerplate if the model omitted it."""
-    if "clear()" not in code:
-        code = KOJO_HEADER + "\n" + code
-    elif "invisible()" not in code:
-        code = code.replace("clear()", "clear()\ninvisible()", 1)
+    """
+    Prepend the canonical KOJO_HEADER.
+    If the model included its own header lines (setSpeed, setHeading, etc.)
+    strip them first so we don't get a doubled-up preamble.
+    """
+    # Strip any model-generated header boilerplate
+    code = _REDUNDANT_HEADER_RE.sub('', code).strip()
+    code = KOJO_HEADER + "\n" + code
     return code
+
+
+def _extract_vars(query_text: str) -> dict[str, str]:
+    """
+    Parse `varname = value` pairs from a KojoQuery markdown file.
+    Handles both plain `(varname = value)` and backtick-quoted `(`varname = value`)`.
+    e.g. "(`radius = 100`)" or "(radius = 100)" → {"radius": "100"}
+    """
+    return {
+        m.group(1).strip(): m.group(2).strip()
+        for m in re.finditer(r'`(\w+)\s*=\s*([^`\n]+)`', query_text)
+    }
+
+
+def _inject_vars(code: str, vars: dict[str, str]) -> str:
+    """
+    For every benchmark variable that appears in the model's code, inject the
+    canonical val declaration immediately after invisible().
+
+    We strip any existing declaration first (models often put them in comments
+    or with wrong values) so there are no duplicate-symbol compile errors.
+    """
+    needed = []
+    for name, value in vars.items():
+        if name not in code:
+            continue
+        # Remove any existing val/var declaration for this name (code or comment)
+        code = re.sub(
+            rf'[ \t]*(?://[^\n]*)?\bva[lr]\s+{re.escape(name)}\s*=[^\n]*\n?',
+            '',
+            code,
+        )
+        needed.append(f"val {name} = {value}")
+
+    if not needed:
+        return code
+    block = "\n".join(needed)
+    if "invisible()" in code:
+        return code.replace("invisible()", f"invisible()\n{block}", 1)
+    return block + "\n" + code
+
+
+def _save_prompt(task_dir: Path, system_message: str, user_message: str) -> None:
+    out = (
+        "=== SYSTEM PROMPT ===\n"
+        + system_message
+        + "\n\n=== USER MESSAGE ===\n"
+        + user_message
+        + "\n"
+    )
+    (task_dir / "llm_prompt.txt").write_text(out, encoding="utf-8")
 
 
 def run_task(task_id: int, model: LMStudioModel) -> dict:
@@ -73,6 +175,7 @@ def run_task(task_id: int, model: LMStudioModel) -> dict:
     result["desc"] = query_text.splitlines()[0][:65]
 
     # ── Call the model ─────────────────────────────────────────────────────────
+    _save_prompt(task_dir, SYSTEM_PROMPT, query_text)
     print(f"  Task {task_id}: querying model...", end=" ", flush=True)
     try:
         response = model.get_response(
@@ -91,9 +194,37 @@ def run_task(task_id: int, model: LMStudioModel) -> dict:
         result["status"] = "no code"
         return result
     code = _ensure_header(code)
+    task_vars = _extract_vars(query_text)
+    code = _inject_vars(code, task_vars)
 
-    # ── Render ────────────────────────────────────────────────────────────────
+    # Save generated code for inspection
+    (task_dir / "llm_generated.kojo").write_text(code, encoding="utf-8")
+
+    # ── Render (with compile-error retry) ─────────────────────────────────────
+    MAX_RETRIES = 2
     ok, err = render(code, str(out_path))
+    for attempt in range(MAX_RETRIES):
+        if ok:
+            break
+        print(f"compile error (attempt {attempt + 1}), asking model to fix...", end=" ", flush=True)
+        fix_prompt = (
+            f"The following Kojo code produced a compiler error.\n\n"
+            f"CODE:\n```scala\n{code}\n```\n\n"
+            f"ERROR:\n{err}\n\n"
+            f"Fix the error. Output ONLY the corrected Kojo code inside a ```scala ... ``` fence."
+        )
+        try:
+            response = model.get_response(system_message=SYSTEM_PROMPT, user_message=fix_prompt)
+        except Exception as e:
+            break
+        fixed = preprocess_response(response)
+        if not fixed:
+            break
+        code = _ensure_header(fixed)
+        code = _inject_vars(code, task_vars)
+        (task_dir / "llm_generated.kojo").write_text(code, encoding="utf-8")
+        ok, err = render(code, str(out_path))
+
     if not ok:
         short = err.splitlines()[0][:80] if err else "unknown"
         print(f"render failed: {short}")

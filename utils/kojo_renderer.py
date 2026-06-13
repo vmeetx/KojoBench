@@ -1,18 +1,22 @@
 ﻿"""
 utils/kojo_renderer.py
-Renders Kojo code to PNG by calling run-kojo-headless.sh via WSL.
+Renders Kojo code to PNG by calling run-kojo-headless.sh.
+Works from both Windows (via WSL subprocess) and directly inside WSL.
 """
 
 import hashlib
+import os
 import shutil
 import subprocess
-import time
 import uuid
 from pathlib import Path
 
 _ROOT             = Path(__file__).parent.parent
 KOJO_HEADLESS_DIR = _ROOT / "kojo-headless"
 CACHE             = _ROOT / ".render_cache"
+
+# Detect if we're already inside WSL or on Windows
+_RUNNING_IN_WSL = os.path.exists("/proc/version")
 
 def _to_wsl_path(p: Path) -> str:
     """Convert a Windows absolute path to its WSL /mnt/X/... equivalent."""
@@ -21,7 +25,8 @@ def _to_wsl_path(p: Path) -> str:
         return "/mnt/" + s[0].lower() + "/" + s[3:].replace("\\", "/")
     return s.replace("\\", "/")
 
-WSL_WORK_DIR = _to_wsl_path(KOJO_HEADLESS_DIR)
+# When in WSL, KOJO_HEADLESS_DIR is already a valid Linux path via /mnt/
+WSL_WORK_DIR = str(KOJO_HEADLESS_DIR) if _RUNNING_IN_WSL else _to_wsl_path(KOJO_HEADLESS_DIR)
 
 
 def render(kojo_code: str, output_png: str) -> tuple[bool, str]:
@@ -37,23 +42,25 @@ def render(kojo_code: str, output_png: str) -> tuple[bool, str]:
         shutil.copy(cached, output_png)
         return True, ""
 
-    # Write .kojo file into the kojo-headless dir (where the JAR and script live)
     kojo_filename = f"_render_{uuid.uuid4().hex[:8]}.kojo"
     kojo_file     = KOJO_HEADLESS_DIR / kojo_filename
     kojo_file.write_text(kojo_code, encoding="utf-8")
 
-    # Expected PNG: run-kojo-headless.sh writes <stem>.png next to the .kojo file
     produced_png = KOJO_HEADLESS_DIR / kojo_filename.replace(".kojo", ".png")
 
     try:
-        result = subprocess.run(
-            ["wsl", "bash", "-c",
-             f"cd {WSL_WORK_DIR} && ./run-kojo-headless.sh {kojo_filename}"],
-            capture_output=True, text=True, timeout=120,
-        )
+        if _RUNNING_IN_WSL:
+            # Already in WSL — run the script directly
+            cmd = ["bash", "-c",
+                   f"cd {WSL_WORK_DIR} && rm -rf p1/ && ./run-kojo-headless.sh {kojo_filename}"]
+        else:
+            # On Windows — call via wsl
+            cmd = ["wsl", "bash", "-c",
+                   f"cd {WSL_WORK_DIR} && rm -rf p1/ && ./run-kojo-headless.sh {kojo_filename}"]
 
-        # Let WSL filesystem settle before next render touches p1/
-        time.sleep(1)
+        result = subprocess.run(
+            cmd, capture_output=True, text=True, timeout=120,
+        )
 
         stdout = result.stdout + "\n" + result.stderr
         print(f"[kojo_renderer] output:\n{stdout.strip()}")
@@ -70,7 +77,6 @@ def render(kojo_code: str, output_png: str) -> tuple[bool, str]:
         return True, ""
 
     finally:
-        # Clean up temp files
         if kojo_file.exists():
             kojo_file.unlink()
         if produced_png.exists():

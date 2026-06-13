@@ -1,5 +1,5 @@
-Draw two equilateral triangles placed side by side, both pointing upward. They share one full side (their common base), so the result looks like a diamond or rhombus outline split down the middle. The whole figure is symmetric along a vertical axis.
+Draw two equilateral triangles placed side by side, both pointing upward. The two triangles meet at a single shared bottom vertex in the center. The left triangle has its base going left from the center, and the right triangle has its base going right from the center. Together the four outer edges form a rhombus (diamond) outline, with the center bottom vertex creating a visible notch at the bottom.
 
-`triangle_side` specifies the length of each side of both triangles in pixels — this is also the length of the shared base. (`triangle_side = 200`)
+`triangle_side` specifies the length of each side of both triangles in pixels. (`triangle_side = 200`)
 
-Write concise Kojo code — a helper command and a loop are appropriate here.
+Use a `def drawPolygon(sides, length)` helper and a loop. Start with `setHeading(60)`, draw the first triangle, then turn `left(120)` and draw the second triangle from the same center point. Write concise Kojo code.

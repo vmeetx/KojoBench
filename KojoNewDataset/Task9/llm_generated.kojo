@@ -1,0 +1,10 @@
+clear()
+setSpeed(fast)
+setHeading(0)
+setPenColor(black)
+invisible()
+
+right(180, 70)
+left(180, 70)
+left(90)
+forward(4 * 70)
