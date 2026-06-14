@@ -1,0 +1,1 @@
+Draw two triangles next to each other that both point up. They touch at one shared corner at the bottom middle. It looks like the letter M, with two peaks and the bottoms meeting at a single point in the center.

@@ -1,0 +1,1 @@
+Draw a big triangle shape where each of the three corners has a small triangle growing out of it. The small triangles point away from the middle of the shape. It kind of looks like a triangle with three little spikes at every corner.

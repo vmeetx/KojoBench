@@ -1,0 +1,1 @@
+Draw a shape with 5 sides all the same length. The bottom is a flat straight line. The two sides go up and outward from the bottom corners, then two more sides come together to meet at a single point at the top.

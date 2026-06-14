@@ -1,0 +1,1 @@
+Draw a four pointed star. There is a square tilted at an angle in the middle, and a triangle sticks out from each of its four sides pointing outward. The four points of the star go diagonally, like a compass with points going upper left, upper right, lower left and lower right.

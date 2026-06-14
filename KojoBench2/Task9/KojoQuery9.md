@@ -1,0 +1,1 @@
+Draw two half circles connected by a straight vertical line in the middle. The top half circle bulges out to the right. The bottom half circle bulges out to the left. They are joined together at the vertical line which runs from top to bottom through both of them.
