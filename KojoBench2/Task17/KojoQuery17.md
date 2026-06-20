@@ -1,0 +1,1 @@
+Draw an equilateral triangle pointing downward. The flat side is at the top and goes straight across. The other two sides slope downward and toward each other from the two top corners, meeting at a single point at the bottom. All three sides are the same length.

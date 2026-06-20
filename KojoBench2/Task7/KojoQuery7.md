@@ -1,1 +1,1 @@
-Draw a square with a triangle stuck to its right side. The triangle points to the right. The left edge of the triangle is the same as the right edge of the square, they share that line. It looks a bit like a house lying on its side or a play button.
+Draw a square with a triangle attached to its right side. The left side of the triangle is the same length as the right side of the square, and those two edges perfectly coincide. The triangle points to the right, and its apex is directly to the right of the center of the shared edge.

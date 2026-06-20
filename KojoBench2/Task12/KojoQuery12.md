@@ -1,0 +1,1 @@
+Draw a triangle that has exactly one right-angle corner. The two sides that meet at the right-angle corner are the same length as each other. The third side connects the far ends of those two sides diagonally.

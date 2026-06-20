@@ -104,7 +104,14 @@ class LMStudioModel:
                 {"role": "system", "content": system_message},
                 {"role": "user",   "content": user_content},
             ],
-            max_tokens=2048,
+            max_tokens=8192,
             temperature=0.0,
         )
-        return response.choices[0].message.content or ""
+        msg = response.choices[0].message
+        # For reasoning models (R1-Distill etc.), prepend the thinking trace
+        # so callers can save it. Falls back gracefully for non-reasoning models.
+        reasoning = getattr(msg, "reasoning_content", None) or ""
+        content   = msg.content or ""
+        if reasoning:
+            return f"<think>\n{reasoning}\n</think>\n\n{content}"
+        return content

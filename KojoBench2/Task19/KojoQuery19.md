@@ -1,0 +1,1 @@
+Draw a shape with eight equal sides and eight equal angles. The top side and the bottom side go straight across and are horizontal. The four corner sides are diagonal and connect the ends of the horizontal and vertical sides at equal angles.

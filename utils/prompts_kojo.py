@@ -107,6 +107,25 @@ State save/restore:
   savePosHe()    — save current position and heading
   restorePosHe() — restore to saved position and heading
 
+Example — equilateral triangle with side 100:
+  repeat(3) {
+    forward(100)
+    right(120)
+  }
+
+Example — square with fill:
+  setFillColor(blue)
+  repeat(4) {
+    forward(100)
+    right(90)
+  }
+
+Example — circle approximation radius 50:
+  repeat(72) {
+    forward(4)
+    right(5)
+  }
+
 Example — arc (quarter circle, radius 100, rightward):
   right(90, 100)
 

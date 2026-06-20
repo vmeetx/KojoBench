@@ -11,6 +11,59 @@ import subprocess
 import uuid
 from pathlib import Path
 
+import numpy as np
+from PIL import Image
+
+# Background luma threshold — pixels brighter than this are considered whitespace
+_BG_LUMA    = 240
+# Uniform margin around the content bbox, in pixels
+_MARGIN_PX  = 20
+# Final square output size (512 comfortably covers max observed content ~402×310)
+_OUT_SIZE   = 512
+
+
+def _crop_to_content(png_path: str) -> None:
+    """
+    Trim whitespace from a rendered PNG, then center it on a _OUT_SIZE square.
+    Overwrites the file in place.
+    """
+    img  = Image.open(png_path).convert("RGB")
+    arr  = np.array(img, dtype=np.float32)
+    gray = arr[:, :, 0] * 0.299 + arr[:, :, 1] * 0.587 + arr[:, :, 2] * 0.114
+    mask = gray < _BG_LUMA
+
+    if not mask.any():
+        # Blank canvas — just resize to output square
+        img.resize((_OUT_SIZE, _OUT_SIZE), Image.LANCZOS).save(png_path)
+        return
+
+    rows = np.where(np.any(mask, axis=1))[0]
+    cols = np.where(np.any(mask, axis=0))[0]
+    r0, r1 = int(rows[0]),  int(rows[-1])
+    c0, c1 = int(cols[0]),  int(cols[-1])
+
+    # Add margin, clamp to image bounds
+    h, w = arr.shape[:2]
+    r0 = max(0,     r0 - _MARGIN_PX)
+    r1 = min(h - 1, r1 + _MARGIN_PX)
+    c0 = max(0,     c0 - _MARGIN_PX)
+    c1 = min(w - 1, c1 + _MARGIN_PX)
+
+    cropped = img.crop((c0, r0, c1 + 1, r1 + 1))  # PIL crop is (left, top, right, bottom)
+
+    # Center on white square canvas
+    canvas = Image.new("RGB", (_OUT_SIZE, _OUT_SIZE), (255, 255, 255))
+    cw, ch = cropped.size
+    # Scale down only if content is larger than canvas
+    if cw > _OUT_SIZE or ch > _OUT_SIZE:
+        scale   = min(_OUT_SIZE / cw, _OUT_SIZE / ch)
+        cropped = cropped.resize((int(cw * scale), int(ch * scale)), Image.LANCZOS)
+        cw, ch  = cropped.size
+    ox = (_OUT_SIZE - cw) // 2
+    oy = (_OUT_SIZE - ch) // 2
+    canvas.paste(cropped, (ox, oy))
+    canvas.save(png_path)
+
 _ROOT             = Path(__file__).parent.parent
 KOJO_HEADLESS_DIR = _ROOT / "kojo-headless"
 CACHE             = _ROOT / ".render_cache"
@@ -40,7 +93,7 @@ def render(kojo_code: str, output_png: str) -> tuple[bool, str]:
     cached = CACHE / f"{h}.png"
     if cached.exists():
         shutil.copy(cached, output_png)
-        return True, ""
+        return True, ""  # cached version is already cropped
 
     kojo_filename = f"_render_{uuid.uuid4().hex[:8]}.kojo"
     kojo_file     = KOJO_HEADLESS_DIR / kojo_filename
@@ -72,8 +125,9 @@ def render(kojo_code: str, output_png: str) -> tuple[bool, str]:
             return False, f"no PNG produced.\n{stdout.strip()}"
 
         shutil.copy(produced_png, output_png)
+        _crop_to_content(output_png)
         CACHE.mkdir(parents=True, exist_ok=True)
-        shutil.copy(produced_png, cached)
+        shutil.copy(output_png, cached)  # cache the cropped version
         return True, ""
 
     finally:

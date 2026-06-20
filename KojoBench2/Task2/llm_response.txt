@@ -1,0 +1,159 @@
+<think>
+
+Okay, so I need to figure out how to draw a triangle that points up using Kojo. The description says it's an equilateral triangle because all sides are the same length. But wait, in the example given earlier, like the equilateral triangle with side 100, they used repeat(3) { forward(100); right(120) }. That makes sense because each internal angle of an equilateral triangle is 60 degrees, but when drawing, you turn by the external angle, which is 120 degrees.
+
+But in this case, the user wants a triangle that points up. So normally, if I draw it with right(120), it would point down because each turn is to the right (clockwise). Hmm, no, wait. Let me think again. If you start facing east, then turning right 120 degrees would make you face south-east, and so on. But that might not be pointing up.
+
+Wait, maybe I should consider the initial heading. In Kojo, setHeading(90) is north, which is upwards. So perhaps if I start by setting the heading to north, then each turn can be left or right accordingly.
+
+Alternatively, maybe it's simpler to adjust the turning angle. If I want the triangle to point up, perhaps I should turn left instead of right. Because in the example, using right(120) makes a downward-pointing triangle. So if I use left(120), would that make it point upwards?
+
+Wait, no. Let me visualize this. Starting facing north (setHeading(90)), then moving forward, turning left 120 degrees would face west, but drawing the lines might not form a proper triangle.
+
+Alternatively, maybe using right turns with a different angle. Wait, perhaps I'm overcomplicating. The user's example for an equilateral triangle uses right(120), which works because each external angle is 120 degrees. So to make it point up, maybe the initial heading needs to be adjusted.
+
+Wait, no. Actually, in the standard drawing, starting facing east (setHeading(90) would be north?), wait no: setHeading(0) is East, 90 is North. So if I start at 90 (North), then turn right by 120 degrees, that's towards west-northwest? Hmm, maybe not.
+
+Wait, perhaps the initial heading isn't an issue because regardless of where you draw it, as long as the relative angles are correct. But in this case, the user wants a triangle pointing up, so perhaps starting facing north is better.
+
+Alternatively, maybe I can just adjust the turning direction. If I use left(120) instead of right(120), would that make the triangle point upwards?
+
+Wait, let me think about how the turns work. Each turn in the repeat loop affects the turtle's heading. So starting at north (90 degrees), if I move forward and then turn right by 120 degrees, my next direction is south-east. Then another right turn of 120 would face west-southwest, but that might not form a proper triangle.
+
+Alternatively, maybe using left turns with the same angle. Let me try to calculate: for an equilateral triangle, each internal angle is 60 degrees, so when drawing, you make external turns of 120 degrees. So whether you turn right or left depends on how you traverse the edges.
+
+Wait, perhaps I should just test this in my mind. If I start facing north (90), then move forward, and then turn right by 60 degrees, that would face me to the east-northeast? No, wait: turning right from north is towards east. Wait no, if you're facing north and turn right, you face east. Then another right turn of 120 would be south-east.
+
+Wait, maybe I'm getting confused with the angles. Let's think about it step by step.
+
+In an equilateral triangle, each internal angle is 60 degrees. So when drawing, at each vertex, you make a turn equal to the external angle, which is 180 - 60 = 120 degrees. But whether that's left or right depends on the traversal direction.
+
+If I'm drawing the triangle in a counter-clockwise manner (left turns), then each turn would be 120 degrees to the left. So starting at north, moving forward, turning left by 120 degrees would face me towards west-northwest? Wait, no: facing north, turning left 90 is west, so 120 would be more than that.
+
+Alternatively, perhaps it's easier to just use right turns but adjust the initial heading. But I'm not sure.
+
+Wait, maybe a simpler approach: in the example given earlier, using right(120) for each turn results in a triangle pointing down. So if I want it pointing up, perhaps I should start facing north and then turn left by 60 degrees instead of right? Or maybe adjust the angle to something else.
+
+Alternatively, perhaps the initial heading isn't an issue because regardless of where you draw it, as long as the relative angles are correct. So maybe just using right(120) but starting at a different heading would make it point up.
+
+Wait, no. The direction affects where the triangle is drawn, not whether it points up or down. So perhaps to have the triangle pointing up, I need to adjust the turning direction.
+
+Let me think: if I start facing north (90), then move forward, and turn right by 120 degrees, that would face me towards west-northwest? Or maybe south-east?
+
+Wait, no. Facing north, a right turn of 120 degrees would make me face east plus some angle down. Wait, perhaps it's better to visualize this.
+
+Alternatively, maybe I can just write the code and see what happens. But since I'm doing this in my mind, let me try another approach.
+
+In the example given earlier, using right(120) for each turn results in a triangle that points downward because after three turns of 120 degrees to the right, you end up facing the same direction as before but shifted by 360 - (3*120) = 360-360=0. So it's pointing down.
+
+Wait, perhaps I'm overcomplicating this. Maybe regardless of the initial heading, using left(120) would make it point up because turning left instead of right changes the direction.
+
+So let me try: starting at north (90), move forward, then turn left by 120 degrees. That would face me towards east plus some angle to the left? Or maybe west?
+
+Wait, no. Facing north, a left turn is counter-clockwise. So turning left 120 degrees from north would make me face west-northwest (since 90 - 120 = -30, which is equivalent to 330 degrees). Then moving forward and turning left another 120 would face me towards south-west? Hmm.
+
+Alternatively, perhaps the key is that for a triangle pointing up, each turn should be a right turn of 60 degrees. Because in an equilateral triangle, when you traverse it counter-clockwise, each external angle is 120 degrees to the left, but if you're going clockwise, each turn would be 120 degrees to the right.
+
+Wait, maybe I'm getting confused between internal and external angles. Let me clarify: for a regular polygon with n sides, each external angle is 360/n degrees. So for a triangle, it's 120 degrees. But when drawing, you can choose to turn left or right depending on the direction of traversal.
+
+So if I want the triangle to point up, perhaps I should traverse it in a clockwise manner, which would involve turning right by 120 degrees each time.
+
+Wait, but in that case, starting at north (90), moving forward, then turning right 120 would face me towards east. Then another right turn of 120 would face me south, and the third turn would bring me back to west? Hmm, not sure.
+
+Alternatively, maybe I should start facing north, move forward, then turn left by 60 degrees. Because for a triangle pointing up, each internal angle is 60 degrees, so perhaps turning left by 60 at each vertex.
+
+Wait, no: the internal angles of an equilateral triangle are 60 degrees, but when drawing, you make external turns. So if I'm moving counter-clockwise around the triangle, each turn would be a right turn of 120 degrees (since external angle is 120). But to have it point up, perhaps starting facing north and turning left by 120 degrees.
+
+Wait, maybe that's not correct. Let me think again: when you draw a polygon in the standard way, each external angle is the angle you turn at each vertex. For a counter-clockwise traversal of a triangle, each turn would be to the right (since it's clockwise around the shape). Wait, no: if you're moving counter-clockwise around the shape, your turns are to the left.
+
+Wait, I'm getting confused. Let me try to find a clear way to think about this.
+
+In turtle graphics, when you draw a polygon by turning at each vertex, the direction of the turn (left or right) determines whether the polygon is drawn clockwise or counter-clockwise around its perimeter.
+
+For example, in the given example, using right(120) three times would result in a triangle that's drawn clockwise, which points downward. So to make it point upward, perhaps I need to draw it counter-clockwise, which would involve turning left at each vertex.
+
+So starting facing north (90), moving forward, then turning left by 120 degrees would face me towards west-northwest? Or maybe south-west?
+
+Wait, no: facing north, a left turn of 120 degrees would make me face east. Wait, that can't be right because 90 - 120 = -30, which is equivalent to 330 degrees, pointing towards the northwest.
+
+Hmm, perhaps I'm overcomplicating this. Maybe it's better to just write the code and see what happens.
+
+So, in the example given earlier, using repeat(3) { forward(80); right(60) } draws a triangle pointing down. So if I want one pointing up, maybe I should use left instead of right.
+
+Wait, but that would change the direction. Let me think: starting at north (90), moving forward, then turning left by 120 degrees would face me towards west-northwest? Or perhaps south-west?
+
+Alternatively, perhaps using left(60) each time would make it point up because each internal angle is 60.
+
+Wait, no. The external angle for a triangle is 120 degrees, so regardless of the direction (left or right), you need to turn by that amount at each vertex.
+
+So if I want the triangle to point up, perhaps I should start facing north and then turn left by 120 degrees after each move.
+
+Wait, but in that case, starting at north, moving forward, turning left 120 would face me towards west-northwest (330 degrees). Then another left 120 would be 330 - 120 = 210 degrees, which is south-west. Then another left 120 would bring me back to 90 degrees.
+
+Wait, but that's three turns of 120 each, totaling 360, so I end up facing north again. So the triangle would be drawn in a counter-clockwise manner, pointing upwards.
+
+Alternatively, perhaps using right(120) and starting at south (270) would make it point up. But that's complicating things.
+
+I think the simplest way is to adjust the initial heading so that after turning left 120 degrees, the turtle faces a direction that allows the triangle to be drawn pointing upwards.
+
+Alternatively, perhaps I can just use right(60) each time because for an equilateral triangle, each internal angle is 60 degrees. So maybe turning right by 60 would make it point up.
+
+Wait, no: in the example given earlier, using right(120) three times makes a downward-pointing triangle. So perhaps to get an upward-pointing one, I need to use left(120).
+
+But let me think about this again. The key is that each turn should be 120 degrees, but in the opposite direction.
+
+So, if I start facing north (90), move forward, then turn right by 120 would face me towards east plus some angle down, which might not point up.
+
+Alternatively, starting at south (270), moving forward, turning left by 120 would face me towards west. Hmm.
+
+Wait, perhaps the initial heading isn't as important as the relative direction of the turns. So maybe regardless of where I start, using right(120) each time makes it point down, and left(120) makes it point up.
+
+So in that case, to make a triangle pointing up, I should use left(120).
+
+But wait, let me test this: starting at north (90), moving forward, then turning left 120 would face me towards west-northwest. Then another left 120 would be south-west, and the third left 120 brings me back to north.
+
+So drawing lines between these points might form a triangle pointing upwards.
+
+Alternatively, perhaps I should start facing east (90) but that's already part of the initial heading.
+
+Wait, maybe it's better to just write the code as per the example but adjust the direction. So instead of right(120), use left(120).
+
+So the code would be:
+
+repeat(3) {
+  forward(80)
+  left(120)
+}
+
+But wait, in the given example, using right(120) makes a downward-pointing triangle. Using left(120) might make it point upwards.
+
+Alternatively, perhaps I should start facing north and then turn right by 60 degrees each time because that's the internal angle.
+
+Wait, no: for an equilateral triangle, each external angle is 120 degrees, so you need to turn by 120 at each vertex regardless of direction.
+
+So in conclusion, to make a triangle pointing up, I should use left(120) instead of right(120).
+
+Therefore, the code would be:
+
+repeat(3) {
+  forward(80)
+  left(120)
+}
+
+But wait, let me check: starting at north (90), moving forward, then turning left by 120. So facing 90 - 120 = -30 degrees, which is equivalent to 330 degrees (north-west). Then another left turn of 120 would be 330 - 120 = 210 degrees (south-west), and the third left turn brings me back to 90. So drawing lines between these points should form a triangle pointing upwards.
+
+Yes, that makes sense.
+
+</think>
+
+
+
+To draw a triangle pointing up with all sides equal length, we can use the `repeat` command to loop through each side. Starting facing north (90 degrees), we move forward and then turn left by 120 degrees at each vertex. This creates an upward-pointing equilateral triangle.
+
+```scala
+// Example code that draws a triangle pointing up.
+repeat(3) {
+  forward(80)
+  left(120)
+}
+```

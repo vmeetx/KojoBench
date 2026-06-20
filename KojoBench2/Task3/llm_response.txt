@@ -1,0 +1,24 @@
+<think>
+
+Okay, I need to help the user by writing Kojo code that draws a square. The description is straightforward: all four sides are the same length with perfectly straight corners. 
+
+First, I'll recall how to move and turn in Kojo. To draw a square, I know that each side should be drawn followed by a 90-degree right turn. So, using the forward command for each side and then turning right.
+
+I remember that in the examples provided, they used repeat loops for shapes like hexagons or octagons because it's efficient. But since this is just a square, maybe repeating four times with the same commands would be simplest.
+
+So, I'll start by moving forward 100 pixels and then turning right. Repeating this four times should complete the square without any issues. 
+
+I don't need to use any complex functions or loops beyond repeat(4) because each side is identical. There's no need for a helper function here since it's just one shape.
+
+Putting it all together, I'll write the code inside a repeat block, moving forward and turning right four times. That should do it.
+
+</think>
+
+
+
+```scala
+repeat(4) {
+  forward(100)
+  right(90)
+}
+```
