@@ -130,7 +130,7 @@ def main():
                         {"role": "system", "content": SYSTEM_PROMPT},
                         {"role": "user",   "content": query},
                     ],
-                    max_tokens=6000,
+                    max_tokens=2048,
                     temperature=0.0,
                 )
                 break  # success
