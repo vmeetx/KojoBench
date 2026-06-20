@@ -29,7 +29,7 @@ except ImportError:
 
 # ── Config ────────────────────────────────────────────────────────────────────
 GROQ_MODEL  = "deepseek-r1-distill-llama-70b"
-TASKS       = list(range(1, 16))           # tasks 1-15
+TASKS       = list(range(1, 11))           # tasks 1-10
 SLEEP_S     = 4                            # seconds between calls (rate limit buffer)
 DATASET_DIR = Path(__file__).parent / "KojoBench2"
 
