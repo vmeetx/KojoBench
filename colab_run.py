@@ -28,7 +28,7 @@ except ImportError:
     raise ImportError("pip install groq")
 
 # ── Config ────────────────────────────────────────────────────────────────────
-GROQ_MODEL  = "qwen-qwq-32b"
+GROQ_MODEL  = "qwen/qwen3-32b"
 TASKS       = list(range(1, 11))           # tasks 1-10
 SLEEP_S     = 10                           # seconds between calls (rate limit buffer)
 MAX_RETRIES = 4                            # retries on rate-limit (429)
@@ -147,9 +147,19 @@ def main():
             continue
 
         msg      = response.choices[0].message
-        thinking = getattr(msg, "reasoning_content", None) or ""
-        content  = msg.content or ""
-        code     = extract_code(content)
+        raw_content = msg.content or ""
+
+        # Qwen3 embeds thinking in <think>...</think> inside content
+        think_match = re.search(r'<think>(.*?)</think>', raw_content, re.DOTALL)
+        if think_match:
+            thinking = think_match.group(1).strip()
+            content  = raw_content[think_match.end():].strip()
+        else:
+            # Fallback: separate reasoning_content field (DeepSeek R1 style)
+            thinking = getattr(msg, "reasoning_content", None) or ""
+            content  = raw_content
+
+        code = extract_code(content)
 
         print_thinking(thinking)
         print_code(code)
