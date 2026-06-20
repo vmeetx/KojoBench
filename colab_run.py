@@ -30,7 +30,8 @@ except ImportError:
 # ── Config ────────────────────────────────────────────────────────────────────
 GROQ_MODEL  = "qwen-qwq-32b"
 TASKS       = list(range(1, 11))           # tasks 1-10
-SLEEP_S     = 4                            # seconds between calls (rate limit buffer)
+SLEEP_S     = 10                           # seconds between calls (rate limit buffer)
+MAX_RETRIES = 4                            # retries on rate-limit (429)
 DATASET_DIR = Path(__file__).parent / "KojoBench2"
 
 # ── System prompt (condensed for rate limit efficiency) ───────────────────────
@@ -120,19 +121,29 @@ def main():
         query = query_file.read_text(encoding="utf-8").strip()
         print_divider(task_id, query)
 
-        try:
-            response = client.chat.completions.create(
-                model=GROQ_MODEL,
-                messages=[
-                    {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user",   "content": query},
-                ],
-                max_tokens=6000,
-                temperature=0.0,
-            )
-        except Exception as e:
-            print(f"\n  ERROR: {e}")
-            time.sleep(SLEEP_S * 3)
+        response = None
+        for attempt in range(MAX_RETRIES):
+            try:
+                response = client.chat.completions.create(
+                    model=GROQ_MODEL,
+                    messages=[
+                        {"role": "system", "content": SYSTEM_PROMPT},
+                        {"role": "user",   "content": query},
+                    ],
+                    max_tokens=6000,
+                    temperature=0.0,
+                )
+                break  # success
+            except Exception as e:
+                err = str(e)
+                is_rate_limit = "429" in err or "rate_limit" in err.lower() or "rate limit" in err.lower()
+                wait = (2 ** attempt) * 30 if is_rate_limit else SLEEP_S * 2
+                print(f"\n  {'RATE LIMITED' if is_rate_limit else 'ERROR'} (attempt {attempt+1}/{MAX_RETRIES}): {err[:80]}")
+                print(f"  Waiting {wait}s before retry...")
+                time.sleep(wait)
+
+        if response is None:
+            print(f"\n  Task {task_id}: all retries failed, skipping")
             continue
 
         msg      = response.choices[0].message
