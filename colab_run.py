@@ -1,40 +1,45 @@
 """
 colab_run.py
 ------------
-Standalone script for running KojoBench2 tasks 11-25 on a reasoning model
-via Groq's free API. Prints the full thinking trace + generated code per task.
-No Kojo rendering needed — just model evaluation.
+Run KojoBench2 tasks against any OpenAI-compatible reasoning model API.
+Prints thinking trace + generated code per task. No Kojo rendering needed.
 
 Colab setup:
-    !pip install groq
-    # Set GROQ_API_KEY in Colab Secrets (left sidebar → key icon)
-
+    !pip install openai
     import os
-    from google.colab import userdata
-    os.environ["GROQ_API_KEY"] = userdata.get("GROQ_API_KEY")
+    os.environ["GROQ_API_KEY"] = "your-key-here"
 
-Get a free Groq API key at: console.groq.com
-Model used: deepseek-r1-distill-llama-70b (returns reasoning_content separately)
+    # Then run:  !python colab_run.py
+
+Provider presets (set the matching env var):
+    Groq        →  GROQ_API_KEY       (default, model: qwen/qwen3-32b)
+    Together    →  TOGETHER_API_KEY
+    OpenRouter  →  OPENROUTER_API_KEY
+    LM Studio   →  (no key needed, runs locally)
+
+Override any value:
+    MODEL_BASE_URL / MODEL_API_KEY / MODEL_NAME
 """
 
 import os
 import re
+import sys
 import time
 from pathlib import Path
 
-try:
-    from groq import Groq
-except ImportError:
-    raise ImportError("pip install groq")
+sys.path.insert(0, str(Path(__file__).parent))
+from models.openai_compat import OpenAICompatModel, PROVIDERS
 
 # ── Config ────────────────────────────────────────────────────────────────────
-GROQ_MODEL  = "qwen/qwen3-32b"
-TASKS       = list(range(1, 11))           # tasks 1-10
-SLEEP_S     = 10                           # seconds between calls (rate limit buffer)
-MAX_RETRIES = 4                            # retries on rate-limit (429)
+PROVIDER   = os.environ.get("PROVIDER", "groq")
+MODEL_NAME = os.environ.get("MODEL_NAME", "qwen/qwen3-32b")
+TASKS      = list(range(1, 11))    # tasks 1-10
+SLEEP_S    = 10                    # seconds between calls
+MAX_RETRIES = 4
+
 DATASET_DIR = Path(__file__).parent / "KojoBench2"
 
-# ── System prompt (condensed for rate limit efficiency) ───────────────────────
+# ── System prompt ─────────────────────────────────────────────────────────────
 SYSTEM_PROMPT = """\
 You are a Kojo turtle graphics programmer.
 Write Kojo code that draws exactly what the user describes.
@@ -66,11 +71,19 @@ Examples:
 """
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
-_FENCE_RE = re.compile(r'```(?:scala|kojo)?\s*(.*?)```', re.DOTALL)
+_FENCE_RE   = re.compile(r'```(?:scala|kojo)?\s*(.*?)```', re.DOTALL)
+_THINK_RE   = re.compile(r'<think>(.*?)</think>', re.DOTALL)
 
 def extract_code(text: str) -> str:
     m = _FENCE_RE.search(text)
     return m.group(1).strip() if m else ""
+
+def split_thinking(text: str) -> tuple[str, str]:
+    """Return (thinking, rest) splitting on <think>...</think>."""
+    m = _THINK_RE.search(text)
+    if m:
+        return m.group(1).strip(), text[m.end():].strip()
+    return "", text
 
 def print_divider(task_id: int, query: str):
     print("\n" + "=" * 70)
@@ -82,10 +95,8 @@ def print_thinking(thinking: str):
     if not thinking:
         return
     lines = thinking.strip().splitlines()
-    # Show first 20 lines of thinking to keep output readable
-    preview = lines[:20]
     print("\n[THINKING]")
-    for line in preview:
+    for line in lines[:20]:
         print(f"  {line}")
     if len(lines) > 20:
         print(f"  ... ({len(lines) - 20} more lines)")
@@ -99,16 +110,15 @@ def print_code(code: str):
         print(f"  {line}")
 
 
-# ── Main loop ─────────────────────────────────────────────────────────────────
+# ── Main ──────────────────────────────────────────────────────────────────────
 def main():
-    api_key = os.environ.get("GROQ_API_KEY", "")
-    if not api_key:
-        raise ValueError("Set GROQ_API_KEY in environment or Colab Secrets.")
-
-    client = Groq(api_key=api_key)
-    print(f"Model: {GROQ_MODEL}")
-    print(f"Tasks: {TASKS}")
-    print(f"Sleep between calls: {SLEEP_S}s\n")
+    model = OpenAICompatModel(
+        provider=PROVIDER,
+        model=MODEL_NAME,
+        max_tokens=2048,
+        temperature=0.0,
+    )
+    print(f"Tasks: {TASKS}  sleep: {SLEEP_S}s\n")
 
     for task_id in TASKS:
         task_dir   = DATASET_DIR / f"Task{task_id}"
@@ -121,60 +131,34 @@ def main():
         query = query_file.read_text(encoding="utf-8").strip()
         print_divider(task_id, query)
 
-        response = None
+        raw_response = None
         for attempt in range(MAX_RETRIES):
             try:
-                response = client.chat.completions.create(
-                    model=GROQ_MODEL,
-                    messages=[
-                        {"role": "system", "content": SYSTEM_PROMPT},
-                        {"role": "user",   "content": query},
-                    ],
-                    max_tokens=2048,
-                    temperature=0.0,
-                )
-                break  # success
+                raw_response = model.get_response(SYSTEM_PROMPT, query)
+                break
             except Exception as e:
                 err = str(e)
                 is_rate_limit = "429" in err or "rate_limit" in err.lower() or "rate limit" in err.lower()
                 wait = (2 ** attempt) * 30 if is_rate_limit else SLEEP_S * 2
-                print(f"\n  {'RATE LIMITED' if is_rate_limit else 'ERROR'} (attempt {attempt+1}/{MAX_RETRIES}): {err[:80]}")
-                print(f"  Waiting {wait}s before retry...")
+                print(f"\n  {'RATE LIMITED' if is_rate_limit else 'ERROR'} (attempt {attempt+1}/{MAX_RETRIES}): {err[:120]}")
+                print(f"  Waiting {wait}s...")
                 time.sleep(wait)
 
-        if response is None:
+        if raw_response is None:
             print(f"\n  Task {task_id}: all retries failed, skipping")
             continue
 
-        msg      = response.choices[0].message
-        raw_content = msg.content or ""
-
-        # Qwen3 embeds thinking in <think>...</think> inside content
-        think_match = re.search(r'<think>(.*?)</think>', raw_content, re.DOTALL)
-        if think_match:
-            thinking = think_match.group(1).strip()
-            content  = raw_content[think_match.end():].strip()
-        else:
-            # Fallback: separate reasoning_content field (DeepSeek R1 style)
-            thinking = getattr(msg, "reasoning_content", None) or ""
-            content  = raw_content
-
-        code = extract_code(content)
+        thinking, content = split_thinking(raw_response)
+        code = extract_code(content) or extract_code(raw_response)
 
         print_thinking(thinking)
         print_code(code)
 
-        # Usage summary
-        u = response.usage
-        print(f"\n  [tokens] prompt={u.prompt_tokens}  completion={u.completion_tokens}  total={u.total_tokens}")
-
-        # Save full response
         task_dir.mkdir(exist_ok=True)
-        full = f"<think>\n{thinking}\n</think>\n\n{content}" if thinking else content
-        (task_dir / "llm_response.txt").write_text(full, encoding="utf-8")
+        (task_dir / "llm_response.txt").write_text(raw_response, encoding="utf-8")
         if code:
-            (task_dir / "llm_generated_raw.py").write_text(code, encoding="utf-8")
-        print(f"  Saved → {task_dir}/llm_response.txt")
+            (task_dir / "llm_generated.kojo").write_text(code, encoding="utf-8")
+        print(f"\n  Saved → {task_dir}/llm_response.txt")
 
         time.sleep(SLEEP_S)
 

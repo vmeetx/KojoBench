@@ -238,7 +238,7 @@ def _save_prompt(task_dir: Path, system_message: str, user_message: str) -> None
     (task_dir / "llm_prompt.txt").write_text(out, encoding="utf-8")
 
 
-def run_task(task_id: int, model: LMStudioModel) -> dict:
+def run_task(task_id: int, model) -> dict:
     task_dir   = DATASET_DIR / f"Task{task_id}"
     query_path = task_dir / f"KojoQuery{task_id}.md"
     gt_path    = task_dir / "ground_truth_kojo.png"
@@ -334,109 +334,146 @@ def run_task(task_id: int, model: LMStudioModel) -> dict:
     return result
 
 
-# ── UI ────────────────────────────────────────────────────────────────────────
+# ── Results window ────────────────────────────────────────────────────────────
 
-def show_ui(results: list[dict], model_name: str):
-    import numpy as np
-    from PIL import Image
+def show_ui(results: list[dict], model_name: str) -> None:
     import matplotlib.pyplot as plt
-    import matplotlib.gridspec as gridspec
+    import matplotlib.patches as mpatches
+    from matplotlib.gridspec import GridSpec
 
-    ok_tasks = [r for r in results if r["status"] == "ok"]
-    n   = len(results)
-    avg = sum(r["score"] for r in ok_tasks) / len(ok_tasks) if ok_tasks else 0.0
+    BG      = "#0d0d0d"
+    PANEL   = "#1a1a1a"
+    WHITE   = "#f0f0f0"
+    DIM     = "#555555"
+    DIMMER  = "#2a2a2a"
+    ACCENT  = "#ffffff"
+    BAR_FG  = "#e0e0e0"
+    BAR_BG  = "#2e2e2e"
 
-    def score_color(s):
-        if s >= 0.75: return "#2ecc71"
-        if s >= 0.50: return "#f39c12"
-        return "#e74c3c"
+    ok      = [r for r in results if r["status"] == "ok"]
+    avg_nss = sum(r["score"] for r in ok) / len(ok) if ok else 0.0
+    kcss_ok = [r for r in ok if r["kcss"]]
+    avg_kcs = sum(r["kcss"].score for r in kcss_ok) / len(kcss_ok) if kcss_ok else 0.0
+    n       = len(results)
 
-    fig = plt.figure(figsize=(15, 3.8 * n), facecolor="#1a1a2e")
-    fig.canvas.manager.set_window_title(f"KojoBench2 — {model_name}")
-    fig.suptitle(
-        f"Model: {model_name}   |   Tasks: {n}   |   Avg NSS: {avg*100:.1f}%   "
-        f"({len(ok_tasks)}/{n} rendered)",
-        fontsize=13, color="white", y=1.001, fontweight="bold",
-    )
+    ROW_H   = 0.44        # inches per task row
+    HDR_H   = 1.1         # header panel height
+    COL_H   = 0.32        # column header strip
+    FOOT_H  = 0.55        # footer / averages strip
+    FIG_H   = HDR_H + COL_H + n * ROW_H + FOOT_H + 0.2
+    FIG_W   = 13.0
 
-    outer = gridspec.GridSpec(n, 1, figure=fig, hspace=0.6)
+    fig = plt.figure(figsize=(FIG_W, FIG_H), facecolor=BG)
+    fig.canvas.manager.set_window_title("KojoBench2 Results")
 
-    for row, r in enumerate(results):
-        inner = gridspec.GridSpecFromSubplotSpec(
-            2, 3, subplot_spec=outer[row],
-            width_ratios=[1, 1, 0.55], height_ratios=[0.18, 1],
-            hspace=0.08, wspace=0.15,
-        )
-        ax_hdr = fig.add_subplot(inner[0, :])
-        ax_hdr.set_facecolor("#16213e")
-        ax_hdr.axis("off")
-        color = score_color(r["score"])
-        ax_hdr.text(0.01, 0.5, f"Task {r['id']}  —  {r['desc']}",
-                    transform=ax_hdr.transAxes, fontsize=10, color="white",
-                    va="center", ha="left")
-        status_txt = (f"NSS: {r['score']*100:.1f}%" if r["status"] == "ok"
-                      else f"[{r['status']}]")
-        ax_hdr.text(0.99, 0.5, status_txt, transform=ax_hdr.transAxes,
-                    fontsize=9,
-                    color=color if r["status"] == "ok" else "#e74c3c",
-                    va="center", ha="right", fontweight="bold")
+    # ── absolute axes helper ───────────────────────────────────────────────────
+    def ax_abs(left, bottom, width, height, bg=BG):
+        a = fig.add_axes([left / FIG_W, bottom / FIG_H, width / FIG_W, height / FIG_H])
+        a.set_facecolor(bg)
+        a.set_xlim(0, 1); a.set_ylim(0, 1)
+        a.axis("off")
+        return a
 
-        ax_gt = fig.add_subplot(inner[1, 0])
-        ax_gt.imshow(np.array(Image.open(r["gt_path"]).convert("RGB")))
-        ax_gt.set_title("Ground Truth", fontsize=8, color="#aaaaaa", pad=3)
-        ax_gt.axis("off")
+    PAD = 0.22   # outer margin inches
 
-        ax_gen = fig.add_subplot(inner[1, 1])
-        if r["status"] == "ok" and r["out_path"].exists():
-            ax_gen.imshow(np.array(Image.open(r["out_path"]).convert("RGB")))
-            ax_gen.set_title("LLM Generated", fontsize=8, color="#aaaaaa", pad=3)
-        else:
-            ax_gen.set_facecolor("#111111")
-            ax_gen.text(0.5, 0.5, r["status"], transform=ax_gen.transAxes,
-                        color="#e74c3c", ha="center", va="center", fontsize=9)
-            ax_gen.set_title("LLM Generated", fontsize=8, color="#aaaaaa", pad=3)
-        ax_gen.axis("off")
+    # ── header ────────────────────────────────────────────────────────────────
+    ax_h = ax_abs(PAD, FIG_H - HDR_H, FIG_W - 2*PAD, HDR_H - 0.12, bg=BG)
+    ax_h.text(0, 0.82, "KojoBench2", fontsize=22, color=ACCENT,
+              fontweight="bold", va="top", fontfamily="monospace")
+    ax_h.text(0, 0.46, model_name, fontsize=11, color=DIM,
+              va="top", fontfamily="monospace")
 
-        ax_bar = fig.add_subplot(inner[1, 2])
-        ax_bar.set_facecolor("#0f3460")
-        ax_bar.axis("off")
+    stats = [
+        ("NSS",    f"{avg_nss*100:.1f}%"),
+        ("KCSS",   f"{avg_kcs*100:.1f}%"),
+        ("TASKS",  f"{len(ok)}/{n}"),
+    ]
+    for i, (label, val) in enumerate(stats):
+        x = 0.52 + i * 0.165
+        ax_h.text(x, 0.80, val,   fontsize=20, color=ACCENT, fontweight="bold",
+                  va="top", ha="center", fontfamily="monospace")
+        ax_h.text(x, 0.38, label, fontsize=7,  color=DIM,
+                  va="top", ha="center", fontfamily="monospace", letterspacing=2)
+
+    # separator line under header
+    ax_h.axhline(0.02, color=DIM, linewidth=0.5)
+
+    # ── column headers ─────────────────────────────────────────────────────────
+    body_top = FIG_H - HDR_H
+    ax_c = ax_abs(PAD, body_top - COL_H, FIG_W - 2*PAD, COL_H - 0.04, bg=BG)
+    cols = [("#",0.012), ("DESCRIPTION",0.055), ("NSS",0.42), ("KCSS",0.64), ("BLOAT",0.84), ("FLAGS",0.90)]
+    for label, x in cols:
+        ax_c.text(x, 0.35, label, fontsize=6.5, color=DIM,
+                  va="center", fontfamily="monospace", fontweight="bold", letterspacing=1)
+    ax_c.axhline(0.0, color=DIMMER, linewidth=0.5)
+
+    # ── task rows ─────────────────────────────────────────────────────────────
+    rows_top = body_top - COL_H
+    for idx, r in enumerate(results):
+        y0     = rows_top - (idx + 1) * ROW_H
+        bg_row = DIMMER if idx % 2 == 0 else BG
+        ax_r   = ax_abs(PAD, y0, FIG_W - 2*PAD, ROW_H - 0.03, bg=bg_row)
+
+        ax_r.text(0.012, 0.5, str(r["id"]), fontsize=8, color=DIM,
+                  va="center", fontfamily="monospace")
+
+        desc = (r["desc"][:42] + "…") if len(r["desc"]) > 42 else r["desc"]
+        ax_r.text(0.055, 0.5, desc, fontsize=7.5, color=WHITE,
+                  va="center", fontfamily="monospace")
+
         if r["status"] == "ok":
-            # NSS bar (top)
-            y_nss = 0.65
-            ax_bar.barh(y_nss, r["score"], height=0.22, color=color, alpha=0.85)
-            ax_bar.barh(y_nss, 1.0, height=0.22, color="#ffffff", alpha=0.06)
-            ax_bar.text(-0.02, y_nss, "NSS", fontsize=7, color="white",
-                        va="center", ha="right")
-            ax_bar.text(r["score"] + 0.02, y_nss, f"{r['score']*100:.0f}%",
-                        fontsize=8, color=color, va="center", ha="left", fontweight="bold")
-            # KCSS bar (bottom)
-            q = r.get("kcss")
-            if q:
-                ks = q.score
-                kc = score_color(ks)
-                y_kcss = 0.30
-                ax_bar.barh(y_kcss, ks, height=0.22, color=kc, alpha=0.70)
-                ax_bar.barh(y_kcss, 1.0, height=0.22, color="#ffffff", alpha=0.06)
-                ax_bar.text(-0.02, y_kcss, "KCSS", fontsize=7, color="white",
-                            va="center", ha="right")
-                ax_bar.text(ks + 0.02, y_kcss, f"{ks*100:.0f}%",
-                            fontsize=8, color=kc, va="center", ha="left", fontweight="bold")
-                # Flag markers below the bars
-                flag_txt = " ".join(
-                    ["✗" + f for f in q.forbidden[:2]] +
-                    ["△" + w.split("(")[0].strip() for w in q.warnings[:1]]
-                )
-                if flag_txt:
-                    ax_bar.text(0.5, 0.05, flag_txt, fontsize=6, color="#e74c3c",
-                                va="bottom", ha="center", transform=ax_bar.transAxes)
-            ax_bar.set_xlim(0, 1.35)
-            ax_bar.set_ylim(0, 1.0)
+            nss = r["score"]
+            q   = r["kcss"]
+            kcs = q.score if q else 0.0
 
-    plt.tight_layout()
+            # NSS bar
+            ax_r.barh(0.5, 0.18,  height=0.38, left=0.42, color=BAR_BG)
+            ax_r.barh(0.5, nss*0.18, height=0.38, left=0.42, color=BAR_FG)
+            ax_r.text(0.615, 0.5, f"{nss*100:.0f}%", fontsize=7.5, color=ACCENT,
+                      va="center", fontfamily="monospace")
+
+            # KCSS bar
+            ax_r.barh(0.5, 0.18,  height=0.38, left=0.64, color=BAR_BG)
+            ax_r.barh(0.5, kcs*0.18, height=0.38, left=0.64, color=BAR_FG)
+            ax_r.text(0.835, 0.5, f"{kcs*100:.0f}%", fontsize=7.5, color=ACCENT,
+                      va="center", fontfamily="monospace")
+
+            bloat = f"{q.metrics['bloat_ratio']:.1f}x" if q else "─"
+            ax_r.text(0.84, 0.5, bloat, fontsize=7.5, color=DIM,
+                      va="center", fontfamily="monospace")
+
+            flags = ",".join((q.forbidden + q.warnings))[:22] if q else ""
+            ax_r.text(0.90, 0.5, flags, fontsize=6.5, color=DIM,
+                      va="center", fontfamily="monospace")
+        else:
+            ax_r.text(0.42, 0.5, r["status"], fontsize=7, color=DIM,
+                      va="center", fontfamily="monospace", style="italic")
+
+        ax_r.axhline(0.0, color=DIM, linewidth=0.3, alpha=0.4)
+
+    # ── footer / averages ─────────────────────────────────────────────────────
+    foot_y = rows_top - n * ROW_H
+    ax_f   = ax_abs(PAD, foot_y - FOOT_H, FIG_W - 2*PAD, FOOT_H - 0.05, bg=PANEL)
+    ax_f.axhline(1.0, color=DIM, linewidth=0.5)
+
+    ax_f.text(0.012, 0.5, "AVG", fontsize=8, color=DIM,
+              va="center", fontfamily="monospace", fontweight="bold")
+
+    ax_f.barh(0.5, 0.18,        height=0.38, left=0.42, color=BAR_BG)
+    ax_f.barh(0.5, avg_nss*0.18, height=0.38, left=0.42, color=ACCENT)
+    ax_f.text(0.615, 0.5, f"{avg_nss*100:.1f}%", fontsize=8, color=ACCENT,
+              va="center", fontfamily="monospace", fontweight="bold")
+
+    ax_f.barh(0.5, 0.18,        height=0.38, left=0.64, color=BAR_BG)
+    ax_f.barh(0.5, avg_kcs*0.18, height=0.38, left=0.64, color=ACCENT)
+    ax_f.text(0.835, 0.5, f"{avg_kcs*100:.1f}%", fontsize=8, color=ACCENT,
+              va="center", fontfamily="monospace", fontweight="bold")
+
     plt.show()
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -445,18 +482,23 @@ def main():
     parser.add_argument("--tasks", type=int, nargs="+", metavar="N",
                         default=list(range(1, 26)),
                         help="Task IDs to run (default: 1-25)")
-    parser.add_argument("--no-ui", action="store_true",
-                        help="Print table only, skip matplotlib window")
-    parser.add_argument("--model-backend", choices=["lmstudio", "hf"], default="lmstudio",
-                        help="Model backend: lmstudio (default) or hf (HF Inference API)")
+    parser.add_argument("--provider", default=None,
+                        help="Provider preset: lmstudio, groq, together, openrouter, fireworks")
+    parser.add_argument("--base-url", default=None,
+                        help="Override provider base URL")
+    parser.add_argument("--api-key", default=None,
+                        help="Override API key")
+    parser.add_argument("--model-name", default=None,
+                        help="Model identifier")
     args = parser.parse_args()
 
-    if args.model_backend == "hf":
-        from models.hf_api import HFApiModel
-        model = HFApiModel()
-    else:
-        from models.lm_studio import LMStudioModel
-        model = LMStudioModel()
+    from models.openai_compat import OpenAICompatModel
+    model = OpenAICompatModel(
+        provider=args.provider,
+        base_url=args.base_url,
+        api_key=args.api_key,
+        model=args.model_name,
+    )
     model_name = model.model
 
     print(f"\nKojoBench2 eval — model: {model_name}")
@@ -466,27 +508,7 @@ def main():
     for task_id in args.tasks:
         results.append(run_task(task_id, model))
 
-    ok  = [r for r in results if r["status"] == "ok"]
-    avg = sum(r["score"] for r in ok) / len(ok) if ok else 0.0
-
-    print(f"\n{'Task':<6} {'NSS':>7}  {'KCSS':>6}  {'Bloat':>6}  {'Flags':<30}  Description")
-    print("-" * 90)
-    for r in results:
-        if r["status"] == "ok":
-            q     = r["kcss"]
-            flags = ",".join(q.forbidden + q.warnings)[:28] if q else ""
-            bloat = f"{q.metrics['bloat_ratio']:.1f}x" if q else "---"
-            kcss_pct = f"{q.score*100:.0f}%" if q else "---"
-            print(f"  {r['id']:<4} {r['score']*100:>6.1f}%  {kcss_pct:>6}  {bloat:>6}  {flags:<30}  {r['desc']}")
-        else:
-            print(f"  {r['id']:<4} {'---':>6}   {'---':>6}  {'---':>6}  [{r['status']}]")
-    print("-" * 90)
-    kcss_ok  = [r for r in ok if r["kcss"]]
-    avg_kcss = sum(r["kcss"].score for r in kcss_ok) / len(kcss_ok) if kcss_ok else 0.0
-    print(f"  {'AVG':<4} {avg*100:>6.1f}%  {avg_kcss*100:>5.0f}%   ({len(ok)}/{len(results)} rendered)\n")
-
-    if not args.no_ui:
-        show_ui(results, model_name)
+    show_ui(results, model_name)
 
 
 if __name__ == "__main__":
