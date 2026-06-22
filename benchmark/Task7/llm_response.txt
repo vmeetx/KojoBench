@@ -1,0 +1,37 @@
+<geometry>
+Goal: Draw a square with a triangle attached to its right side.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Square with side length 100 pixels.
+- Triangle with base and height both 100 pixels, pointing to the right.
+Drawing order:
+1. Draw the square.
+2. Draw the triangle on top of the square.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the square
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+
+// Move to the starting point of the triangle
+penUp()
+forward(50)
+left(90)
+forward(50)
+penDown()
+
+// Draw the triangle
+forward(100)
+right(120)
+forward(100)
+```

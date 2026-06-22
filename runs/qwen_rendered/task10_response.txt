@@ -1,0 +1,31 @@
+<geometry>
+Goal: Draw a circle inside a square.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Square with side length 200 pixels.
+- Circle with diameter equal to the side length of the square (200 pixels).
+Drawing order:
+1. Draw the square.
+2. Draw the circle centered inside the square.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the square
+repeat(4) {
+  forward(200)
+  right(90)
+}
+
+// Move to the center of the square and draw the circle
+penUp()
+forward(100)
+left(90)
+forward(100)
+penDown()
+right(90)
+setPenColor(blue)
+circle(100)
+```

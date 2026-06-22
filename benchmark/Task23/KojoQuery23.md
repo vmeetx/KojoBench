@@ -1,0 +1,1 @@
+Draw a staircase shape with three equal steps going from the lower left to the upper right. Each step has one flat horizontal surface going to the right and one vertical surface going straight up, both the same size as each other. The right side of the shape is one straight vertical line and the bottom of the shape is one straight horizontal line.

@@ -1,0 +1,1 @@
+Draw three adjacent squares sharing a common base, side by side, enclosed within a larger rectangle, resembling a segmented bar.

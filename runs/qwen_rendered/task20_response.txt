@@ -1,0 +1,42 @@
+<geometry>
+Goal: Draw two squares, one centered inside the other with equal gaps on all sides.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Outer square with side length 400 pixels.
+- Inner square with side length 300 pixels.
+Drawing order:
+1. Draw the outer square.
+2. Move to the center of the outer square.
+3. Draw the inner square.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the outer square
+forward(400)
+right(90)
+forward(400)
+right(90)
+forward(400)
+right(90)
+forward(400)
+right(90)
+
+// Move to the center of the outer square
+penUp()
+forward(50)
+left(90)
+forward(50)
+penDown()
+
+// Draw the inner square
+forward(300)
+right(90)
+forward(300)
+right(90)
+forward(300)
+right(90)
+forward(300)
+```

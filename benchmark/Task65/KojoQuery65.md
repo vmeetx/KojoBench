@@ -1,0 +1,1 @@
+Draw three semicircles arranged in a triangular pattern.

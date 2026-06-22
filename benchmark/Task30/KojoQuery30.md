@@ -1,0 +1,1 @@
+Draw a square with one of its diagonals from top right to bottom left.

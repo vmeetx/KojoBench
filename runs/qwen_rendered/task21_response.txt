@@ -1,0 +1,41 @@
+<geometry>
+Goal: Draw a half-circle with a smooth curve rising from both ends of the flat side.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Flat side (horizontal line)
+- Smooth curve (arc)
+Drawing order:
+1. Draw the flat side.
+2. Draw the smooth curve on one end of the flat side.
+3. Draw the smooth curve on the other end of the flat side.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the flat side
+forward(200)
+
+// Move to the starting point for the first arc
+penUp()
+back(100)
+right(90)
+forward(50)
+left(90)
+penDown()
+
+// Draw the first arc
+right(180, 50)
+
+// Move to the starting point for the second arc
+penUp()
+forward(200)
+right(90)
+forward(50)
+left(90)
+penDown()
+
+// Draw the second arc
+left(180, 50)
+```

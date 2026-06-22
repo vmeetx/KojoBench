@@ -1,0 +1,22 @@
+cleari()
+
+def shape = Picture {
+    val largest_triangle_side = 200
+    
+    
+    setHeading(0)
+    
+    setHeading(60)
+    repeat(3) {
+      forward(largest_triangle_side)
+      right(120)
+    }
+    forward(largest_triangle_side / 2)
+    right(60)
+    repeat(3) {
+      forward(largest_triangle_side / 2)
+      right(120)
+    }
+}
+
+drawCentered(shape)

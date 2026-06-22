@@ -1,0 +1,1 @@
+Draw two triangles side by side, both pointing up. They share one corner at the bottom in the middle. It looks like two mountains joined at the same point, with a small dip between them at the bottom.

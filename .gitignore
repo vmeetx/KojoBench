@@ -10,6 +10,10 @@
 .render_work/
 .audit_tmp/
 kojo-headless/p1/
+kojo-headless/_render_*
+
+# Raw archive (large source data, not needed for benchmark use)
+archive/
 
 # Python
 __pycache__/

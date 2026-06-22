@@ -1,0 +1,20 @@
+cleari()
+
+def shape = Picture {
+    val hexagon_side = 120
+    val semicircle_radius = 30
+    
+    
+    setHeading(0)
+    
+    repeat(6) {
+      forward((hexagon_side- 2 * semicircle_radius)/2)
+      right(90)
+      right(180, semicircle_radius)
+      right(90)
+      forward((hexagon_side- 2 * semicircle_radius)/2)
+      left(60)
+    }
+}
+
+drawCentered(shape)

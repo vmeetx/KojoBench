@@ -1,0 +1,20 @@
+<geometry>
+Goal: Draw a square.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Square with side length 100 pixels.
+Drawing order:
+1. Move forward 100 pixels.
+2. Turn right 90 degrees.
+3. Repeat steps 1 and 2 three more times.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+repeat(4) {
+  forward(100)
+  right(90)
+}
+```

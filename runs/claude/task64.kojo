@@ -1,0 +1,10 @@
+clear(); setSpeed(fast)
+val s = 140
+penUp(); setPosition(0, 0); penDown()
+lineTo(s, 0)
+lineTo(s, s)
+lineTo(0, s)
+lineTo(0, 0)
+lineTo(s, s)
+penUp(); setPosition(s, 0); penDown()
+lineTo(0, s)

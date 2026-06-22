@@ -1,0 +1,35 @@
+<geometry>
+Goal: Draw an arrow pointing to the right.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Rectangle for the body.
+- Triangle for the head.
+Drawing order:
+1. Draw the rectangle.
+2. Draw the triangle on top of the rectangle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the rectangular body of the arrow
+forward(150)
+right(90)
+forward(50)
+right(90)
+forward(150)
+right(90)
+forward(50)
+
+// Move to the top right corner of the rectangle to draw the triangle head
+penUp()
+forward(75)
+left(45)
+penDown()
+
+// Draw the triangular head
+forward(106.066) // Length of the hypotenuse of a 45-45-90 triangle with legs of length 50
+right(90)
+forward(106.066)
+```

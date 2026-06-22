@@ -1,294 +1,154 @@
-# KojoBench
+# KojoBench2
 
-Benchmark and dataset for evaluating LLMs on generating [Kojo](https://kogics.net/kojo) turtle-graphics code from natural language descriptions, with automated rendering and visual accuracy scoring.
+Benchmark for evaluating LLMs on generating [Kojo](https://kogics.net/kojo) turtle-graphics code from natural language descriptions. 75 tasks, automated rendering via WSL, visual accuracy scoring (NSS + KCSS).
 
-Based on [TurtleBench](https://github.com/sinaris76/TurtleBench) — every Python Turtle task has been ported to Kojo (a Scala-based turtle graphics environment used in CS education). This makes the benchmark harder in an interesting way: models cannot rely on memorised Python syntax and must reason from a Kojo-specific reference.
-
----
-
-## File map
-
-Every file in one line.
-
-```
-KojoBench/
-│
-├── README_kojo.md                ← this file
-├── requirements.txt              ← Python dependencies
-├── .gitignore
-│
-├── eval/                         ← evaluation pipeline (run from repo root)
-│   ├── eval_kojo.py              ← main entry point: run LLM eval on all tasks
-│   ├── calculate_score_kojo.py   ← re-score saved responses after an interruption
-│   ├── audit_tasks.py            ← render all reference Kojo code, report IoU failures
-│   └── audit_kojobench.py        ← visual audit for KojoNewDataset with NSS scoring
-│
-├── scripts/                      ← one-off utility scripts
-│   ├── build_new_dataset.py      ← generate KojoNewDataset/ from Tasks 1-10
-│   ├── convert_to_kojo.py        ← convert Python Turtle reference code → Kojo
-│   ├── crawl_tasks.py            ← rebuild dataset.jsonl by crawling Tasks/
-│   └── test_render.py            ← visual smoke test: ground truth vs generated side-by-side
-│
-├── models/                       ← LLM wrappers (one per provider)
-│   └── hf_model.py               ← HuggingFace Inference API wrapper (text + multimodal)
-│
-├── utils/                        ← shared library imported by eval and scripts
-│   ├── kojo_renderer.py          ← renders Kojo code → PNG via WSL + local JAR (with cache)
-│   ├── kojo_preprocess.py        ← strips markdown/boilerplate from raw LLM responses
-│   ├── shape_similarity.py       ← pixel IoU metric used by the original pipeline
-│   └── prompts_kojo.py           ← system + user prompts with embedded Kojo syntax reference
-│
-├── kojo-headless/                ← Kojo headless runner
-│   ├── kojo-lib-assembly-0.3.3.jar   ← Kojo runtime JAR (Scala)
-│   └── run-kojo-headless.sh      ← shell script: compiles + runs a .kojo file → PNG
-│
-├── Tasks/                        ← raw task data (130+ tasks, TurtleBench format)
-│   └── {N}/
-│       ├── description.txt       ← natural language description of the shape
-│       ├── variables.txt         ← e.g. "radius = 100"
-│       ├── image/{N}.png         ← ground truth shape image
-│       ├── result_image/         ← variant images (q1–q4)
-│       └── QA/code/
-│           ├── q1_code.txt       ← reference Kojo code for question 1
-│           └── q1_code.py_orig   ← original Python Turtle code (backup)
-│
-├── KojoNewDataset/               ← formatted dataset for training / evaluation
-│   └── Task{N}/                  ← Tasks 1-10, each containing:
-│       ├── KojoQuery{N}.md       ← student-style natural language prompt
-│       ├── KojoTask{N}.kojo      ← reference Kojo solution
-│       ├── TurtleTask{N}.py      ← equivalent Python Turtle solution
-│       ├── ground_truth.png      ← canonical shape image
-│       └── generated.png         ← image rendered from KojoTask{N}.kojo
-│
-├── autotest/source/              ← ground-truth PNGs for the main eval pipeline
-│   └── {id}_{q}.png              ← e.g. 1_1.png, 3_2.png
-│
-└── .render_cache/                ← SHA-256 keyed PNG cache (auto-managed, gitignored)
-```
+Based on [TurtleBench](https://github.com/sinaris76/TurtleBench) — ported from Python Turtle to Kojo (Scala), making it harder since models can't rely on memorised Python syntax.
 
 ---
 
-## Setup
+## Results (open in browser after cloning)
 
-### 1. Install Python dependencies
+| Report | What it shows | File |
+|---|---|---|
+| **Claude vs GT** | Claude Sonnet 4.6 output vs ground truth, task by task | [`runs/report_claude.html`](runs/report_claude.html) |
+| **Qwen vs GT** | Qwen 2.5 Coder 7B output vs ground truth, task by task | [`runs/report_qwen.html`](runs/report_qwen.html) |
+| **GT Accuracy Audit** | How faithful our Kojo ground truth is vs original Python images | [`runs/report_gt_audit.html`](runs/report_gt_audit.html) |
+
+Each card: ground truth image on the left, model output on the right, **YES** / **NO** match at a glance.
+
+---
+
+## Just want to see the results?
+
+No setup needed. Clone and open in your browser:
 
 ```bash
+git clone https://github.com/vmeetx2/KojoBench
+```
+
+Then open one of these files directly in your browser:
+
+- `runs/report_claude.html` — Claude Sonnet 4.6 vs Ground Truth
+- `runs/report_qwen.html` — Qwen (LM Studio) vs Ground Truth
+
+Each card shows the ground truth shape next to the model's output, with a green **YES** / red **NO** for whether they match (NSS ≥ 65%).
+
+---
+
+## Run it yourself
+
+### 1. Clone and install Python deps
+
+```bash
+git clone https://github.com/vmeetx2/KojoBench
+cd KojoBench
 pip install -r requirements.txt
 ```
 
-### 2. Set up the renderer
+### 2. Set up the Kojo renderer (WSL required — Windows only as-is)
 
-The renderer runs headlessly via WSL — no internet needed at render time.
+The renderer compiles and runs Kojo code headlessly via WSL.
 
-**Install WSL with Java and Scala 2.13:**
+**Install WSL** if you don't have it:
 ```bash
-sudo apt install default-jdk
-# Install Scala 2.13 and add its bin/ to PATH
+wsl --install
 ```
 
-**Verify the JAR and script are in place:**
-```
-kojo-headless/kojo-lib-assembly-0.3.3.jar
-kojo-headless/run-kojo-headless.sh
-```
-
-**Smoke test** (renders task 1 and shows ground truth vs generated):
+**Inside WSL**, install Java:
 ```bash
-python scripts/test_render.py
+sudo apt update && sudo apt install -y default-jdk
 ```
 
-### 3. Configure your model
-
-Set credentials as environment variables — never hardcode them:
-
+**Install Scala 2.13** inside WSL:
 ```bash
-export HF_TOKEN=hf_...
-export HF_API_URL=https://api-inference.huggingface.co/models/meta-llama/Llama-3.1-8B-Instruct
+curl -fL https://github.com/coursier/launchers/raw/master/cs-x86_64-pc-linux.gz | gzip -d > cs
+chmod +x cs && ./cs setup
+cs install scala:2.13.12 scalac:2.13.12
+```
+Make sure `scalac` is on your WSL PATH (`which scalac` should return a path).
+
+**Make the runner script executable:**
+```bash
+wsl chmod +x kojo-headless/run-kojo-headless.sh
 ```
 
-Or add a `.env` file in the repo root (already gitignored):
+**Smoke test** — renders task 1 and checks it works:
+```bash
+python -c "from utils.kojo_renderer import render; ok,err = render('clear(); setSpeed(fast)\nrepeat(4){forward(100);right(90)}', '/tmp/test.png'); print('OK' if ok else err)"
 ```
-HF_TOKEN=hf_...
-HF_API_URL=https://...
-```
 
-**Supported model URLs:**
+### 3. Run Claude (no API key needed — proxy mode)
 
-| Model | HF_API_URL |
-|---|---|
-| Llama 3.1 8B Instruct | `https://api-inference.huggingface.co/models/meta-llama/Llama-3.1-8B-Instruct` |
-| Qwen2-VL 7B (multimodal) | `https://api-inference.huggingface.co/models/Qwen/Qwen2-VL-7B-Instruct` |
-| InternVL2-8B (multimodal) | `https://api-inference.huggingface.co/models/OpenGVLab/InternVL2-8B` |
-| Dedicated endpoint | `https://<name>.endpoints.huggingface.cloud` |
-
-For other providers (Together AI, Replicate, OpenAI): subclass `HFModel` in `models/` and implement `get_response()` with the same signature — `eval_kojo.py` only calls that method.
-
----
-
-## Workflows
-
-### Run an LLM evaluation
+Claude's outputs are already pre-generated in `runs/claude/`. This just renders and scores them:
 
 ```bash
-# All defaults (scratch tasks, image only, CoT)
-python eval/eval_kojo.py
-
-# Full options
-python eval/eval_kojo.py \
-  --task_type      scratch \         # scratch | tweak
-  --task_mode      code_generation \ # code_generation | code_edit
-  --modalities     image_only \      # image_only | text_only | image+text | image+image
-  --prompting_mode cot \             # cot | basic | few-shot
-  --save_responses                   # save raw LLM responses to .responses/
+python runs/run.py claude
+python runs/make_report.py
 ```
 
-Results are written to `reports/report.csv`.
+Then open `runs/report_claude.html`.
 
-### Re-score after interruption
+### 4. Run Qwen (needs LM Studio)
+
+1. Download [LM Studio](https://lmstudio.ai/)
+2. Download and load a Qwen model (e.g. `qwen2.5-coder-7b-instruct`)
+3. Start the local server in LM Studio (default: `http://localhost:1234`)
+4. Run:
 
 ```bash
-python eval/calculate_score_kojo.py .responses/<run_name>
+python runs/run.py qwen
+python runs/make_report_qwen.py
 ```
 
-### Audit reference Kojo code (main task set)
+Then open `runs/report_qwen.html`.
 
-Renders every reference code file, reports IoU against ground truth, auto-retries conversion on failures:
+### 5. Run any other LLM
 
-```bash
-python eval/audit_tasks.py
-python eval/audit_tasks.py --task 5   # single task
-```
-
-### Visual audit of KojoNewDataset
-
-Opens a window showing ground truth vs generated for all 10 tasks with NSS scores:
+Add a provider to `models/openai_compat.py` or set these env vars and point to any OpenAI-compatible API:
 
 ```bash
-python eval/audit_kojobench.py
-python eval/audit_kojobench.py --task 3   # single task
-```
-
-### Rebuild KojoNewDataset from scratch
-
-Regenerates all files in `KojoNewDataset/` (converts code, renders images):
-
-```bash
-python scripts/build_new_dataset.py
-```
-
-### Convert Python Turtle reference code → Kojo
-
-Safe to re-run — backs up originals as `*.py_orig`:
-
-```bash
-python scripts/convert_to_kojo.py
-```
-
-### Rebuild dataset index
-
-```bash
-python scripts/crawl_tasks.py
+# .env file (gitignored)
+ANTHROPIC_API_KEY=sk-ant-...
+GROQ_API_KEY=gsk_...
 ```
 
 ---
 
-## Evaluation metrics
-
-### NSS — Normalised Shape Similarity (KojoNewDataset)
-
-Used by `eval/audit_kojobench.py`. Fixes the main weakness of raw IoU (position sensitivity):
-
-1. Both images are binarised (drawn vs. white background), including correct RGBA handling.
-2. Each is cropped to its content bounding box and resized to a 256×256 thumbnail — removing canvas-position differences.
-3. Both thumbnails are dilated uniformly (MaxFilter 9px) so that thick hand-drawn strokes and thin computer-drawn strokes overlap meaningfully.
-4. **NSS-IoU**: IoU on the dilated thumbnails.
-5. **Edge-corr**: Pearson correlation of a 16×16 spatial histogram of drawn pixels — captures whether the layout of the shape matches.
+## Benchmark structure
 
 ```
-Final score = 0.7 × NSS-IoU + 0.3 × Edge-corr
+benchmark/
+└── Task{N}/                   # 75 tasks
+    ├── KojoQuery{N}.md        # natural language prompt given to the LLM
+    ├── KojoTask{N}.kojo       # ground truth Kojo code
+    └── ground_truth_kojo.png  # rendered ground truth image
+
+runs/
+├── claude/task{N}.kojo        # Claude's generated code (pre-filled, proxy mode)
+├── claude_rendered/           # Claude's rendered PNGs
+├── qwen_rendered/             # Qwen's rendered PNGs
+├── report_claude.html         # visual comparison report (self-contained)
+├── report_qwen.html           # visual comparison report (self-contained)
+├── run.py                     # entry point: python runs/run.py [claude|qwen|compare]
+├── make_report.py             # generate Claude HTML report
+└── make_report_qwen.py        # generate Qwen HTML report
 ```
-
-### Pixel IoU (main pipeline)
-
-Used by `eval/eval_kojo.py` and `eval/audit_tasks.py`. Identical to TurtleBench:
-
-```
-IoU = |drawn in both| / |drawn in either|
-```
-
-Both images resized to 500×500, luminance threshold < 240 = drawn pixel. Task solved if IoU ≥ 0.95.
 
 ---
 
-## Python Turtle → Kojo command map
+## Scores
 
-| Python Turtle | Kojo |
-|---|---|
-| `forward(n)` | `forward(n)` |
-| `backward(n)` | `back(n)` |
-| `right(a)` | `right(a)` |
-| `left(a)` | `left(a)` |
-| `t.circle(r)` | `left(360, r)` — full circle arc |
-| `t.circle(r, a)` | `left(a, r)` — partial arc |
-| `penup()` | `penUp()` |
-| `pendown()` | `penDown()` |
-| `goto(x, y)` | `setPosition(x, y)` |
-| `setheading(a)` | `setHeading(a)` |
-| `pensize(n)` | `setPenThickness(n)` |
-| `pencolor(c)` | `setPenColor(c)` |
-| `fillcolor(c)` | `setFillColor(c)` |
-| `bgcolor(c)` | `setBackground(c)` |
-| `speed(n)` | `setSpeed(slow\|medium\|fast\|superFast)` |
-| `hideturtle()` | `invisible()` |
-| `for i in range(n):` | `repeat(n) { ... }` |
-| `for i in range(a, b):` | `repeatFor(a to b) { i => ... }` |
-| `def f(): ...` | `def f() { ... }` |
-| *(no equivalent)* | `hop(n)` — move without drawing |
-| *(no equivalent)* | `savePosHe()` / `restorePosHe()` |
+| Model | Avg NSS | YES (≥65%) / 75 |
+|---|---|---|
+| Claude Sonnet 4.6 (proxy) | 53.6% | 35 / 75 |
+| Qwen 2.5 Coder 7B (LM Studio) | — | — |
 
-**Key differences:**
-- No imports — Kojo builtins are always in scope.
-- `setHeading(0)` is required at the start; Kojo's default heading is 90° (North), not 0° (East).
-- `repeat(n) { ... }` replaces Python's `for` loop for turtle patterns.
-- Arc drawing: `right(angle, radius)` / `left(angle, radius)` — more explicit than Python's `circle()`.
-- `hop(n)` moves without drawing (pen auto-restores after).
-
----
-
-## Adding a new model
-
-Create `models/my_model.py`:
-
-```python
-class MyModel:
-    def get_response(
-        self,
-        system_message: str,
-        user_message: str,
-        base_image: str | None = None,
-        result_image: str | None = None,
-        few_shot: bool = False,
-    ) -> str:
-        ...
-        return response_text
-```
-
-Then in `eval/eval_kojo.py` swap:
-```python
-from models.hf_model import HFModel
-model = HFModel()
-```
-for:
-```python
-from models.my_model import MyModel
-model = MyModel()
-```
+**NSS** (Normalised Shape Similarity) = `0.7 × shape_overlap + 0.3 × edge_correlation`  
+**KCSS** (Kojo Code Style Score) = `0.4 × structure + 0.3 × idioms + 0.3 × simplicity`
 
 ---
 
 ## Citation
-
-If you use this benchmark, please also cite the original TurtleBench paper:
 
 ```bibtex
 @inproceedings{rismanchian2025turtlebench,

@@ -1,0 +1,1 @@
+Draw a hexagon with six semicircles attached to each side.

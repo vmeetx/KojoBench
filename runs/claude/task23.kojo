@@ -1,0 +1,13 @@
+clear(); setSpeed(fast)
+val s = 60
+penUp()
+setPosition(0, 0)
+penDown()
+lineTo(3 * s, 0)
+lineTo(3 * s, 3 * s)
+lineTo(2 * s, 3 * s)
+lineTo(2 * s, 2 * s)
+lineTo(1 * s, 2 * s)
+lineTo(1 * s, 1 * s)
+lineTo(0, 1 * s)
+lineTo(0, 0)

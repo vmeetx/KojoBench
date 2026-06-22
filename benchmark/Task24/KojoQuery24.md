@@ -1,0 +1,1 @@
+Draw a four-sided shape where the top side and the bottom side are equal in length, parallel to each other, and both go straight across. The left side and the right side are equal in length, parallel to each other, and both slant in the same direction at the same angle. None of the four sides are vertical.

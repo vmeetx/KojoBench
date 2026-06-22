@@ -1,0 +1,1 @@
+Draw a grid of nine equilateral triangles.

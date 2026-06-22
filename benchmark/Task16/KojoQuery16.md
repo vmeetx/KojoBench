@@ -1,0 +1,1 @@
+Draw a square balanced on one of its four corners. All four sides are the same length. One corner points straight up, one corner points straight down, one corner points to the left, and one corner points to the right.

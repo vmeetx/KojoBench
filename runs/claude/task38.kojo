@@ -1,0 +1,5 @@
+clear(); setSpeed(fast)
+right(90)
+left(360, 40)
+left(360, 70)
+left(360, 110)

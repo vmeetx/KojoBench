@@ -1,0 +1,1 @@
+Draw two overlapping squares.

@@ -1,0 +1,1 @@
+Draw two distinct circles placed adjacently, touching at one point. The larger circle is to the left, and the smaller circle is to the right.

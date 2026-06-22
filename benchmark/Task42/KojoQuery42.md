@@ -1,0 +1,1 @@
+Draw a triangle with two semicircles attached to its base.

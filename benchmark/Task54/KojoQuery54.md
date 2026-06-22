@@ -1,0 +1,1 @@
+Draw six regular hexagons arranged in a ring.

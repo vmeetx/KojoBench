@@ -1,0 +1,17 @@
+cleari()
+
+def shape = Picture {
+    val small_circle_radius = 100
+    
+    
+    setHeading(0)
+    
+    repeat(6) {
+            left(360, small_circle_radius)
+            right(60)
+    }
+    left(180, small_circle_radius)
+    left(360, 2 * small_circle_radius)
+}
+
+drawCentered(shape)

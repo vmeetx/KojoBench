@@ -1,0 +1,1 @@
+Draw a square inscribed in a circle.

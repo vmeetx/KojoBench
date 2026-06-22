@@ -1,0 +1,36 @@
+<geometry>
+Goal: Draw a shape with 5 sides all the same length.
+Canvas/scale: 200x200 pixels.
+Main shapes:
+- A flat straight line for the bottom.
+- Two sides going up and outward from the bottom corners.
+- Two more sides coming together to meet at a single point at the top.
+Drawing order:
+1. Draw the bottom straight line.
+2. Draw the two sides going up and outward from the bottom corners.
+3. Draw the two more sides coming together to meet at a single point at the top.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the bottom straight line
+forward(200)
+
+// Turn right and draw the first side going up and outward
+right(72)
+forward(150)
+
+// Turn left and draw the second side going up and outward
+left(144)
+forward(150)
+
+// Turn right and draw the third side coming together to meet at a single point at the top
+right(72)
+forward(150)
+
+// Turn left and draw the fourth side coming together to meet at a single point at the top
+left(144)
+forward(150)
+```

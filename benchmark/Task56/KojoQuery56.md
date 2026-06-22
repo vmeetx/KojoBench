@@ -1,0 +1,1 @@
+Draw three regular hexagons arranged in a triangular pattern.

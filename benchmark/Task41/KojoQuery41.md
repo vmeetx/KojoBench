@@ -1,0 +1,1 @@
+Draw three shapes: two semicircles and one triangle.

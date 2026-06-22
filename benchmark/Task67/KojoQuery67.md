@@ -1,0 +1,1 @@
+Draw four semicircles arranged in a square pattern.

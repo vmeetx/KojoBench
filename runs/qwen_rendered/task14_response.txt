@@ -1,0 +1,32 @@
+<geometry>
+Goal: Draw a five-pointed star.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- A large outer pentagon.
+- Five sharp points extending inward.
+Drawing order:
+1. Draw the outer pentagon.
+2. Draw the five crossing lines to form the inner shape.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the outer pentagon
+repeat(5) {
+  forward(300)
+  right(72)
+}
+
+// Move to the first point and draw the crossing lines
+penUp()
+forward(150)
+right(144)
+penDown()
+
+repeat(5) {
+  forward(150)
+  right(144)
+}
+```

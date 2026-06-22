@@ -1,0 +1,1 @@
+Draw a rectangle with four sides and four right-angle corners. The two longer sides go straight across, and the two shorter sides go straight up and down. The two longer sides are exactly twice the length of the shorter sides.

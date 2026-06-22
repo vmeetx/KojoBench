@@ -1,0 +1,1 @@
+Draw a large triangle, a smaller triangle, and another large triangle in an equilateral arrangement.

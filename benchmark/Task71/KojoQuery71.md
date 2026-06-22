@@ -1,0 +1,1 @@
+Draw a semicircle with a radius of 100 pixels.

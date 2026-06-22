@@ -1,0 +1,1 @@
+Draw a square of four equilateral triangles.

@@ -1,0 +1,1 @@
+Draw three squares in a triangular pattern.

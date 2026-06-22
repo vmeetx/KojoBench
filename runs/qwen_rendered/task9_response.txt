@@ -1,0 +1,36 @@
+<geometry>
+Goal: Draw an "S" shape.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Top half of the "S": curve to the right.
+- Bottom half of the "S": curve to the left.
+- Straight line connecting the top and bottom halves.
+Drawing order:
+1. Draw the top half of the "S".
+2. Draw the straight line.
+3. Draw the bottom half of the "S".
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Top half of the "S"
+forward(50)
+right(90, 50)
+forward(100)
+left(90, 50)
+forward(50)
+
+// Straight line connecting the top and bottom halves
+penUp()
+forward(200)
+penDown()
+forward(50)
+
+// Bottom half of the "S"
+right(90, 50)
+forward(100)
+left(90, 50)
+forward(50)
+```

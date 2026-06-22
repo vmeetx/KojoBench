@@ -1,0 +1,1 @@
+Draw a semicircle with its diameter which is a horizontal line segment and the semicircle arc is on top of it.

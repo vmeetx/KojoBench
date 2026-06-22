@@ -1,0 +1,1 @@
+Draw four triangles of different sizes in a row.

@@ -1,0 +1,1 @@
+Draw a shape pointing to the right like an arrow. It has a rectangular body going across, and at the right end the shape widens into a triangular point. The triangular head is taller than the rectangular body. The left end of the arrow is a straight vertical line.

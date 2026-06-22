@@ -1,0 +1,1 @@
+Draw four nested squares with increasing side lengths.

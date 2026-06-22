@@ -1,0 +1,1 @@
+Draw a large circle with four smaller circles inside it.

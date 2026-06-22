@@ -1,0 +1,1 @@
+Draw four squares of an equal size that form a larger square.

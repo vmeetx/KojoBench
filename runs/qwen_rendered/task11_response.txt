@@ -1,0 +1,25 @@
+<geometry>
+Goal: Draw a rectangle.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Two longer sides (length = 100 pixels)
+- Two shorter sides (length = 50 pixels)
+Drawing order:
+1. Move forward 100 pixels to draw the first long side.
+2. Turn right 90 degrees and move forward 50 pixels to draw the first short side.
+3. Turn right 90 degrees and move forward 100 pixels to draw the second long side.
+4. Turn right 90 degrees and move forward 50 pixels to draw the second short side.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+forward(100) // First long side
+right(90)
+forward(50)  // First short side
+right(90)
+forward(100) // Second long side
+right(90)
+forward(50)  // Second short side
+```

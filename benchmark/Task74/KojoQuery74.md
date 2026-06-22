@@ -1,0 +1,1 @@
+Draw a square with side length 200.

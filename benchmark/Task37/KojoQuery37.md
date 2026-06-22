@@ -1,0 +1,1 @@
+Draw a rectangle with rounded corners.

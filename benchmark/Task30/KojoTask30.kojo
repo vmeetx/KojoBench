@@ -1,0 +1,22 @@
+cleari()
+
+def shape = Picture {
+    val square_side = 200
+    
+    
+    setHeading(0)
+    
+    def draw_polygon(sides: Int, length: Double) {
+      var outer_turn = 360 / sides
+      repeat(sides.toInt) {
+        forward(length)
+        right(outer_turn)
+      }
+    }
+    draw_polygon(4, square_side)
+    forward(square_side)
+    right(135)
+    forward(square_side * math.sqrt(2))
+}
+
+drawCentered(shape)

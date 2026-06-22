@@ -1,0 +1,17 @@
+clear()
+setSpeed(fast)
+
+// Kojo code here
+forward(280)
+right(45)
+forward(280 * math.sqrt(2))
+right(45)
+forward(280)
+right(45)
+forward(280 * math.sqrt(2))
+right(45)
+forward(280)
+right(45)
+forward(280 * math.sqrt(2))
+right(45)
+forward(280)

@@ -1,0 +1,1 @@
+Draw a square with a smaller square inside it, rotated 45 degrees.

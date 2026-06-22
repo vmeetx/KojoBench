@@ -28,7 +28,7 @@ from utils.shape_similarity import nss_score
 from utils.kojo_code_quality import analyze as kcss_analyze
 
 BASE        = Path(__file__).parent.parent
-DATASET_DIR = BASE / "KojoBench2"
+DATASET_DIR = BASE / "benchmark"
 
 SYSTEM_PROMPT = """\
 You are a Kojo turtle graphics programmer.
@@ -480,8 +480,8 @@ def main():
         description="Evaluate a model on KojoBench2 tasks."
     )
     parser.add_argument("--tasks", type=int, nargs="+", metavar="N",
-                        default=list(range(1, 26)),
-                        help="Task IDs to run (default: 1-25)")
+                        default=list(range(1, 76)),
+                        help="Task IDs to run (default: 1-75)")
     parser.add_argument("--provider", default=None,
                         help="Provider preset: lmstudio, groq, together, openrouter, fireworks")
     parser.add_argument("--base-url", default=None,

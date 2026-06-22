@@ -1,0 +1,23 @@
+<geometry>
+Goal: Draw an equilateral triangle pointing downward.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Equilateral triangle with side length 200 pixels.
+Drawing order:
+1. Move forward by 200 pixels to the right.
+2. Turn left by 120 degrees.
+3. Move forward by 200 pixels.
+4. Turn left by 120 degrees.
+5. Move forward by 200 pixels.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+forward(200)
+left(120)
+forward(200)
+left(120)
+forward(200)
+```

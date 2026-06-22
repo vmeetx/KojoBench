@@ -1,0 +1,20 @@
+<geometry>
+Goal: Draw a pentagon with five equal sides.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Pentagon with side length 100 pixels.
+Drawing order:
+1. Move forward 100 pixels.
+2. Turn right by 72 degrees.
+3. Repeat steps 1 and 2 four more times.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+repeat(5) {
+  forward(100)
+  right(72)
+}
+```

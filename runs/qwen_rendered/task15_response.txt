@@ -1,0 +1,35 @@
+<geometry>
+Goal: Draw a shape made of two rectangles joined together at a shared corner in the lower left.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Tall narrow rectangle (height 200, width 50) on the left side.
+- Wide short rectangle (width 150, height 50) along the bottom.
+Drawing order:
+1. Draw the tall narrow rectangle.
+2. Move to the shared corner and draw the wide short rectangle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the tall narrow rectangle on the left side
+forward(50)
+right(90)
+forward(200)
+right(90)
+forward(50)
+right(90)
+forward(200)
+right(90)
+
+// Move to the shared corner and draw the wide short rectangle along the bottom
+penUp()
+forward(50)
+left(90)
+forward(50)
+penDown()
+forward(150)
+right(90)
+forward(50)
+```

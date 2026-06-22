@@ -37,7 +37,7 @@ TASKS      = list(range(1, 11))    # tasks 1-10
 SLEEP_S    = 10                    # seconds between calls
 MAX_RETRIES = 4
 
-DATASET_DIR = Path(__file__).parent / "KojoBench2"
+DATASET_DIR = Path(__file__).parent / "benchmark"
 
 # ── System prompt ─────────────────────────────────────────────────────────────
 SYSTEM_PROMPT = """\

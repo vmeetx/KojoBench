@@ -1,0 +1,51 @@
+<geometry>
+Goal: Draw a four-pointed star with a tilted square in the middle.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Tilted square with side length 200 pixels.
+- Four triangles with base and height of 100 pixels each.
+Drawing order:
+1. Draw the tilted square.
+2. Draw the four triangles.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the tilted square
+right(45)
+forward(200)
+right(90)
+forward(200)
+right(90)
+forward(200)
+right(90)
+forward(200)
+left(45)
+
+// Draw the four triangles
+def drawTriangle() {
+  forward(100)
+  right(135)
+  forward(141.4) // Hypotenuse of a 45-45-90 triangle with leg length 100
+  right(135)
+  forward(100)
+}
+
+// Upper-left triangle
+left(45)
+drawTriangle()
+
+// Upper-right triangle
+right(90)
+drawTriangle()
+
+// Lower-left triangle
+right(90)
+drawTriangle()
+
+// Lower-right triangle
+right(90)
+drawTriangle()
+```

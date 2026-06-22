@@ -1,0 +1,22 @@
+<geometry>
+Goal: Draw a right-angled isosceles triangle.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Two equal-length sides forming a right angle.
+- One diagonal side connecting the endpoints of the other two sides.
+Drawing order:
+1. Move forward to create one side.
+2. Turn right by 90 degrees and move forward to create the second side.
+3. Turn right by 90 degrees again and move forward to complete the triangle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(141.42) // Length of the diagonal side (sqrt(100^2 + 100^2))
+```

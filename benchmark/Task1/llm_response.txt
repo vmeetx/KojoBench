@@ -1,0 +1,15 @@
+<geometry>
+Goal: Draw a circle.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Circle with radius 100 pixels.
+Drawing order:
+1. Move right by 360 degrees with a radius of 100 pixels.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+right(360, 100)
+```

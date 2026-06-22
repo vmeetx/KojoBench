@@ -1,0 +1,1 @@
+Draw five concentric regular pentagons.

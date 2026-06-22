@@ -1,0 +1,1 @@
+Draw a hexagon with alternating large and small circles.

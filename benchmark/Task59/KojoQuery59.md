@@ -1,0 +1,1 @@
+Draw a large square with four smaller squares inside it.

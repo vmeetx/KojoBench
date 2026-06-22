@@ -1,0 +1,1 @@
+Draw a large equilateral triangle with a smaller one inside it.

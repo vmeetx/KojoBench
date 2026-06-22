@@ -1,0 +1,30 @@
+<geometry>
+Goal: Draw a hexagon with two parallel sides at the top and bottom, and four diagonal sides connecting the ends.
+Canvas/scale: 500x500 pixels
+Main shapes:
+- Two horizontal lines (top and bottom)
+- Four diagonal lines
+Drawing order:
+1. Draw the top horizontal line.
+2. Draw the first diagonal line from the top left to the bottom right.
+3. Draw the second diagonal line from the top right to the bottom left.
+4. Draw the third diagonal line from the bottom left to the top right.
+5. Draw the fourth diagonal line from the bottom right to the top left.
+6. Draw the bottom horizontal line.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Kojo code here
+forward(200)  // Top side
+right(120)
+forward(200 * math.sqrt(3))  // First diagonal
+left(120)
+forward(200)  // Second diagonal
+left(120)
+forward(200 * math.sqrt(3))  // Third diagonal
+left(120)
+forward(200)  // Fourth diagonal
+```

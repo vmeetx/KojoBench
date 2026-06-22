@@ -1,0 +1,36 @@
+<geometry>
+Goal: Draw an octagon.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- An octagon with side length approximately 280 pixels.
+Drawing order:
+1. Draw the top horizontal side.
+2. Draw the first diagonal side.
+3. Draw the second horizontal side.
+4. Draw the third diagonal side.
+5. Draw the fourth horizontal side.
+6. Draw the fifth diagonal side.
+7. Draw the sixth horizontal side.
+8. Draw the seventh diagonal side.
+9. Draw the bottom horizontal side.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Kojo code here
+forward(280)
+right(45)
+forward(280 * math.sqrt(2))
+right(45)
+forward(280)
+right(45)
+forward(280 * math.sqrt(2))
+right(45)
+forward(280)
+right(45)
+forward(280 * math.sqrt(2))
+right(45)
+forward(280)
+```

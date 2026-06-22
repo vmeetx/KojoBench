@@ -1,0 +1,24 @@
+<geometry>
+Goal: Draw a square balanced on one of its four corners.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Square with side length 200 pixels.
+Drawing order:
+1. Move down by 200 pixels to the starting corner.
+2. Draw the square from that corner.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Move down by 200 pixels to start at the bottom-left corner of the square
+hop(200)
+left(90)
+
+// Draw the square
+repeat(4) {
+  forward(200)
+  right(90)
+}
+```

@@ -1,0 +1,1 @@
+Draw a square with its two diagonals.

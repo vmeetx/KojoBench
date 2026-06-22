@@ -1,0 +1,1 @@
+Draw two circles on top of each other + the vertical diameter of the upper circle.

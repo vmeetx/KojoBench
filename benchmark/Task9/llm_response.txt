@@ -1,0 +1,23 @@
+<geometry>
+Goal: Draw two half circles connected by a straight vertical line.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Top half circle with radius 100, bulging out to the right.
+- Bottom half circle with radius 100, bulging out to the left.
+- Vertical line connecting the two half circles.
+Drawing order:
+1. Draw the top half circle.
+2. Draw the vertical line.
+3. Draw the bottom half circle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the top half circle
+right(90, 100) // Move to the right of the starting position
+
+// Draw the bottom half circle
+left(90, 100) // Move to the left of the starting position
+```

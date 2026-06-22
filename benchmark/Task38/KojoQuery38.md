@@ -1,0 +1,1 @@
+Draw three circles with different radi lengths all sharing only one point at the bottom.

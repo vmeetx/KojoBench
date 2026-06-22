@@ -19,8 +19,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from utils.kojo_renderer import render
 
 BASE       = Path(__file__).parent.parent
-SRC        = BASE / "KojoNewDataset"
-DEST       = BASE / "KojoBench2"
+SRC        = BASE / "archive" / "KojoNewDataset"
+DEST       = BASE / "benchmark"
 
 # Lines to strip from the old-style header before wrapping in Picture{}
 _STRIP_RE = re.compile(
@@ -75,9 +75,46 @@ def build_task(task_id: int):
         shutil.copy2(query_src, dest_dir / f"KojoQuery{task_id}.md")
 
 
+def render_existing(task_id: int):
+    """Render ground_truth_kojo.png for tasks whose .kojo is already in KojoBench2/."""
+    dest_dir  = DEST / f"Task{task_id}"
+    kojo_path = dest_dir / f"KojoTask{task_id}.kojo"
+    gt_out    = dest_dir / "ground_truth_kojo.png"
+
+    if not kojo_path.exists():
+        print(f"  Task {task_id}: no .kojo file, skipping")
+        return
+    if gt_out.exists():
+        print(f"  Task {task_id}: already has ground truth, skipping")
+        return
+
+    code = kojo_path.read_text(encoding="utf-8")
+    ok, err = render(code, str(gt_out))
+    if not ok:
+        print(f"  Task {task_id}: render FAILED — {err.splitlines()[0][:80] if err else '?'}")
+    else:
+        print(f"  Task {task_id}: rendered -> {gt_out}")
+
+
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--tasks", type=int, nargs="+", metavar="N",
+                        help="Task IDs to build from KojoNewDataset (default: 1-10)")
+    parser.add_argument("--render-existing", type=int, nargs="+", metavar="N",
+                        help="Render ground truth for tasks already in KojoBench2/")
+    args = parser.parse_args()
+
     print(f"Building KojoBench2 -> {DEST}\n")
     DEST.mkdir(exist_ok=True)
-    for i in range(1, 11):
+
+    build_ids = args.tasks if args.tasks else list(range(1, 11))
+    for i in build_ids:
         build_task(i)
+
+    if args.render_existing:
+        print("\nRendering existing tasks...")
+        for i in args.render_existing:
+            render_existing(i)
+
     print("\nDone.")
