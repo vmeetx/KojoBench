@@ -1,0 +1,28 @@
+<geometry>
+Goal: Draw a trapezoid.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Top side: horizontal line segment
+- Bottom side: horizontal line segment parallel to top side
+- Left side: slanted line segment
+- Right side: slanted line segment parallel to left side
+Drawing order:
+1. Draw the top side.
+2. Draw the bottom side.
+3. Draw the left side.
+4. Draw the right side.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Kojo code here
+forward(200)  // Top side
+right(60)
+forward(150)
+right(120)
+forward(150)
+right(60)
+forward(200)  // Bottom side
+```

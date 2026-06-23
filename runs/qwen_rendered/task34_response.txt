@@ -1,0 +1,20 @@
+<geometry>
+Goal: Draw a square.
+Canvas/scale: Standard turtle canvas.
+Main shapes:
+- Square with side length 80 pixels.
+Drawing order:
+1. Move forward by 80 pixels.
+2. Turn right by 90 degrees.
+3. Repeat steps 1 and 2 three more times.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+repeat(4) {
+  forward(80)
+  right(90)
+}
+```

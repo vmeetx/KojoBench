@@ -1,0 +1,35 @@
+<geometry>
+Goal: Draw three circles with different radii that share a single point at the bottom.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Circle 1: Radius 50, centered at (250, 450)
+- Circle 2: Radius 75, centered at (350, 450)
+- Circle 3: Radius 100, centered at (450, 450)
+Drawing order:
+1. Draw the first circle.
+2. Draw the second circle.
+3. Draw the third circle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the first circle
+penUp()
+setPosition(250, 450)
+penDown()
+right(360, 50)
+
+// Draw the second circle
+penUp()
+setPosition(350, 450)
+penDown()
+right(360, 75)
+
+// Draw the third circle
+penUp()
+setPosition(450, 450)
+penDown()
+right(360, 100)
+```

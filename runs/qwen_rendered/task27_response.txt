@@ -1,0 +1,27 @@
+<geometry>
+Goal: Draw a square inscribed in a circle.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Circle with radius 250 pixels centered at (0,0).
+- Square with side length approximately 341.4 pixels (diagonal of the circle).
+Drawing order:
+1. Draw the circle.
+2. Draw the square.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the circle
+right(360, 250)
+
+// Draw the square
+penUp()
+setPosition(-250, 0)
+penDown()
+repeat(4) {
+  forward(341.4)
+  right(90)
+}
+```

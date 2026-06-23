@@ -1,0 +1,32 @@
+<geometry>
+Goal: Draw a staircase with three equal steps from the lower left to the upper right.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Three horizontal steps, each 100 pixels wide and 100 pixels high.
+- One vertical step, 100 pixels tall.
+Drawing order:
+1. Draw the first horizontal step.
+2. Draw the first vertical step.
+3. Draw the second horizontal step.
+4. Draw the second vertical step.
+5. Draw the third horizontal step.
+6. Draw the third vertical step.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Kojo code here
+forward(100) // First horizontal step
+right(90)
+forward(100) // First vertical step
+left(90)
+forward(100) // Second horizontal step
+right(90)
+forward(100) // Second vertical step
+left(90)
+forward(100) // Third horizontal step
+right(90)
+forward(100) // Third vertical step
+```

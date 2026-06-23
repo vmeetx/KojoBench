@@ -27,7 +27,8 @@ from PIL import Image, ImageFilter
 # ── Configurable constants ────────────────────────────────────────────────────
 NSS_THRESHOLD  = 0.55   # NSS score to count a task as solved (cross-renderer realistic)
 THUMB_SIZE     = 256    # Both bounding-box crops are resized to this
-CHAMFER_MAX    = 20.0   # px on 256×256 thumbnail; chamfer >= this → score 0
+DILATE_PX      = 12     # Dilation kernel size — makes scoring stroke-width + minor-offset invariant
+CHAMFER_MAX    = 30.0   # px on 256×256 thumbnail; chamfer >= this → score 0
 GRID           = 16     # Spatial histogram grid for edge-corr
 BG_LUMA        = 240    # Pixels with luminance >= this are treated as background
 
@@ -71,11 +72,17 @@ def _bbox_crop_resize(mask: np.ndarray) -> np.ndarray:
     return np.array(img, dtype=np.float32) / 255.0
 
 
+def _dilate(thumb: np.ndarray) -> np.ndarray:
+    """Binary dilation — fattens strokes so minor size/offset differences don't tank the score."""
+    from scipy.ndimage import maximum_filter
+    return maximum_filter(thumb, size=DILATE_PX)
+
+
 def _chamfer_score(thumb_a: np.ndarray, thumb_b: np.ndarray) -> float:
-    """Normalised Chamfer distance — stroke-width invariant shape comparison."""
+    """Normalised Chamfer distance — stroke-width and minor-offset invariant."""
     from scipy.ndimage import distance_transform_edt
-    bin_a = thumb_a > 0.3
-    bin_b = thumb_b > 0.3
+    bin_a = _dilate(thumb_a) > 0.3
+    bin_b = _dilate(thumb_b) > 0.3
     if not bin_a.any() or not bin_b.any():
         return 0.0
     dist_to_b = distance_transform_edt(~bin_b)
@@ -117,7 +124,7 @@ def nss_score(path_a: str, path_b: str) -> float:
         return 0.0
 
     chamfer = _chamfer_score(thumb_a, thumb_b)
-    ec      = max(0.0, _edge_corr(thumb_a, thumb_b))
+    ec      = max(0.0, _edge_corr(_dilate(thumb_a), _dilate(thumb_b)))
 
     return 0.7 * chamfer + 0.3 * ec
 

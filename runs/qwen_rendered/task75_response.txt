@@ -1,0 +1,39 @@
+<geometry>
+Goal: Draw a square with a smaller square inside it, rotated 45 degrees.
+Canvas/scale: 200x200 pixels.
+Main shapes:
+- Outer square: side length 100 pixels.
+- Inner square: side length 70 pixels.
+Drawing order:
+1. Draw the outer square.
+2. Move to the center of the outer square.
+3. Rotate 45 degrees.
+4. Draw the inner square.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the outer square
+repeat(4) {
+  forward(100)
+  right(90)
+}
+
+// Move to the center of the outer square
+penUp()
+forward(25)
+right(90)
+forward(25)
+penDown()
+
+// Rotate 45 degrees
+right(45)
+
+// Draw the inner square
+repeat(4) {
+  forward(70)
+  right(90)
+}
+```

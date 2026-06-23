@@ -1,0 +1,32 @@
+<geometry>
+Goal: Draw a square with one of its diagonals from top left to bottom right.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Square with side length 200 pixels.
+- Diagonal line from (0, 200) to (200, 0).
+Drawing order:
+1. Draw the square.
+2. Draw the diagonal.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the square
+forward(200)
+right(90)
+forward(200)
+right(90)
+forward(200)
+right(90)
+forward(200)
+
+// Move to the top left corner
+penUp()
+setPosition(0, 200)
+penDown()
+
+// Draw the diagonal from top left to bottom right
+lineTo(200, 0)
+```

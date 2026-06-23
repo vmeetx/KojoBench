@@ -1,0 +1,45 @@
+<geometry>
+Goal: Draw a large circle with four smaller circles inside it.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Large circle with radius 200 pixels.
+- Four smaller circles, each with radius 50 pixels.
+Drawing order:
+1. Draw the large circle.
+2. Position and draw the first small circle.
+3. Position and draw the second small circle.
+4. Position and draw the third small circle.
+5. Position and draw the fourth small circle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the large circle
+right(360, 200)
+
+// Position and draw the first small circle
+left(90)
+forward(100)
+right(90)
+right(360, 50)
+
+// Position and draw the second small circle
+left(90)
+forward(100)
+right(90)
+right(360, 50)
+
+// Position and draw the third small circle
+left(90)
+forward(100)
+right(90)
+right(360, 50)
+
+// Position and draw the fourth small circle
+left(90)
+forward(100)
+right(90)
+right(360, 50)
+```

@@ -1,0 +1,24 @@
+<geometry>
+Goal: Draw a semicircle with its diameter as a horizontal line segment.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Horizontal line segment (diameter)
+- Semicircle arc
+Drawing order:
+1. Draw the horizontal line segment.
+2. Draw the semicircle arc above the line segment.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the horizontal line segment (diameter)
+forward(300)
+
+// Move to the starting point of the semicircle
+hop(-150, 0)
+
+// Draw the semicircle arc
+right(90, 150)
+```

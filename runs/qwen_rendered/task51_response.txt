@@ -1,0 +1,47 @@
+<geometry>
+Goal: Draw a hexagon with alternating large and small circles.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Hexagon with side length 100 pixels.
+- Large circle with radius 20 pixels.
+- Small circle with radius 10 pixels.
+Drawing order:
+1. Draw the hexagon.
+2. Draw a large circle at each vertex of the hexagon.
+3. Draw a small circle between each pair of adjacent vertices.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the hexagon
+repeat(6) {
+  forward(100)
+  right(60)
+}
+
+// Draw large circles at each vertex
+savePosHe()
+forward(50)
+right(90)
+penUp()
+forward(20)
+penDown()
+circle(20)
+restorePosHe()
+
+// Draw small circles between each pair of adjacent vertices
+repeat(6) {
+  forward(100)
+  right(60)
+  savePosHe()
+  forward(50)
+  right(90)
+  penUp()
+  forward(10)
+  penDown()
+  circle(10)
+  restorePosHe()
+}
+```

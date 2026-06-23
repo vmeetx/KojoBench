@@ -1,0 +1,43 @@
+<geometry>
+Goal: Draw three shapes: two semicircles and one triangle.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Two semicircles with radius 100 pixels each.
+- One equilateral triangle with side length 200 pixels.
+Drawing order:
+1. Draw the first semicircle on the left.
+2. Draw the second semicircle on the right.
+3. Draw the triangle below the semicircles.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the first semicircle on the left
+right(90, 100)
+penUp()
+forward(100)
+penDown()
+left(90)
+right(180, 100)
+
+// Draw the second semicircle on the right
+right(90, 100)
+penUp()
+forward(300)
+penDown()
+left(90)
+right(180, 100)
+
+// Draw the triangle below the semicircles
+penUp()
+forward(200)
+left(90)
+forward(150)
+penDown()
+right(120)
+forward(200)
+right(120)
+forward(200)
+```

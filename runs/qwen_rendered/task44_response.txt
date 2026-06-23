@@ -1,0 +1,45 @@
+<geometry>
+Goal: Draw three overlapping semicircles.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Three semicircles with radius 100 pixels each.
+Drawing order:
+1. Draw the first semicircle.
+2. Draw the second semicircle.
+3. Draw the third semicircle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the first semicircle
+penDown()
+forward(100)
+right(90, 100)
+forward(100)
+right(90, 100)
+penUp()
+
+// Move to a new position for the second semicircle
+hop(250, 0)
+
+// Draw the second semicircle
+penDown()
+forward(100)
+right(90, 100)
+forward(100)
+right(90, 100)
+penUp()
+
+// Move to a new position for the third semicircle
+hop(-250, 0)
+
+// Draw the third semicircle
+penDown()
+forward(100)
+right(90, 100)
+forward(100)
+right(90, 100)
+penUp()
+```

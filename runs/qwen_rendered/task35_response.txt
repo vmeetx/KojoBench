@@ -1,0 +1,25 @@
+<geometry>
+Goal: Draw an ice cream cone shape.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Semicircle with radius 100 pixels.
+- Equilateral triangle with side length 200 pixels.
+Drawing order:
+1. Draw the semicircle.
+2. Draw the equilateral triangle on top of the semicircle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the semicircle
+right(360, 100) // Draw a semicircle to the right
+
+// Draw the equilateral triangle
+forward(200)
+left(120)
+forward(200)
+left(120)
+forward(200)
+```

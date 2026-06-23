@@ -1,0 +1,45 @@
+<geometry>
+Goal: Draw a square composed of four equilateral triangles.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Four equilateral triangles, each with side length 100 pixels.
+Drawing order:
+1. Draw the first triangle.
+2. Move to the next position and draw the second triangle.
+3. Move to the next position and draw the third triangle.
+4. Move to the final position and draw the fourth triangle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Define a function to draw an equilateral triangle with side length 100 pixels
+def drawTriangle() {
+  repeat(3) {
+    forward(100)
+    right(120)
+  }
+}
+
+// Draw the first triangle
+drawTriangle()
+
+// Move to the next position and draw the second triangle
+right(90)
+forward(100)
+left(90)
+drawTriangle()
+
+// Move to the next position and draw the third triangle
+right(90)
+forward(100)
+left(90)
+drawTriangle()
+
+// Move to the final position and draw the fourth triangle
+right(90)
+forward(100)
+left(90)
+drawTriangle()
+```

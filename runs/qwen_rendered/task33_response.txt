@@ -1,0 +1,42 @@
+<geometry>
+Goal: Draw two overlapping squares.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Square 1 with side length 200 pixels.
+- Square 2 with side length 200 pixels, offset to overlap with Square 1.
+Drawing order:
+1. Draw Square 1.
+2. Draw Square 2 overlapping with Square 1.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the first square
+forward(200)
+right(90)
+forward(200)
+right(90)
+forward(200)
+right(90)
+forward(200)
+right(90)
+
+// Move to the starting position for the second square
+penUp()
+forward(100)
+left(90)
+forward(50)
+penDown()
+
+// Draw the overlapping square
+forward(200)
+right(90)
+forward(200)
+right(90)
+forward(200)
+right(90)
+forward(200)
+right(90)
+```

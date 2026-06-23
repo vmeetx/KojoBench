@@ -1,0 +1,21 @@
+clear()
+setSpeed(fast)
+
+// Draw the upper circle
+right(90, 100) // Position turtle at the top of the upper circle
+penDown()
+forward(200)   // Draw the upper circle
+
+// Draw the lower circle
+penUp()
+hop(-40, -80)  // Move to the starting position for the lower circle
+penDown()
+right(90, 80)  // Position turtle at the top of the lower circle
+forward(160)   // Draw the lower circle
+
+// Draw the vertical diameter line through the upper circle
+penUp()
+hop(-100, 0)   // Move to the left edge of the upper circle
+penDown()
+right(90)
+forward(200)   // Draw the vertical diameter line

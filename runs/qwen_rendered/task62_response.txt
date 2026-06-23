@@ -1,0 +1,46 @@
+<geometry>
+Goal: Draw two intersecting circles within a horizontal rectangle.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Two circles with radius 100 pixels each.
+- A horizontal rectangle that bounds both circles.
+Drawing order:
+1. Draw the first circle.
+2. Draw the second circle.
+3. Draw the bounding rectangle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the first circle
+penDown()
+forward(100)
+right(90, 100)
+forward(200)
+right(90, 100)
+forward(100)
+right(90, 100)
+penUp()
+
+// Move to the starting position for the second circle
+hop(-200, 0)
+
+// Draw the second circle
+penDown()
+forward(100)
+right(90, 100)
+forward(200)
+right(90, 100)
+forward(100)
+right(90, 100)
+penUp()
+
+// Draw the bounding rectangle
+setPosition(-150, -100)
+lineTo(150, -100)
+lineTo(150, 100)
+lineTo(-150, 100)
+lineTo(-150, -100)
+```

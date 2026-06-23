@@ -1,0 +1,41 @@
+<geometry>
+Goal: Draw a shape with two rectangles.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Wide horizontal rectangle (100x20)
+- Narrow vertical rectangle (40x100)
+Drawing order:
+1. Draw the wide horizontal rectangle.
+2. Move to the center of the bottom edge of the wide rectangle.
+3. Draw the narrow vertical rectangle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the wide horizontal rectangle
+forward(100)
+right(90)
+forward(20)
+right(90)
+forward(100)
+right(90)
+forward(20)
+right(90)
+
+// Move to the center of the bottom edge of the wide rectangle
+penUp()
+forward(50)
+left(90)
+forward(10)
+penDown()
+
+// Draw the narrow vertical rectangle
+forward(40)
+right(90)
+forward(100)
+right(90)
+forward(40)
+right(90)
+```

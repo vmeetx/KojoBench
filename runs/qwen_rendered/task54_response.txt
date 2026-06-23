@@ -1,0 +1,35 @@
+<geometry>
+Goal: Draw six regular hexagons arranged in a ring.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Six hexagons, each with side length 80 pixels.
+Drawing order:
+1. Position the first hexagon at (0, 0).
+2. Rotate and position each subsequent hexagon around the center.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+def drawHexagon(sideLength: Double) {
+  repeat(6) {
+    forward(sideLength)
+    right(60)
+  }
+}
+
+val hexSide = 80.0
+val radius = (hexSide * math.sqrt(3)) / 2
+
+// Draw the first hexagon at the center
+drawHexagon(hexSide)
+
+// Position and draw the remaining five hexagons in a ring
+repeatFor(1 until 6) { i =>
+  right(60)
+  forward(radius)
+  drawHexagon(hexSide)
+  back(radius)
+}
+```

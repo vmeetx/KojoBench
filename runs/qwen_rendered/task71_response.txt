@@ -1,0 +1,16 @@
+<geometry>
+Goal: Draw a semicircle with a radius of 100 pixels.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Semicircle with radius 100 pixels.
+Drawing order:
+1. Move to the starting point of the semicircle.
+2. Draw the semicircle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+right(90, 100) // Draw a semicircle on the right side of the turtle
+```

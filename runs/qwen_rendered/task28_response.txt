@@ -1,0 +1,27 @@
+<geometry>
+Goal: Draw a square with its two diagonals.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Square with side length 200 pixels.
+- Two diagonals of the square, each 283 pixels long (approximately).
+Drawing order:
+1. Draw the square.
+2. Draw the first diagonal from one corner to the opposite corner.
+3. Draw the second diagonal from the other two corners.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the square
+repeat(4) {
+  forward(200)
+  right(90)
+}
+
+// Draw the diagonals
+forward(283)
+right(135)
+forward(283)
+```

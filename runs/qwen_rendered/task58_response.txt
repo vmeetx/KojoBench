@@ -1,0 +1,24 @@
+<geometry>
+Goal: Draw two concentric circles.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Outer circle with radius 200 pixels.
+- Inner circle with radius 100 pixels.
+Drawing order:
+1. Draw the outer circle.
+2. Draw the inner circle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the outer circle
+right(360, 200)
+
+// Draw the inner circle
+penUp()
+forward(100)
+penDown()
+right(360, 100)
+```

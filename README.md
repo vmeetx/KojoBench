@@ -138,10 +138,10 @@ runs/
 
 ## Scores
 
-| Model | Avg NSS | YES (≥65%) / 75 |
-|---|---|---|
-| Claude Sonnet 4.6 (proxy) | 53.6% | 35 / 75 |
-| Qwen 2.5 Coder 7B (LM Studio) | — | — |
+| Model | Avg NSS | YES (≥65%) / 75 | Avg KCSS |
+|---|---|---|---|
+| Claude Sonnet 4.6 (proxy) | 66.6% | 39 / 75 | 81.3% |
+| Qwen 2.5 Coder 7B (LM Studio) | 36.4% | 8 / 75 | 77.1% |
 
 **NSS** (Normalised Shape Similarity) = `0.7 × shape_overlap + 0.3 × edge_correlation`  
 **KCSS** (Kojo Code Style Score) = `0.4 × structure + 0.3 × idioms + 0.3 × simplicity`

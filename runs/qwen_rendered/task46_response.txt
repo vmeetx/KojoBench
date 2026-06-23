@@ -1,0 +1,45 @@
+<geometry>
+Goal: Draw three equilateral triangles.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Three equilateral triangles, each with side length 100 pixels.
+Drawing order:
+1. First triangle at the origin (0,0).
+2. Second triangle 150 pixels to the right of the first.
+3. Third triangle 150 pixels below the first.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the first equilateral triangle
+repeat(3) {
+  forward(100)
+  right(120)
+}
+
+// Move to the position for the second triangle
+hop(150, 0)
+right(90)
+forward(150)
+left(90)
+
+// Draw the second equilateral triangle
+repeat(3) {
+  forward(100)
+  right(120)
+}
+
+// Move to the position for the third triangle
+hop(-150, -150)
+right(90)
+forward(150)
+left(90)
+
+// Draw the third equilateral triangle
+repeat(3) {
+  forward(100)
+  right(120)
+}
+```

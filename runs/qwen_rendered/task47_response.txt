@@ -1,0 +1,53 @@
+<geometry>
+Goal: Draw three squares in a triangular pattern.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Three squares, each with side length 100 pixels.
+Drawing order:
+1. Draw the first square at the origin (0,0).
+2. Move to the position for the second square and draw it.
+3. Move to the position for the third square and draw it.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the first square
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+
+// Move to the position for the second square and draw it
+penUp()
+forward(200)
+penDown()
+right(45)
+forward(100 * math.sqrt(2))
+right(135)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+
+// Move to the position for the third square and draw it
+penUp()
+left(45)
+forward(200)
+penDown()
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+```

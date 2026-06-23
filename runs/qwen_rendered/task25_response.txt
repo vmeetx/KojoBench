@@ -1,0 +1,39 @@
+<geometry>
+Goal: Draw three equal-sized triangles placed side by side in a row, each pointing upward with a flat base at the bottom.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Three equilateral triangles, each with a base of 100 pixels and height of approximately 86.6 pixels.
+Drawing order:
+1. Draw the first triangle starting from (0, 0).
+2. Move to the right by 100 pixels and draw the second triangle.
+3. Move to the right by another 100 pixels and draw the third triangle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Kojo code here
+forward(100)
+right(60)
+forward(86.6)
+right(120)
+forward(86.6)
+right(60)
+penUp()
+forward(100)
+penDown()
+right(60)
+forward(86.6)
+right(120)
+forward(86.6)
+right(60)
+penUp()
+forward(100)
+penDown()
+right(60)
+forward(86.6)
+right(120)
+forward(86.6)
+right(60)
+```

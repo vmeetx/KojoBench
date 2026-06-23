@@ -18,6 +18,12 @@ OUT_DIR.mkdir(exist_ok=True)
 _THINK_RE = re.compile(r'<think>.*?</think>', re.DOTALL)
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--start", type=int, default=1, help="Resume from this task number")
+    parser.add_argument("--skip-existing", action="store_true", help="Skip tasks that already have a rendered PNG")
+    args = parser.parse_args()
+
     try:
         model = OpenAICompatModel(provider="lmstudio", max_tokens=8192, temperature=0.0)
     except Exception as e:
@@ -28,7 +34,7 @@ def main():
     print(f"[LM Studio] model={model.model}\n")
     results = []
 
-    for t in TASKS:
+    for t in [t for t in TASKS if t >= args.start]:
         query = load_query(t)
         print(f"  Task {t}: generating...", end=" ", flush=True)
 

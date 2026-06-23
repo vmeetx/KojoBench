@@ -1,0 +1,60 @@
+<geometry>
+Goal: Draw a square with four quarter-circles at each corner.
+Canvas/scale: 200x200 pixels.
+Main shapes:
+- Square with side length 100 pixels.
+- Four quarter-circles, each with radius 50 pixels.
+Drawing order:
+1. Draw the square.
+2. Draw the top-left quarter-circle.
+3. Draw the top-right quarter-circle.
+4. Draw the bottom-right quarter-circle.
+5. Draw the bottom-left quarter-circle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the square
+repeat(4) {
+  forward(100)
+  right(90)
+}
+
+// Move to the starting position for the first quarter-circle
+penUp()
+forward(50)
+right(90)
+forward(50)
+penDown()
+
+// Draw the top-left quarter-circle
+left(90, 50)
+
+// Move to the starting position for the second quarter-circle
+penUp()
+forward(100)
+penDown()
+
+// Draw the top-right quarter-circle
+right(90, 50)
+
+// Move to the starting position for the third quarter-circle
+penUp()
+forward(100)
+left(180)
+penDown()
+
+// Draw the bottom-right quarter-circle
+left(90, 50)
+
+// Move to the starting position for the fourth quarter-circle
+penUp()
+forward(100)
+right(180)
+penDown()
+
+// Draw the bottom-left quarter-circle
+right(90, 50)
+```

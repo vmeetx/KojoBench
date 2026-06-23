@@ -1,0 +1,30 @@
+<geometry>
+Goal: Draw five concentric regular pentagons.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Five regular pentagons with decreasing side lengths.
+Drawing order:
+1. Outermost pentagon with side length 200.
+2. Second pentagon with side length 180.
+3. Third pentagon with side length 160.
+4. Fourth pentagon with side length 140.
+5. Innermost pentagon with side length 120.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+def drawPentagon(sideLength: Double) {
+  repeat(5) {
+    forward(sideLength)
+    right(72)
+  }
+}
+
+// Draw five concentric regular pentagons
+for (i <- 0 until 5) {
+  val sideLength = 200 - i * 20
+  drawPentagon(sideLength)
+}
+```

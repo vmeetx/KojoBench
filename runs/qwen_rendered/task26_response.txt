@@ -1,0 +1,73 @@
+<geometry>
+Goal: Draw three adjacent squares sharing a common base, side by side, enclosed within a larger rectangle.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Three squares with side length 100 pixels each.
+- One large rectangle with width 300 pixels and height 200 pixels.
+Drawing order:
+1. Draw the first square.
+2. Draw the second square next to the first.
+3. Draw the third square next to the second.
+4. Draw the larger rectangle around the three squares.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the first square
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+
+// Move to the starting position for the second square
+penUp()
+forward(100)
+penDown()
+
+// Draw the second square
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+
+// Move to the starting position for the third square
+penUp()
+forward(100)
+penDown()
+
+// Draw the third square
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+
+// Move to the starting position for the rectangle
+penUp()
+back(300)
+left(90)
+back(200)
+penDown()
+
+// Draw the rectangle
+forward(600)
+right(90)
+forward(400)
+right(90)
+forward(600)
+right(90)
+forward(400)
+```

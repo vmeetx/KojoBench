@@ -1,0 +1,40 @@
+<geometry>
+Goal: Draw four semicircles arranged in a square pattern.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Four semicircles, each with a diameter of approximately 200 pixels.
+Drawing order:
+1. Top-left semicircle.
+2. Top-right semicircle.
+3. Bottom-left semicircle.
+4. Bottom-right semicircle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw top-left semicircle
+penUp()
+setPosition(-100, 100)
+penDown()
+left(90, 100)
+
+// Draw top-right semicircle
+penUp()
+setPosition(100, 100)
+penDown()
+right(90, 100)
+
+// Draw bottom-left semicircle
+penUp()
+setPosition(-100, -100)
+penDown()
+left(90, 100)
+
+// Draw bottom-right semicircle
+penUp()
+setPosition(100, -100)
+penDown()
+right(90, 100)
+```

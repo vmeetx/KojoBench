@@ -1,0 +1,21 @@
+<geometry>
+Goal: Draw a regular octagon.
+Canvas/scale: 500x500 pixels.
+Main shapes:
+- Octagon with side length approximately 100 pixels.
+Drawing order:
+1. Move forward by 100 pixels.
+2. Turn right by 45 degrees.
+3. Repeat steps 1 and 2 seven more times.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Kojo code here
+repeat(8) {
+  forward(100)
+  right(45)
+}
+```
