@@ -1,15 +1,14 @@
 cleari()
 
 def shape = Picture {
-    val semicircle_radius = 100
-    
-    
-    setHeading(0)
-    
-    left(90)
-    left(180, semicircle_radius)
-    left(90)
-    forward(2 * semicircle_radius)
+    val r = 150
+
+    setHeading(90)
+    forward(r)
+    right(90)
+    right(90, r)
+    right(90)
+    forward(r)
 }
 
 drawCentered(shape)

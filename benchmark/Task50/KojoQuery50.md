@@ -1,1 +1,1 @@
-Draw a square with four circles at each corner.
+Draw four equal circles arranged in a clover or four-leaf pattern so that each adjacent pair overlaps and all four circles meet at a single central point.

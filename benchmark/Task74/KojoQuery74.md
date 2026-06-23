@@ -1,1 +1,1 @@
-Draw a square with side length 200.
+Draw three sides of a square — the top side and both vertical sides — leaving the bottom open, forming a U-shape or square bracket.

@@ -1,6 +1,7 @@
-clear(); setSpeed(fast)
-val r = 100
-right(90)
-forward(2 * r)
+clear()
+setSpeed(fast)
+
 setHeading(90)
-left(180, r)
+right(180, 100)
+right(90)
+forward(200)

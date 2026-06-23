@@ -1,1 +1,1 @@
-Draw a square with side length 80.
+Draw a plus sign (cross shape) with four equal square arms, all arms the same width and length.

@@ -1,1 +1,1 @@
-Draw a square with four semicircles at each corner.
+Draw a square with a semicircle protruding outward from the midpoint of each of its four sides, where each semicircle's diameter equals half the side length of the square.

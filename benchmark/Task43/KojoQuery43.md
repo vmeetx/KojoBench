@@ -1,1 +1,1 @@
-Draw a square with four semicircles at each corner.
+Draw a square with a small semicircle protruding outward from the midpoint of each of its four sides, like a rounded cross or four-petaled flower shape.

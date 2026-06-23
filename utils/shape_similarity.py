@@ -58,7 +58,7 @@ def _binarise(img: Image.Image) -> np.ndarray:
 
 def _bbox_crop_resize(mask: np.ndarray) -> np.ndarray:
     """
-    Crop to content bounding box, resize to THUMB_SIZE × THUMB_SIZE.
+    Crop to content bounding box, then pad to square and resize — preserves aspect ratio.
     If the mask is blank, return a blank thumbnail (avoids zero-division).
     """
     rows = np.any(mask, axis=1)
@@ -68,8 +68,28 @@ def _bbox_crop_resize(mask: np.ndarray) -> np.ndarray:
     r0, r1 = np.where(rows)[0][[0, -1]]
     c0, c1 = np.where(cols)[0][[0, -1]]
     crop = mask[r0:r1+1, c0:c1+1].astype(np.uint8) * 255
-    img  = Image.fromarray(crop).resize((THUMB_SIZE, THUMB_SIZE), Image.LANCZOS)
-    return np.array(img, dtype=np.float32) / 255.0
+    h, w  = crop.shape
+    scale = THUMB_SIZE / max(h, w)
+    nh, nw = max(1, round(h * scale)), max(1, round(w * scale))
+    resized = np.array(
+        Image.fromarray(crop).resize((nw, nh), Image.LANCZOS),
+        dtype=np.float32,
+    ) / 255.0
+    thumb = np.zeros((THUMB_SIZE, THUMB_SIZE), dtype=np.float32)
+    y0 = (THUMB_SIZE - nh) // 2
+    x0 = (THUMB_SIZE - nw) // 2
+    thumb[y0:y0 + nh, x0:x0 + nw] = resized
+    return thumb
+
+
+def _aspect_ratio(mask: np.ndarray) -> float:
+    rows = np.any(mask, axis=1)
+    cols = np.any(mask, axis=0)
+    if not rows.any() or not cols.any():
+        return 1.0
+    h = int(np.where(rows)[0][-1]) - int(np.where(rows)[0][0]) + 1
+    w = int(np.where(cols)[0][-1]) - int(np.where(cols)[0][0]) + 1
+    return max(h, w) / max(min(h, w), 1)
 
 
 def _dilate(thumb: np.ndarray) -> np.ndarray:
@@ -118,15 +138,24 @@ def nss_score(path_a: str, path_b: str) -> float:
     try:
         img_a = Image.open(path_a)
         img_b = Image.open(path_b)
-        thumb_a = _bbox_crop_resize(_binarise(img_a))
-        thumb_b = _bbox_crop_resize(_binarise(img_b))
+        mask_a = _binarise(img_a)
+        mask_b = _binarise(img_b)
+        thumb_a = _bbox_crop_resize(mask_a)
+        thumb_b = _bbox_crop_resize(mask_b)
     except Exception:
         return 0.0
+
+    # Soft aspect-ratio penalty: smoothly degrades score when shapes have very
+    # different bounding-box proportions (e.g. square vs 2:1 rectangle).
+    ar_a = _aspect_ratio(mask_a)
+    ar_b = _aspect_ratio(mask_b)
+    ar_diff = abs(ar_a - ar_b)
+    ar_penalty = max(0.0, 1.0 - max(0.0, ar_diff - 0.15) * 1.5)
 
     chamfer = _chamfer_score(thumb_a, thumb_b)
     ec      = max(0.0, _edge_corr(_dilate(thumb_a), _dilate(thumb_b)))
 
-    return 0.7 * chamfer + 0.3 * ec
+    return ar_penalty * (0.7 * chamfer + 0.3 * ec)
 
 
 # ── Public interface (same signatures as before) ──────────────────────────────

@@ -1,1 +1,1 @@
-Draw a square with side length 200.
+Draw a circle divided into four equal quadrants by a horizontal line and a vertical line both passing through the center.

@@ -1,1 +1,1 @@
-Draw a square with four semicircles at each corner.
+Draw a square where the center of each side bulges outward as a large semicircle whose diameter equals the full side length, producing a four-lobed shape with small square jogs at each corner.

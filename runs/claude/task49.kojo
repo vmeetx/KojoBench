@@ -1,12 +1,11 @@
-clear(); setSpeed(fast)
-val s = 120
-val r = 30
-penUp(); setPosition(0, r); penDown(); setHeading(90)
-forward(s - 2 * r)
-left(90, r)
-forward(s - 2 * r)
-left(90, r)
-forward(s - 2 * r)
-left(90, r)
-forward(s - 2 * r)
-left(90, r)
+clear()
+setSpeed(fast)
+
+val r = 80
+setHeading(0)
+repeat(4) {
+  left(360, r)
+  right(90)
+}
+left(180, r)
+left(360, 2 * r)

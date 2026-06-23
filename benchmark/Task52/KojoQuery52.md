@@ -1,1 +1,1 @@
-Draw an octagon.
+Draw two squares of equal size overlapping at their centers, with one square axis-aligned and the other rotated 45 degrees, forming an eight-pointed star outline.

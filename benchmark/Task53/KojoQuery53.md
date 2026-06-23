@@ -1,1 +1,1 @@
-Draw a square with side length 100.
+Draw a three-quarter circle shape: a 270-degree arc closed by two straight radius lines that meet at a right angle at the center, like a pac-man facing right.

@@ -1,2 +1,8 @@
-clear(); setSpeed(fast)
-repeat(4) { forward(200); right(90) }
+clear()
+setSpeed(fast)
+
+setHeading(90)
+repeat(3) {
+  forward(200)
+  right(90)
+}

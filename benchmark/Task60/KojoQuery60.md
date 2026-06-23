@@ -1,1 +1,1 @@
-Draw four triangles of different sizes in a row.
+Draw four concentric equilateral triangles of increasing sizes all sharing the same starting corner, so the three smaller triangles appear nested inside the largest one.

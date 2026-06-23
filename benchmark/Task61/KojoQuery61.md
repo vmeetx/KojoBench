@@ -1,1 +1,1 @@
-Draw a semicircle with its diameter which is a horizontal line segment and the semicircle arc is on top of it.
+Draw a quarter circle shape: a 90-degree arc with two straight radius lines meeting at a right angle at the center, forming a pie-slice or quarter-pie shape.

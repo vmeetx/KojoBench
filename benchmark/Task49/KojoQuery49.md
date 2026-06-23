@@ -1,1 +1,1 @@
-Draw a square with four quarter-circles at each corner.
+Draw four equal circles arranged in a clover pattern so that all four meet at a single central point, then draw a larger circle centered on that same point that encloses all four smaller circles.
