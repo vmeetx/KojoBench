@@ -1,6 +1,6 @@
 # KojoBench2
 
-Benchmark for evaluating LLMs on generating [Kojo](https://kogics.net/kojo) turtle-graphics code from natural language descriptions. 75 tasks, automated rendering via WSL, visual accuracy scoring (NSS + KCSS).
+Benchmark for evaluating LLMs on generating [Kojo](https://kogics.net/kojo) turtle-graphics code from natural language descriptions. 71 tasks, automated rendering via WSL, visual accuracy scoring (NSS + KCSS).
 
 Based on [TurtleBench](https://github.com/sinaris76/TurtleBench) — ported from Python Turtle to Kojo (Scala), making it harder since models can't rely on memorised Python syntax.
 
@@ -118,7 +118,7 @@ GROQ_API_KEY=gsk_...
 
 ```
 benchmark/
-└── Task{N}/                   # 75 tasks
+└── Task{N}/                   # 71 scored tasks (75 total, 4 excluded as scorer blind spots)
     ├── KojoQuery{N}.md        # natural language prompt given to the LLM
     ├── KojoTask{N}.kojo       # ground truth Kojo code
     └── ground_truth_kojo.png  # rendered ground truth image
@@ -140,8 +140,8 @@ runs/
 
 | Model | Avg NSS | YES (≥65%) / 75 | Avg KCSS |
 |---|---|---|---|
-| Claude Sonnet 4.6 (proxy) | 66.6% | 39 / 75 | 81.3% |
-| Qwen 2.5 Coder 7B (LM Studio) | 36.4% | 8 / 75 | 77.1% |
+| Claude Sonnet 4.6 (proxy) | 71.1% | 49 / 71 | 81.2% |
+| Qwen 2.5 Coder 7B (LM Studio) | 20.6% | 6 / 71 | 77.6% |
 
 **NSS** (Normalised Shape Similarity) = `0.7 × shape_overlap + 0.3 × edge_correlation`  
 **KCSS** (Kojo Code Style Score) = `0.4 × structure + 0.3 × idioms + 0.3 × simplicity`
