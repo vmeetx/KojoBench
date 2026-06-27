@@ -1,25 +1,20 @@
 cleari()
 
 def shape = Picture {
-    val large_triangle_side = 150
-    val small_triangle_side = 75
-    
-    
+    val large = 150.0
+    val small = 75.0
     setHeading(0)
-    
-    def draw_polygon(sides: Int, length: Double) {
-      var outer_turn = 360 / sides
-      repeat(sides.toInt) {
-        forward(length)
-        right(outer_turn)
-      }
-    }
-    left(60)
-    draw_polygon(3, large_triangle_side)
-    right(60)
-    forward(small_triangle_side)
-    left(60)
-    draw_polygon(3, large_triangle_side)
+    repeat(3) { forward(large); right(120) }
+    penUp()
+    setPosition(large + 20, 0)
+    setHeading(0)
+    penDown()
+    repeat(3) { forward(small); right(120) }
+    penUp()
+    setPosition(large * 2 + 40, 0)
+    setHeading(0)
+    penDown()
+    repeat(3) { forward(large); right(120) }
 }
 
 drawCentered(shape)

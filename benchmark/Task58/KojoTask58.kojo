@@ -1,15 +1,12 @@
 cleari()
 
 def shape = Picture {
-    val circle_radius = 100
-    
-    
-    setHeading(0)
-    
-    forward(circle_radius * 2)
-    left(540, circle_radius)
-    forward(circle_radius * 2)
-    left(540, circle_radius)
+    val r1 = 60.0
+    val r2 = 100.0
+    penUp(); setPosition(0, -r1); setHeading(0); penDown()
+    left(360, r1)
+    penUp(); setPosition(0, -r2); setHeading(0); penDown()
+    left(360, r2)
 }
 
 drawCentered(shape)

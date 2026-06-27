@@ -1,19 +1,16 @@
 cleari()
 
 def shape = Picture {
-    val semicircle_radius = 50
-    
-    
+    val side = 200
+    val r = side / 4
     setHeading(0)
-    
     repeat(4) {
-      left(180, semicircle_radius)
-      right(90)
-    }
-    left(90)
-    repeat(4) {
-      forward(2 * semicircle_radius)
-      left(90)
+        forward(side / 2 - r)
+        left(90)
+        left(180, r)
+        right(90)
+        forward(side / 2 - r)
+        right(90)
     }
 }
 

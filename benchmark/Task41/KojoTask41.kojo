@@ -1,20 +1,16 @@
 cleari()
 
 def shape = Picture {
-    val triangle_side = 200
-    val semicircle_radius = 40
-    
-    
+    val r = 50
+    val side = 100
+    setHeading(270)
+    left(180, r)
+    penUp(); hop(r * 3); penDown()
+    setHeading(270)
+    left(180, r)
+    penUp(); hop(r * 3); penDown()
     setHeading(0)
-    
-    repeat(3) {
-      forward((triangle_side-semicircle_radius)/2)
-      right(90)
-      right(180, semicircle_radius)
-      right(90)
-      forward((triangle_side-semicircle_radius)/2)
-      left(120)
-    }
+    repeat(3) { forward(side); left(120) }
 }
 
 drawCentered(shape)

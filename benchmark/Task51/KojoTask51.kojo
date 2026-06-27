@@ -1,17 +1,20 @@
 cleari()
 
 def shape = Picture {
-    val small_circle_radius = 100
-    
-    
-    setHeading(0)
-    
-    repeat(6) {
-            left(360, small_circle_radius)
-            right(60)
+    val rLarge = 50
+    val rSmall = 25
+    val dist = 110
+    repeatFor(0 until 6) { i =>
+        val angle = i * 60.0
+        val cx = dist * math.cos(angle.toRadians)
+        val cy = dist * math.sin(angle.toRadians)
+        val r = if (i % 2 == 0) rLarge else rSmall
+        penUp()
+        setPosition(cx, cy - r)
+        setHeading(0)
+        penDown()
+        left(360, r)
     }
-    left(180, small_circle_radius)
-    left(360, 2 * small_circle_radius)
 }
 
 drawCentered(shape)

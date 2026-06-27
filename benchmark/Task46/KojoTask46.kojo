@@ -1,18 +1,15 @@
 cleari()
 
 def shape = Picture {
-    val line_segment = 80
-    val circle_radius = 20
-    
-    
+    val side = 100
     setHeading(0)
-    
-    repeat(3) {
-      forward(line_segment)
-      left(360, circle_radius)
-      forward(-line_segment)
-      right(120)
-    }
+    repeat(3) { forward(side); right(120) }
+    penUp(); forward(side + 20); penDown()
+    setHeading(0)
+    repeat(3) { forward(side); right(120) }
+    penUp(); forward(side + 20); penDown()
+    setHeading(0)
+    repeat(3) { forward(side); right(120) }
 }
 
 drawCentered(shape)

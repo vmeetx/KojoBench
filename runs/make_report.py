@@ -175,6 +175,7 @@ html = f"""<!DOCTYPE html>
 <h1>KojoBench2 - Claude Sonnet 4.6</h1>
 <p class="subtitle">Input: system prompt + query only &nbsp;·&nbsp; No ground-truth code seen &nbsp;·&nbsp; 75 tasks</p>
 <div class="summary">
+  <div class="stat"><div class="stat-val" style="color:{score_color(sum(1 for r in rows if r['match'])/len(rows))};font-size:2rem">{sum(1 for r in rows if r['match'])/len(rows):.2f}</div><div class="stat-lbl">Benchmark Score (0–1)</div></div>
   <div class="stat"><div class="stat-val green">{sum(1 for r in rows if r['match'])}/{len(rows)}</div><div class="stat-lbl">Visual Match (NSS >= 65%)</div></div>
   <div class="stat"><div class="stat-val" style="color:{score_color(avg_nss/100)}">{avg_nss:.1f}%</div><div class="stat-lbl">Avg Visual Accuracy (NSS)</div></div>
   <div class="stat"><div class="stat-val" style="color:{score_color(avg_kcss/100)}">{avg_kcss:.1f}%</div><div class="stat-lbl">Avg Code Quality (KCSS)</div></div>

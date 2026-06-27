@@ -1,21 +1,17 @@
 cleari()
 
 def shape = Picture {
-    val small_hexagon_side = 100
-    
-    
-    setHeading(0)
-    
-    def draw_polygon(sides: Int, length: Double) {
-      var outer_turn = 360 / sides
-      repeat(sides.toInt) {
-        forward(length)
-        right(outer_turn)
-      }
-    }
-    repeat(6) {
-      draw_polygon(6, small_hexagon_side)
-      right(60)
+    val side = 50
+    val ringRadius = 110
+    repeatFor(0 until 6) { i =>
+        val angle = i * 60.0
+        val cx = ringRadius * math.cos(angle.toRadians)
+        val cy = ringRadius * math.sin(angle.toRadians)
+        penUp()
+        setPosition(cx, cy)
+        setHeading(0)
+        penDown()
+        repeat(6) { forward(side); right(60) }
     }
 }
 

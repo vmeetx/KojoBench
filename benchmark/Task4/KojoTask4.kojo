@@ -1,15 +1,9 @@
 cleari()
 
 def shape = Picture {
+    val side = 200
     setHeading(0)
-    setPenColor(black)
-    val pentagon_side = 200
-    
-    setHeading(36)
-    repeat(5) {
-      forward(pentagon_side)
-      right(72)
-    }
+    repeat(5) { forward(side); left(72) }
 }
 
 drawCentered(shape)

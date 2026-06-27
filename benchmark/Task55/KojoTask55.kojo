@@ -1,21 +1,15 @@
 cleari()
 
 def shape = Picture {
-    val pentagon_side = 100
-    
-    
-    setHeading(0)
-    
-    def draw_polygon(sides: Int, length: Double) {
-      var outer_turn = 360 / sides
-      repeat(sides.toInt) {
-        forward(length)
-        right(outer_turn)
-      }
-    }
-    repeat(5) {
-      draw_polygon(5, pentagon_side)
-      right(72)
+    val sizes = Array(40.0, 80.0, 120.0, 160.0, 200.0)
+    repeatFor(0 until 5) { i =>
+        val s = sizes(i)
+        val cr = s / (2 * math.sin(math.Pi / 5))
+        penUp()
+        setPosition(0, -cr)
+        setHeading(0)
+        penDown()
+        repeat(5) { forward(s); left(72) }
     }
 }
 
