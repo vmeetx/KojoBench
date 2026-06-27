@@ -1,1 +1,0 @@
-Draw two squares, one centered inside the other. The inner square is smaller and the gap between each side of the inner square and the nearest side of the outer square is equal on all four sides. The sides of the inner square run parallel to the sides of the outer square.

@@ -1,1 +1,0 @@
-A square, with two horizontal and two vertical sides.

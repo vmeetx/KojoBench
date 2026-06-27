@@ -1,1 +1,0 @@
-Draw a four-pointed star. There is a square tilted at 45 degrees in the middle. A triangle sticks out from each of the four sides of the tilted square, pointing outward away from the center. The four triangular points of the star point toward the upper-left, upper-right, lower-left, and lower-right directions.

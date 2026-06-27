@@ -1,1 +1,0 @@
-Draw a shape made of two rectangles. A wide horizontal rectangle sits at the top. A narrower vertical rectangle extends downward from the center of the wide rectangle. The two rectangles share the middle portion of the bottom edge of the top rectangle. All corners are right angles.

@@ -1,2 +1,0 @@
-large_triangle_side = 150
-small_triangle_side = 75

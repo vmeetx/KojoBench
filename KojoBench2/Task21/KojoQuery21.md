@@ -1,1 +1,0 @@
-Draw a half-circle with the flat side at the bottom going straight across. Above the flat side, a smooth curve rises from both ends of the flat side, reaches its highest point directly above the middle, and comes back down to the other end of the flat side.

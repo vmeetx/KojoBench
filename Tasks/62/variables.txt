@@ -1,2 +1,0 @@
-radius = 90
-rectangle_length = 300

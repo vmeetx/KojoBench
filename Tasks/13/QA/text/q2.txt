@@ -1,1 +1,0 @@
-in the given shape, slices the circle into 16 equal pieces.

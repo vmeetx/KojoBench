@@ -1,1 +1,0 @@
-Draw a shape with six equal sides and six equal angles. The top side and the bottom side go straight across and are parallel to each other. The other four sides are diagonal, and they connect the ends of the top and bottom sides symmetrically on both the left and the right.

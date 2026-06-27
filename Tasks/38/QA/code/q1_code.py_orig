@@ -1,3 +1,0 @@
-t.circle(circles_radi[2])
-t.circle(circles_radi[1])
-t.circle(circles_radi[0])

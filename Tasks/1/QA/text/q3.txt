@@ -1,1 +1,0 @@
-divides the shape into four equal pieces and draws the upper left and bottom right quarters.

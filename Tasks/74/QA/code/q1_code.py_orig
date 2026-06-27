@@ -1,4 +1,0 @@
-t.setheading(90)
-for i in range(3):
-  t.forward(square_side)
-  t.right(90)

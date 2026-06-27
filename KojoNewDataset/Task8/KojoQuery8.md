@@ -1,1 +1,0 @@
-Draw a four pointed star. There is a square in the middle and a triangle on each side of it pointing outward. The points of the star go diagonally, not straight up or sideways. It looks like a compass rose.

@@ -1,1 +1,0 @@
-Draw three equal-sized triangles placed side by side in a row, each pointing upward. All three triangles have a flat base at the bottom. The bottom-right corner of each triangle is the same point as the bottom-left corner of the next triangle. All three sides of every triangle are the same length.

@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Qwen — Compact Score Report</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background:#111; color:#ddd; font-family:system-ui,sans-serif; padding:20px; font-size:13px; }
+  h1 { font-size:1.3rem; color:#fff; text-align:center; margin-bottom:4px; }
+  .sub { text-align:center; color:#666; font-size:0.75rem; margin-bottom:18px; }
+  .stats { display:flex; gap:16px; justify-content:center; margin-bottom:24px; flex-wrap:wrap; }
+  .stat { background:#1a1a1a; border:1px solid #2a2a2a; border-radius:8px; padding:8px 18px; text-align:center; }
+  .stat-v { font-size:1.2rem; font-weight:700; }
+  .stat-l { font-size:0.65rem; color:#555; text-transform:uppercase; letter-spacing:.05em; margin-top:2px; }
+  .section { margin-bottom:28px; }
+  .section-title { font-size:0.8rem; font-weight:700; text-transform:uppercase;
+                    letter-spacing:.08em; color:#888; border-bottom:1px solid #222;
+                    padding-bottom:6px; margin-bottom:10px; }
+  .row { display:grid; grid-template-columns:32px 36px 120px 36px 1fr; align-items:center;
+          gap:6px; padding:3px 4px; border-radius:4px; }
+  .row:hover { background:#1a1a1a; }
+  .row.has-sub { grid-template-columns:32px 120px 36px 1fr 1fr; }
+  .tid { font-weight:700; color:#888; font-size:0.72rem; }
+  .yes { background:#14532d; color:#4ade80; font-size:0.6rem; font-weight:800;
+          padding:2px 5px; border-radius:3px; text-align:center; }
+  .no  { background:#3f0f0f; color:#f87171; font-size:0.6rem; font-weight:800;
+          padding:2px 5px; border-radius:3px; text-align:center; }
+  .val { font-size:0.75rem; font-weight:700; text-align:right; white-space:nowrap; }
+  .bar-bg { background:#2a2a2a; border-radius:2px; height:6px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:2px; }
+  .qtxt { font-size:0.65rem; color:#555; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sub-lbl { font-size:0.6rem; color:#555; white-space:nowrap; }
+  .sub-val { font-size:0.6rem; font-weight:600; white-space:nowrap; }
+  .krow { padding:4px 4px 2px; border-radius:4px; margin-bottom:2px; }
+  .krow:hover { background:#1a1a1a; }
+  .krow-top { display:grid; grid-template-columns:32px 140px 36px 1fr;
+               align-items:center; gap:6px; }
+  .krow-sub { display:grid; grid-template-columns:32px 55px 140px 28px 55px 140px 28px 55px 140px 28px;
+               align-items:center; gap:4px; margin-top:3px; padding-left:2px; }
+  .nav { display:flex; justify-content:center; gap:12px; margin-bottom:20px; }
+  .nav a { padding:6px 18px; border-radius:6px; text-decoration:none; font-weight:600;
+             font-size:0.85rem; border:1px solid #333; color:#aaa; }
+  .nav a.active { background:#34d399; color:#111; border-color:#34d399; }
+  .nav a:not(.active):hover { background:#1f1f1f; color:#eee; }
+</style>
+</head>
+<body>
+<h1>Qwen 2.5 Coder 7B — Score Summary</h1>
+<p class="sub">71 tasks · no images · sorted by score</p>
+<nav class="nav">
+  <a href="report_claude.html">Claude Sonnet 4.6</a>
+  <a href="report_qwen.html">Full Report</a>
+  <a href="report_qwen_compact.html" class="active">Compact</a>
+</nav>
+<div class="stats">
+  <div class="stat"><div class="stat-v" style="color:#ef4444">6/71</div><div class="stat-l">Visual Match ≥65%</div></div>
+  <div class="stat"><div class="stat-v" style="color:#7f1d1d">20.6%</div><div class="stat-l">Avg NSS</div></div>
+  <div class="stat"><div class="stat-v" style="color:#22c55e">77.6%</div><div class="stat-l">Avg KCSS</div></div>
+</div>
+
+<div class="section">
+  <div class="section-title">Visual Accuracy (NSS) — sorted high to low</div>
+  <div class="row">
+  <span class="tid">T29</span>
+  <span class="yes">YES</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div>
+  <span class="val" style="color:#22c55e">100%</span>
+  <span class="qtxt">Draw a square with one of its diagonals from top left to bottom right.</span>
+</div><div class="row">
+  <span class="tid">T3</span>
+  <span class="yes">YES</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div>
+  <span class="val" style="color:#22c55e">100%</span>
+  <span class="qtxt">Draw a square.</span>
+</div><div class="row">
+  <span class="tid">T74</span>
+  <span class="yes">YES</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div>
+  <span class="val" style="color:#22c55e">80%</span>
+  <span class="qtxt">Draw three sides of a square — the top side and both vertical sides — leaving th...</span>
+</div><div class="row">
+  <span class="tid">T54</span>
+  <span class="yes">YES</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:69%;background:#f59e0b"></div></div>
+  <span class="val" style="color:#f59e0b">69%</span>
+  <span class="qtxt">Draw six regular hexagons arranged in a ring.</span>
+</div><div class="row">
+  <span class="tid">T55</span>
+  <span class="yes">YES</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:66%;background:#f59e0b"></div></div>
+  <span class="val" style="color:#f59e0b">66%</span>
+  <span class="qtxt">Draw five concentric regular pentagons.</span>
+</div><div class="row">
+  <span class="tid">T4</span>
+  <span class="yes">YES</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:65%;background:#f59e0b"></div></div>
+  <span class="val" style="color:#f59e0b">65%</span>
+  <span class="qtxt">Draw a pentagon with five equal sides. The bottom is flat and one corner points ...</span>
+</div><div class="row">
+  <span class="tid">T58</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:65%;background:#f59e0b"></div></div>
+  <span class="val" style="color:#f59e0b">65%</span>
+  <span class="qtxt">Draw two concentric circles.</span>
+</div><div class="row">
+  <span class="tid">T56</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:62%;background:#f59e0b"></div></div>
+  <span class="val" style="color:#f59e0b">62%</span>
+  <span class="qtxt">Draw three regular hexagons arranged in a triangular pattern.</span>
+</div><div class="row">
+  <span class="tid">T19</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:61%;background:#f59e0b"></div></div>
+  <span class="val" style="color:#f59e0b">61%</span>
+  <span class="qtxt">Draw a shape with eight equal sides and eight equal angles. The top side and the...</span>
+</div><div class="row">
+  <span class="tid">T51</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div>
+  <span class="val" style="color:#f59e0b">50%</span>
+  <span class="qtxt">Draw a hexagon with alternating large and small circles.</span>
+</div><div class="row">
+  <span class="tid">T8</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:49%;background:#ef4444"></div></div>
+  <span class="val" style="color:#ef4444">49%</span>
+  <span class="qtxt">Draw a four pointed star. There is a square in the middle and a triangle on each...</span>
+</div><div class="row">
+  <span class="tid">T72</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:37%;background:#ef4444"></div></div>
+  <span class="val" style="color:#ef4444">37%</span>
+  <span class="qtxt">Draw a circle divided into four equal quadrants by a horizontal line and a verti...</span>
+</div><div class="row">
+  <span class="tid">T52</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:36%;background:#ef4444"></div></div>
+  <span class="val" style="color:#ef4444">36%</span>
+  <span class="qtxt">Draw two squares of equal size overlapping at their centers, with one square axi...</span>
+</div><div class="row">
+  <span class="tid">T43</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:31%;background:#ef4444"></div></div>
+  <span class="val" style="color:#ef4444">31%</span>
+  <span class="qtxt">Draw a square with a small semicircle protruding outward from the midpoint of ea...</span>
+</div><div class="row">
+  <span class="tid">T5</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:29%;background:#ef4444"></div></div>
+  <span class="val" style="color:#ef4444">29%</span>
+  <span class="qtxt">Draw a triangle with a smaller triangle sticking out of each corner. The small t...</span>
+</div><div class="row">
+  <span class="tid">T49</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:28%;background:#ef4444"></div></div>
+  <span class="val" style="color:#ef4444">28%</span>
+  <span class="qtxt">Draw four equal circles arranged in a clover pattern so that all four meet at a ...</span>
+</div><div class="row">
+  <span class="tid">T27</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:27%;background:#ef4444"></div></div>
+  <span class="val" style="color:#ef4444">27%</span>
+  <span class="qtxt">Draw a square inscribed in a circle.</span>
+</div><div class="row">
+  <span class="tid">T14</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:25%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">25%</span>
+  <span class="qtxt">Draw a five-pointed star. It has five equally spaced sharp points. Each point is...</span>
+</div><div class="row">
+  <span class="tid">T68</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:24%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">24%</span>
+  <span class="qtxt">Draw a square with a semicircle protruding outward from the midpoint of each of ...</span>
+</div><div class="row">
+  <span class="tid">T48</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:23%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">23%</span>
+  <span class="qtxt">Draw four nested squares with increasing side lengths.</span>
+</div><div class="row">
+  <span class="tid">T13</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:23%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">23%</span>
+  <span class="qtxt">Draw a shape with six equal sides and six equal angles. The top side and the bot...</span>
+</div><div class="row">
+  <span class="tid">T35</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:23%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">23%</span>
+  <span class="qtxt">Draw a combination of a semicircle on top and an equilateral triangle beneath it...</span>
+</div><div class="row">
+  <span class="tid">T65</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:21%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">21%</span>
+  <span class="qtxt">Draw three semicircles arranged in a triangular pattern.</span>
+</div><div class="row">
+  <span class="tid">T36</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:20%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">20%</span>
+  <span class="qtxt">Draw two distinct circles placed adjacently, touching at one point. The larger c...</span>
+</div><div class="row">
+  <span class="tid">T28</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:20%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">20%</span>
+  <span class="qtxt">Draw a square with its two diagonals.</span>
+</div><div class="row">
+  <span class="tid">T53</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:19%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">19%</span>
+  <span class="qtxt">Draw a three-quarter circle shape: a 270-degree arc closed by two straight radiu...</span>
+</div><div class="row">
+  <span class="tid">T9</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:19%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">19%</span>
+  <span class="qtxt">Draw a shape that looks like the letter S. The top half curves to the right and ...</span>
+</div><div class="row">
+  <span class="tid">T69</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:18%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">18%</span>
+  <span class="qtxt">Draw a square where the center of each side bulges outward as a large semicircle...</span>
+</div><div class="row">
+  <span class="tid">T34</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:18%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">18%</span>
+  <span class="qtxt">Draw a plus sign (cross shape) with four equal square arms, all arms the same wi...</span>
+</div><div class="row">
+  <span class="tid">T33</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:16%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">16%</span>
+  <span class="qtxt">Draw two overlapping squares.</span>
+</div><div class="row">
+  <span class="tid">T75</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:16%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">16%</span>
+  <span class="qtxt">Draw a square with a smaller square inside it, rotated 45 degrees.</span>
+</div><div class="row">
+  <span class="tid">T17</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:16%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">16%</span>
+  <span class="qtxt">Draw an equilateral triangle pointing downward. The flat side is at the top and ...</span>
+</div><div class="row">
+  <span class="tid">T2</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:15%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">15%</span>
+  <span class="qtxt">Draw a triangle with a flat bottom and the point at the top. All three sides are...</span>
+</div><div class="row">
+  <span class="tid">T39</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:14%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">14%</span>
+  <span class="qtxt">Draw three concentric circles.</span>
+</div><div class="row">
+  <span class="tid">T67</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:14%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">14%</span>
+  <span class="qtxt">Draw four semicircles arranged in a square pattern.</span>
+</div><div class="row">
+  <span class="tid">T18</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:12%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">12%</span>
+  <span class="qtxt">Draw a shape pointing to the right like an arrow. It has a rectangular body goin...</span>
+</div><div class="row">
+  <span class="tid">T42</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:11%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">11%</span>
+  <span class="qtxt">Draw a triangle with two semicircles attached to its base.</span>
+</div><div class="row">
+  <span class="tid">T45</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:6%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">6%</span>
+  <span class="qtxt">Draw four squares of an equal size that form a larger square.</span>
+</div><div class="row">
+  <span class="tid">T21</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:4%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">4%</span>
+  <span class="qtxt">Draw a semicircle with a flat diameter line at the bottom and the curved arc ris...</span>
+</div><div class="row">
+  <span class="tid">T30</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:4%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">4%</span>
+  <span class="qtxt">Draw a square with one of its diagonals from top right to bottom left.</span>
+</div><div class="row">
+  <span class="tid">T70</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:1%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">1%</span>
+  <span class="qtxt">Draw a grid of nine equilateral triangles.</span>
+</div><div class="row">
+  <span class="tid">T7</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a square with a triangle attached to its right side. The triangle points to...</span>
+</div><div class="row">
+  <span class="tid">T47</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw three squares in a triangular pattern.</span>
+</div><div class="row">
+  <span class="tid">T6</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw two triangles side by side, both pointing up. They share one corner at the ...</span>
+</div><div class="row">
+  <span class="tid">T10</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a circle inside a square. The circle touches the middle of each side of the...</span>
+</div><div class="row">
+  <span class="tid">T11</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a rectangle with four sides and four right-angle corners. The two longer si...</span>
+</div><div class="row">
+  <span class="tid">T12</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a triangle that has exactly one right-angle corner. The two sides that meet...</span>
+</div><div class="row">
+  <span class="tid">T15</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a shape made of two rectangles joined together at a shared corner in the lo...</span>
+</div><div class="row">
+  <span class="tid">T20</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw two squares, one centered inside the other. The inner square is smaller and...</span>
+</div><div class="row">
+  <span class="tid">T22</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a shape made of two rectangles. A wide horizontal rectangle sits at the top...</span>
+</div><div class="row">
+  <span class="tid">T23</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a staircase shape with three equal steps going from the lower left to the u...</span>
+</div><div class="row">
+  <span class="tid">T24</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a four-sided shape where the top side and the bottom side are equal in leng...</span>
+</div><div class="row">
+  <span class="tid">T25</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw three equal-sized triangles placed side by side in a row, each pointing upw...</span>
+</div><div class="row">
+  <span class="tid">T26</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw three adjacent squares sharing a common base, side by side, enclosed within...</span>
+</div><div class="row">
+  <span class="tid">T31</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw two squares connected at one corner. The square on the top left is aligned ...</span>
+</div><div class="row">
+  <span class="tid">T37</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a rectangle with rounded corners.</span>
+</div><div class="row">
+  <span class="tid">T38</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw three circles with different radi lengths all sharing only one point at the...</span>
+</div><div class="row">
+  <span class="tid">T40</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a semicircle with a radius of 60.</span>
+</div><div class="row">
+  <span class="tid">T41</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw three shapes: two semicircles and one triangle.</span>
+</div><div class="row">
+  <span class="tid">T57</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a large triangle, a smaller triangle, and another large triangle in an equi...</span>
+</div><div class="row">
+  <span class="tid">T59</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a large square with four smaller squares inside it.</span>
+</div><div class="row">
+  <span class="tid">T63</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a hexagon with six semicircles attached to each side.</span>
+</div><div class="row">
+  <span class="tid">T64</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a square of four equilateral triangles.</span>
+</div><div class="row">
+  <span class="tid">T66</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a large circle with four smaller circles inside it.</span>
+</div><div class="row">
+  <span class="tid">T71</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div>
+  <span class="val" style="color:#7f1d1d">0%</span>
+  <span class="qtxt">Draw a semicircle with a radius of 100 pixels.</span>
+</div><div class="row">
+  <span class="tid">T32</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#444"></div></div>
+  <span class="val" style="color:#444">?</span>
+  <span class="qtxt">Draw two circles on top of each other + the vertical diameter of the upper circl...</span>
+</div><div class="row">
+  <span class="tid">T44</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#444"></div></div>
+  <span class="val" style="color:#444">?</span>
+  <span class="qtxt">Draw three overlapping semicircles.</span>
+</div><div class="row">
+  <span class="tid">T46</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#444"></div></div>
+  <span class="val" style="color:#444">?</span>
+  <span class="qtxt">Draw three equilateral triangles.</span>
+</div><div class="row">
+  <span class="tid">T61</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#444"></div></div>
+  <span class="val" style="color:#444">?</span>
+  <span class="qtxt">Draw a quarter circle shape: a 90-degree arc with two straight radius lines meet...</span>
+</div><div class="row">
+  <span class="tid">T62</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#444"></div></div>
+  <span class="val" style="color:#444">?</span>
+  <span class="qtxt">Draw two circles interstecting at two points which makes a shared area between t...</span>
+</div><div class="row">
+  <span class="tid">T73</span>
+  <span class="no">NO</span>
+  <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#444"></div></div>
+  <span class="val" style="color:#444">?</span>
+  <span class="qtxt">Draw a large equilateral triangle with a smaller one inside it.</span>
+</div>
+</div>
+
+<div class="section">
+  <div class="section-title">Code Quality (KCSS) — sorted high to low &nbsp;·&nbsp; S=Structure &nbsp;I=Idioms &nbsp;X=Simplicity</div>
+  <div class="krow">
+  <div class="krow-top">
+    <span class="tid">T27</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">100%</span>
+    <span class="qtxt">Draw a square inscribed in a circle.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T36</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">100%</span>
+    <span class="qtxt">Draw two distinct circles placed adjacently, touching at one point. The larger c...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T54</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">100%</span>
+    <span class="qtxt">Draw six regular hexagons arranged in a ring.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T55</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">100%</span>
+    <span class="qtxt">Draw five concentric regular pentagons.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T56</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">100%</span>
+    <span class="qtxt">Draw three regular hexagons arranged in a triangular pattern.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T61</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">100%</span>
+    <span class="qtxt">Draw a quarter circle shape: a 90-degree arc with two straight radius lines meet...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T63</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">100%</span>
+    <span class="qtxt">Draw a hexagon with six semicircles attached to each side.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T64</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">100%</span>
+    <span class="qtxt">Draw a square of four equilateral triangles.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T32</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:94%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">94%</span>
+    <span class="qtxt">Draw two circles on top of each other + the vertical diameter of the upper circl...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T37</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:94%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">94%</span>
+    <span class="qtxt">Draw a rectangle with rounded corners.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T46</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:94%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">94%</span>
+    <span class="qtxt">Draw three equilateral triangles.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T62</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:94%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">94%</span>
+    <span class="qtxt">Draw two circles interstecting at two points which makes a shared area between t...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T70</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:94%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">94%</span>
+    <span class="qtxt">Draw a grid of nine equilateral triangles.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T3</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw a square.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T4</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw a pentagon with five equal sides. The bottom is flat and one corner points ...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T7</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw a square with a triangle attached to its right side. The triangle points to...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T28</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw a square with its two diagonals.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T34</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw a plus sign (cross shape) with four equal square arms, all arms the same wi...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T35</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw a combination of a semicircle on top and an equilateral triangle beneath it...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T39</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw three concentric circles.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T40</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw a semicircle with a radius of 60.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T42</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw a triangle with two semicircles attached to its base.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T52</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw two squares of equal size overlapping at their centers, with one square axi...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T53</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw a three-quarter circle shape: a 270-degree arc closed by two straight radiu...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T57</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw a large triangle, a smaller triangle, and another large triangle in an equi...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T58</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw two concentric circles.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T71</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw a semicircle with a radius of 100 pixels.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T72</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw a circle divided into four equal quadrants by a horizontal line and a verti...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T73</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw a large equilateral triangle with a smaller one inside it.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T74</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw three sides of a square — the top side and both vertical sides — leaving th...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T75</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw a square with a smaller square inside it, rotated 45 degrees.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T49</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:85%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">85%</span>
+    <span class="qtxt">Draw four equal circles arranged in a clover pattern so that all four meet at a ...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T9</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:79%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">79%</span>
+    <span class="qtxt">Draw a shape that looks like the letter S. The top half curves to the right and ...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T38</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:79%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">79%</span>
+    <span class="qtxt">Draw three circles with different radi lengths all sharing only one point at the...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T41</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:79%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">79%</span>
+    <span class="qtxt">Draw three shapes: two semicircles and one triangle.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T43</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:79%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">79%</span>
+    <span class="qtxt">Draw a square with a small semicircle protruding outward from the midpoint of ea...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T66</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:79%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">79%</span>
+    <span class="qtxt">Draw a large circle with four smaller circles inside it.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T67</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:79%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">79%</span>
+    <span class="qtxt">Draw four semicircles arranged in a square pattern.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T68</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:79%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">79%</span>
+    <span class="qtxt">Draw a square with a semicircle protruding outward from the midpoint of each of ...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T69</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:79%;background:#22c55e"></div></div>
+    <span class="val" style="color:#22c55e">79%</span>
+    <span class="qtxt">Draw a square where the center of each side bulges outward as a large semicircle...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T14</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">70%</span>
+    <span class="qtxt">Draw a five-pointed star. It has five equally spaced sharp points. Each point is...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T21</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">70%</span>
+    <span class="qtxt">Draw a semicircle with a flat diameter line at the bottom and the curved arc ris...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T59</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">70%</span>
+    <span class="qtxt">Draw a large square with four smaller squares inside it.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T65</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">70%</span>
+    <span class="qtxt">Draw three semicircles arranged in a triangular pattern.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T2</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">70%</span>
+    <span class="qtxt">Draw a triangle with a flat bottom and the point at the top. All three sides are...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T6</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">70%</span>
+    <span class="qtxt">Draw two triangles side by side, both pointing up. They share one corner at the ...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T11</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">70%</span>
+    <span class="qtxt">Draw a rectangle with four sides and four right-angle corners. The two longer si...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T12</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">70%</span>
+    <span class="qtxt">Draw a triangle that has exactly one right-angle corner. The two sides that meet...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T15</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">70%</span>
+    <span class="qtxt">Draw a shape made of two rectangles joined together at a shared corner in the lo...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T17</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">70%</span>
+    <span class="qtxt">Draw an equilateral triangle pointing downward. The flat side is at the top and ...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T22</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">70%</span>
+    <span class="qtxt">Draw a shape made of two rectangles. A wide horizontal rectangle sits at the top...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T23</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">70%</span>
+    <span class="qtxt">Draw a staircase shape with three equal steps going from the lower left to the u...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T24</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">70%</span>
+    <span class="qtxt">Draw a four-sided shape where the top side and the bottom side are equal in leng...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T29</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">70%</span>
+    <span class="qtxt">Draw a square with one of its diagonals from top left to bottom right.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T30</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">70%</span>
+    <span class="qtxt">Draw a square with one of its diagonals from top right to bottom left.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T5</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:64%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">64%</span>
+    <span class="qtxt">Draw a triangle with a smaller triangle sticking out of each corner. The small t...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T8</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:64%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">64%</span>
+    <span class="qtxt">Draw a four pointed star. There is a square in the middle and a triangle on each...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T13</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:64%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">64%</span>
+    <span class="qtxt">Draw a shape with six equal sides and six equal angles. The top side and the bot...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T18</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:64%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">64%</span>
+    <span class="qtxt">Draw a shape pointing to the right like an arrow. It has a rectangular body goin...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T20</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:64%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">64%</span>
+    <span class="qtxt">Draw two squares, one centered inside the other. The inner square is smaller and...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T25</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:64%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">64%</span>
+    <span class="qtxt">Draw three equal-sized triangles placed side by side in a row, each pointing upw...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T31</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:64%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">64%</span>
+    <span class="qtxt">Draw two squares connected at one corner. The square on the top left is aligned ...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T33</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:64%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">64%</span>
+    <span class="qtxt">Draw two overlapping squares.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T47</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:64%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">64%</span>
+    <span class="qtxt">Draw three squares in a triangular pattern.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T19</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:55%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">55%</span>
+    <span class="qtxt">Draw a shape with eight equal sides and eight equal angles. The top side and the...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T26</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:55%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">55%</span>
+    <span class="qtxt">Draw three adjacent squares sharing a common base, side by side, enclosed within...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T45</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:55%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">55%</span>
+    <span class="qtxt">Draw four squares of an equal size that form a larger square.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T44</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:54%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">54%</span>
+    <span class="qtxt">Draw three overlapping semicircles.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T51</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:54%;background:#f59e0b"></div></div>
+    <span class="val" style="color:#f59e0b">54%</span>
+    <span class="qtxt">Draw a hexagon with alternating large and small circles.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:80%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">80%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T48</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:46%;background:#ef4444"></div></div>
+    <span class="val" style="color:#ef4444">46%</span>
+    <span class="qtxt">Draw four nested squares with increasing side lengths.</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:20%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">20%</span>
+  </div>
+</div><div class="krow">
+  <div class="krow-top">
+    <span class="tid">T10</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:45%;background:#ef4444"></div></div>
+    <span class="val" style="color:#ef4444">45%</span>
+    <span class="qtxt">Draw a circle inside a square. The circle touches the middle of each side of the...</span>
+  </div>
+  <div class="krow-sub">
+    <span class="sub-lbl">Structure</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#7f1d1d"></div></div><span class="sub-val" style="color:#7f1d1d">0%</span>
+    <span class="sub-lbl">Idioms</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div><span class="sub-val" style="color:#f59e0b">50%</span>
+    <span class="sub-lbl">Simplicity</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#22c55e"></div></div><span class="sub-val" style="color:#22c55e">100%</span>
+  </div>
+</div>
+</div>
+
+</body>
+</html>

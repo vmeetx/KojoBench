@@ -1,1 +1,0 @@
-Draw a square with a triangle attached to its right side. The left side of the triangle is the same length as the right side of the square, and those two edges perfectly coincide. The triangle points to the right, and its apex is directly to the right of the center of the shared edge.

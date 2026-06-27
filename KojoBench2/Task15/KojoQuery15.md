@@ -1,1 +1,0 @@
-Draw a shape made of two rectangles joined together at a shared corner in the lower left. One rectangle is tall and narrow and stands upright on the left side. The other rectangle is wide and short and lies flat along the bottom. The two rectangles share the lower-left corner and their sides meet at right angles.

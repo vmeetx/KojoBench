@@ -1,1 +1,0 @@
-removes the squares on the left and the right.

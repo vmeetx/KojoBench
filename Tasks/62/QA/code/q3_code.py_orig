@@ -1,7 +1,0 @@
-t.forward(rectangle_length)
-t.left(90)
-t.forward(2 * radius)
-t.left(90)
-t.forward(rectangle_length)
-t.left(90)
-t.forward(2 * radius)

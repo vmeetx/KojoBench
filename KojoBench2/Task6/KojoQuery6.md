@@ -1,1 +1,0 @@
-Draw two equal triangles placed side by side, each pointing upward. The two triangles share exactly one corner at the bottom middle. That shared corner is the bottom-right corner of the left triangle and the bottom-left corner of the right triangle at the same point.

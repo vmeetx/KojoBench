@@ -1,1 +1,0 @@
-Draw a five-pointed star. It has five equally spaced sharp points. Each point is connected by a straight line that goes across the inside of the star to the non-adjacent point two positions away. These five crossing lines form a smaller five-sided shape in the center where they all overlap.

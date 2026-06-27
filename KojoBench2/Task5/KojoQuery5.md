@@ -1,1 +1,0 @@
-Draw a big triangle shape where each of the three corners has a small triangle attached to it. The vertex of each small triangle coincides with the vertex of the large triangle. Each side of the large triangle perfectly lines up with one side each of two of the small triangles.
