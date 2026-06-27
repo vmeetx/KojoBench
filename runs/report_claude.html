@@ -13,6 +13,11 @@
   .stat-val { font-size:1.4rem; font-weight:700; }
   .stat-lbl { font-size:0.7rem; color:#666; text-transform:uppercase; letter-spacing:.06em; margin-top:2px; }
   .green { color:#22c55e; } .amber { color:#f59e0b; } .red { color:#ef4444; }
+  .nav { display:flex; justify-content:center; gap:12px; margin-bottom:20px; }
+  .nav a { padding:8px 22px; border-radius:6px; text-decoration:none; font-weight:600;
+             font-size:0.9rem; border:1px solid #333; color:#aaa; }
+  .nav a.active { background:#a78bfa; color:#111; border-color:#a78bfa; }
+  .nav a:not(.active):hover { background:#1f1f1f; color:#eee; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
   .card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 10px; overflow: hidden; }
   .card-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #222; }
@@ -37,7 +42,11 @@
 </head>
 <body>
 <h1>KojoBench2 - Claude Sonnet 4.6</h1>
-<p class="subtitle">Input: system prompt + query only &nbsp;·&nbsp; No ground-truth code seen &nbsp;·&nbsp; 75 tasks</p>
+<p class="subtitle">Input: system prompt + query only &nbsp;·&nbsp; No ground-truth code seen &nbsp;·&nbsp; 71 tasks</p>
+<nav class="nav">
+  <a href="report_claude.html" class="active">Claude Sonnet 4.6</a>
+  <a href="report_qwen.html">Qwen 2.5 Coder 7B</a>
+</nav>
 <div class="summary">
   <div class="stat"><div class="stat-val" style="color:#f59e0b;font-size:2rem">0.69</div><div class="stat-lbl">Benchmark Score (0–1)</div></div>
   <div class="stat"><div class="stat-val green">49/71</div><div class="stat-lbl">Visual Match (NSS >= 65%)</div></div>

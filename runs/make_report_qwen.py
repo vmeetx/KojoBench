@@ -1,5 +1,5 @@
 """
-Generates a self-contained HTML report: GT vs Qwen side-by-side for all 75 tasks.
+Generates a self-contained HTML report: GT vs Qwen side-by-side for all 71 scored tasks.
 YES/NO = NSS >= 65%
 """
 import base64, sys
@@ -168,7 +168,7 @@ html = f"""<!DOCTYPE html>
 </head>
 <body>
 <h1>KojoBench2 - Qwen 2.5 Coder 7B</h1>
-<p class="subtitle">Input: system prompt + query only &nbsp;·&nbsp; No ground-truth code seen &nbsp;·&nbsp; 75 tasks</p>
+<p class="subtitle">Input: system prompt + query only &nbsp;·&nbsp; No ground-truth code seen &nbsp;·&nbsp; 71 tasks</p>
 <nav class="nav">
   <a href="report_claude.html">Claude Sonnet 4.6</a>
   <a href="report_qwen.html" class="active">Qwen 2.5 Coder 7B</a>
