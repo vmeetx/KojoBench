@@ -1,0 +1,39 @@
+<geometry>
+Goal: Draw three squares in a triangular pattern.
+Canvas/scale: 500x500
+Main shapes:
+- Square
+Drawing order:
+1. Square
+2. Square
+3. Square
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// First square
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+
+// Second square
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+
+// Third square
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+```

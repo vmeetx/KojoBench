@@ -1,0 +1,117 @@
+<geometry>
+Goal: Draw four squares of an equal size that form a larger square.
+Canvas/scale: 500x500
+Main shapes:
+- Square 1
+- Square 2
+- Square 3
+- Square 4
+Drawing order:
+1. Move to (100, 100)
+2. Forward 100
+3. Turn right 90
+4. Forward 100
+5. Turn right 90
+6. Forward 100
+7. Turn right 90
+8. Forward 100
+9. Turn right 90
+10. Forward 100
+11. Turn right 90
+12. Forward 100
+13. Turn right 90
+14. Forward 100
+15. Turn right 90
+16. Forward 100
+17. Turn right 90
+18. Forward 100
+19. Turn right 90
+20. Forward 100
+21. Turn right 90
+22. Forward 100
+23. Turn right 90
+24. Forward 100
+25. Turn right 90
+26. Forward 100
+27. Turn right 90
+28. Forward 100
+29. Turn right 90
+30. Forward 100
+31. Turn right 90
+32. Forward 100
+33. Turn right 90
+34. Forward 100
+35. Turn right 90
+36. Forward 100
+37. Turn right 90
+38. Forward 100
+39. Turn right 90
+40. Forward 100
+41. Turn right 90
+42. Forward 100
+43. Turn right 90
+44. Forward 100
+45. Turn right 90
+46. Forward 100
+47. Turn right 90
+48. Forward 100
+49. Turn right 90
+50. Forward 100
+51. Turn right 90
+52. Forward 100
+53. Turn right 90
+54. Forward 100
+55. Turn right 90
+56. Forward 100
+57. Turn right 90
+58. Forward 100
+59. Turn right 90
+60. Forward 100
+61. Turn right 90
+62. Forward 100
+63. Turn right 90
+64. Forward 100
+65. Turn right 90
+66. Forward 100
+67. Turn right 90
+68. Forward 100
+69. Turn right 90
+70. Forward 100
+71. Turn right 90
+72. Forward 100
+73. Turn right 90
+74. Forward 100
+75. Turn right 90
+76. Forward 100
+77. Turn right 90
+78. Forward 100
+79. Turn right 90
+80. Forward 100
+81. Turn right 90
+82. Forward 100
+83. Turn right 90
+84. Forward 100
+85. Turn right 90
+86. Forward 100
+87. Turn right 90
+88. Forward 100
+89. Turn right 90
+90. Forward 100
+91. Turn right 90
+92. Forward 100
+93. Turn right 90
+94. Forward 100
+95. Turn right 90
+96. Forward 100
+97. Turn right 90
+98. Forward 100
+99. Turn right 90
+100. Forward 100
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Kojo code here
+```

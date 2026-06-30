@@ -1,0 +1,33 @@
+<geometry>
+Goal: Draw a pentagon with five equal sides where the bottom is flat and one corner points straight up.
+Canvas/scale: Default canvas size.
+Main shapes:
+- Pentagon
+Drawing order:
+1. Move forward 100 units.
+2. Turn right 72 degrees.
+3. Move forward 100 units.
+4. Turn right 72 degrees.
+5. Move forward 100 units.
+6. Turn right 72 degrees.
+7. Move forward 100 units.
+8. Turn right 72 degrees.
+9. Move forward 100 units.
+10. Turn right 72 degrees.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+forward(100)
+right(72)
+forward(100)
+right(72)
+forward(100)
+right(72)
+forward(100)
+right(72)
+forward(100)
+right(72)
+```

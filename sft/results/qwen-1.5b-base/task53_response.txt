@@ -1,0 +1,31 @@
+<geometry>
+Goal: Draw a three-quarter circle shape with a 270-degree arc closed by two straight radius lines meeting at a right angle at the center.
+Canvas/scale: Canvas size is 500x500 pixels.
+Main shapes:
+- Three-quarters circle
+Drawing order:
+1. Move to the center of the canvas
+2. Draw the first quarter circle
+3. Draw the second quarter circle
+4. Draw the third quarter circle
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Move to the center of the canvas
+moveTo(250, 250)
+
+// Draw the first quarter circle
+right(90)
+forward(250)
+
+// Draw the second quarter circle
+right(90)
+forward(250)
+
+// Draw the third quarter circle
+right(90)
+forward(250)
+```

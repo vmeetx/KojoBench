@@ -1,0 +1,28 @@
+<geometry>
+Goal: Draw a four-sided shape with two sets of parallel sides, one going straight across and the other slanted at the same angle.
+Canvas/scale: 500x500 pixels
+Main shapes:
+- Two lines representing the straight sides
+- One line representing the slanted side
+Drawing order:
+1. Draw the straight sides
+2. Draw the slanted side
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the straight sides
+forward(200) // Top side
+right(90)
+forward(200) // Bottom side
+right(90)
+
+// Draw the slanted side
+right(45) // Slanted angle
+forward(200) // Length of the slanted side
+right(90)
+forward(200) // Return to the starting point
+right(-45) // Return to the original orientation
+```

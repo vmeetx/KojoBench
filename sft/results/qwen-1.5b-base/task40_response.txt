@@ -1,0 +1,19 @@
+<geometry>
+Goal: Draw a semicircle with a radius of 60.
+Canvas/scale: Default canvas size.
+Main shapes:
+- Circle with radius 60
+Drawing order:
+1. forward(60)
+2. right(180)
+3. forward(60)
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+forward(60)
+right(180)
+forward(60)
+```

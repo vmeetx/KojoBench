@@ -1,0 +1,27 @@
+<geometry>
+Goal: Draw a rectangle with four sides and four right-angle corners.
+Canvas/scale: 500x500
+Main shapes:
+- Rectangle
+Drawing order:
+1. Move forward 100 units
+2. Turn right 90 degrees
+3. Move forward 100 units
+4. Turn right 90 degrees
+5. Move forward 100 units
+6. Turn right 90 degrees
+7. Move forward 100 units
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+```

@@ -1,0 +1,32 @@
+<geometry>
+Goal: Draw three shapes: two semicircles and one triangle.
+Canvas/scale: 500x500 pixels
+Main shapes:
+- Two semicircles with radii 50 and 30 respectively
+- One triangle with vertices at (0, -100), (-50, 0), and (50, 0)
+Drawing order:
+1. Draw the two semicircles
+2. Draw the triangle
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the two semicircles
+right(90)
+forward(50)
+right(90)
+forward(30)
+right(90)
+forward(50)
+right(90)
+forward(30)
+
+// Draw the triangle
+forward(50)
+right(120)
+forward(50)
+right(120)
+forward(50)
+```

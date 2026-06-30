@@ -1,0 +1,27 @@
+<geometry>
+Goal: Draw three circles with different radii lengths all sharing only one point at the bottom.
+Canvas/scale: 500x500
+Main shapes:
+- Circle with radius 50
+- Circle with radius 100
+- Circle with radius 150
+Drawing order:
+1. Move to (-250, -250)
+2. Draw a circle with radius 50
+3. Move to (-250, -100)
+4. Draw a circle with radius 100
+5. Move to (-250, 50)
+6. Draw a circle with radius 150
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+moveTo(-250, -250)
+drawCircle(50)
+moveTo(-250, -100)
+drawCircle(100)
+moveTo(-250, 50)
+drawCircle(150)
+```

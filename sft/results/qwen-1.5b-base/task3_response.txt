@@ -1,0 +1,28 @@
+<geometry>
+Goal: Draw a square with side length 100 pixels.
+Canvas/scale: Default scale.
+Main shapes:
+- Square
+Drawing order:
+1. forward(100)
+2. right(90)
+3. forward(100)
+4. right(90)
+5. forward(100)
+6. right(90)
+7. forward(100)
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+```

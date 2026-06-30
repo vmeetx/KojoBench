@@ -1,0 +1,29 @@
+<geometry>
+Goal: Draw a plus sign (cross shape) with four equal square arms, all arms the same width and length.
+Canvas/scale: 500x500
+Main shapes:
+- Square
+Drawing order:
+1. Forward(100)
+2. Right(90)
+3. Forward(100)
+4. Left(90)
+5. Forward(100)
+6. Right(90)
+7. Forward(100)
+8. Left(90)
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+forward(100)
+right(90)
+forward(100)
+left(90)
+forward(100)
+right(90)
+forward(100)
+left(90)
+```

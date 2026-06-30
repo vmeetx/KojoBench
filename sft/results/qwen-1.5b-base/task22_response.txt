@@ -1,0 +1,35 @@
+<geometry>
+Goal: Draw a shape consisting of two rectangles, one wider than the other, sharing the middle portion of their bottom edges.
+Canvas/scale: Canvas size is 500x500 pixels.
+Main shapes:
+- Rectangle 1 (wider, taller)
+- Rectangle 2 (narrower, shorter)
+Drawing order:
+1. Move to (0, 250) and draw Rectangle 1 (width=300, height=100)
+2. Move to (0, 150) and draw Rectangle 2 (width=200, height=50)
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Move to (0, 250) and draw Rectangle 1 (width=300, height=100)
+forward(300)
+right(90)
+forward(100)
+right(90)
+forward(300)
+right(90)
+forward(100)
+right(90)
+
+// Move to (0, 150) and draw Rectangle 2 (width=200, height=50)
+forward(200)
+right(90)
+forward(50)
+right(90)
+forward(200)
+right(90)
+forward(50)
+right(90)
+```

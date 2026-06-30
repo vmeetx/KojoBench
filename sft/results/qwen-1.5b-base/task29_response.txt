@@ -1,0 +1,27 @@
+<geometry>
+Goal: Draw a square with one diagonal from top left to bottom right.
+Canvas/scale: Default canvas size.
+Main shapes:
+- Square
+Drawing order:
+1. Move to (0, 0)
+2. Forward to (100, 0)
+3. Right to (100, 100)
+4. Forward to (0, 100)
+5. Left to (0, 0)
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+moveTo(0, 0)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+```

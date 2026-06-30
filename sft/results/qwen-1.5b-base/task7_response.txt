@@ -1,0 +1,31 @@
+<geometry>
+Goal: Draw a square with a triangle attached to its right side, sharing the same edge where they meet and are the same size.
+Canvas/scale: 500x500
+Main shapes:
+- Square
+- Triangle
+Drawing order:
+1. Square
+2. Triangle
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the square
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+
+// Draw the triangle
+right(120)
+forward(50)
+right(120)
+forward(50)
+right(120)
+```

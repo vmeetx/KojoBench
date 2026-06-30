@@ -1,0 +1,26 @@
+<geometry>
+Goal: Draw a circle inside a square where the circle touches the middle of each side of the square without any gaps.
+Canvas/scale: Square with side length 100.
+Main shapes:
+- Square with side length 100.
+- Circle with diameter equal to the side length of the square.
+Drawing order:
+1. Draw the square.
+2. Draw the circle.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the square
+repeat(4) {
+  forward(100)
+  right(90)
+}
+
+// Draw the circle
+right(90)
+forward(50)
+circle(50)
+```

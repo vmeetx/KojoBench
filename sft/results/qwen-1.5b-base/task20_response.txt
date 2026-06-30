@@ -1,0 +1,38 @@
+<geometry>
+Goal: Draw two squares, one centered inside the other. The inner square is smaller and the gap between each side of the inner square and the nearest side of the outer square is equal on all four sides. The sides of the inner square run parallel to the sides of the outer square.
+
+Canvas/scale: 500x500
+
+Main shapes:
+- Square 1 (outer square)
+- Square 2 (inner square)
+
+Drawing order:
+1. Move to the center of the outer square
+2. Draw the outer square
+3. Move to the center of the inner square
+4. Draw the inner square
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Move to the center of the outer square
+moveTo(250, 250)
+
+// Draw the outer square
+repeat(4) {
+  forward(100)
+  right(90)
+}
+
+// Move to the center of the inner square
+moveTo(200, 200)
+
+// Draw the inner square
+repeat(4) {
+  forward(50)
+  right(90)
+}
+```

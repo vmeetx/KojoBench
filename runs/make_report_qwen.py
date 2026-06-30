@@ -8,7 +8,7 @@ from pathlib import Path
 BASE        = Path(__file__).parent.parent
 GT_DIR      = BASE / "benchmark"
 QWEN_DIR    = Path(__file__).parent / "qwen_rendered"
-OUT_HTML    = Path(__file__).parent / "report_qwen.html"
+OUT_HTML    = Path(__file__).parent / "reports" / "report_qwen.html"
 _DROP_TASKS = {1, 16, 50, 60}   # NSS scorer blind spots — excluded from scoring
 TASKS       = [t for t in range(1, 76) if t not in _DROP_TASKS]
 MATCH_THRESH = 0.65

@@ -1,0 +1,24 @@
+<geometry>
+Goal: Draw an octagon with eight equal sides and eight equal angles.
+Canvas/scale: Canvas size is 500x500 pixels.
+Main shapes:
+- Square with side length 50
+- Diagonal lines connecting opposite corners
+Drawing order:
+1. Draw the square
+2. Draw the diagonal lines
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the square
+square(50)
+
+// Draw the diagonal lines
+lineTo(50, 50)
+lineTo(0, 50)
+lineTo(0, 0)
+lineTo(50, 0)
+```

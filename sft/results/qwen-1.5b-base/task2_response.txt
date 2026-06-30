@@ -1,0 +1,19 @@
+<geometry>
+Goal: Draw a triangle with a flat bottom and the point at the top. All three sides are the same length.
+Canvas/scale: 500x500
+Main shapes:
+- Triangle
+Drawing order:
+1. forward(150)
+2. right(120)
+3. forward(150)
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+forward(150)
+right(120)
+forward(150)
+```

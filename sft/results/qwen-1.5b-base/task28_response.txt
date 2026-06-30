@@ -1,0 +1,27 @@
+<geometry>
+Goal: Draw a square with its two diagonals.
+Canvas/scale: 500x500
+Main shapes:
+- Square
+Drawing order:
+1. Forward(200)
+2. Right(90)
+3. Forward(200)
+4. Right(90)
+5. Forward(200)
+6. Right(90)
+7. Forward(200)
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+forward(200)
+right(90)
+forward(200)
+right(90)
+forward(200)
+right(90)
+forward(200)
+```

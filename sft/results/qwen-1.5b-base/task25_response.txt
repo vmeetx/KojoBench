@@ -1,0 +1,30 @@
+<geometry>
+Goal: Draw three equal-sized triangles placed side by side in a row, each pointing upward. All three triangles have a flat base at the bottom. The bottom-right corner of each triangle is the same point as the bottom-left corner of the next triangle. All three sides of every triangle are the same length.
+
+Canvas/scale: 500x500
+
+Main shapes:
+- Triangle 1: Top-left corner at (0, 0), side length 100
+- Triangle 2: Top-left corner at (100, 0), side length 100
+- Triangle 3: Top-left corner at (200, 0), side length 100
+
+Drawing order:
+1. Move forward 100 units
+2. Turn right 120 degrees
+3. Move forward 100 units
+4. Turn right 120 degrees
+5. Move forward 100 units
+6. Turn right 120 degrees
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+forward(100)
+right(120)
+forward(100)
+right(120)
+forward(100)
+right(120)
+```

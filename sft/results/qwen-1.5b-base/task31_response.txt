@@ -1,0 +1,23 @@
+<geometry>
+Goal: Draw two squares connected at one corner.
+Canvas/scale: 500x500
+Main shapes:
+- Square 1 (top left)
+- Square 2 (bottom right)
+Drawing order:
+1. Move to (0, 0)
+2. Draw Square 1 (side length 100)
+3. Move to (100, 0)
+4. Draw Square 2 (side length 100)
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+moveTo(0, 0)
+drawSquare(100)
+
+moveTo(100, 0)
+drawSquare(100)
+```

@@ -1,0 +1,22 @@
+<geometry>
+Goal: Draw two distinct circles placed adjacently, touching at one point. The larger circle is to the left, and the smaller circle is to the right.
+Canvas/scale: 500x500
+Main shapes:
+- Circle with center (-250, 0) and radius 100
+- Circle with center (250, 0) and radius 50
+Drawing order:
+1. Move to (-250, 0)
+2. Draw a circle with radius 100
+3. Move to (250, 0)
+4. Draw a circle with radius 50
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+moveTo(-250, 0)
+drawCircle(100)
+moveTo(250, 0)
+drawCircle(50)
+```

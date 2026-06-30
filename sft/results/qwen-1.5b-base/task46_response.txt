@@ -1,0 +1,29 @@
+<geometry>
+Goal: Draw three equilateral triangles.
+Canvas/scale: 500x500 pixels
+Main shapes:
+- Triangle 1
+- Triangle 2
+- Triangle 3
+Drawing order:
+1. Move to (0, 0)
+2. Turn right 120 degrees
+3. Forward 100
+4. Turn right 120 degrees
+5. Forward 100
+6. Turn right 120 degrees
+7. Forward 100
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+moveTo(0, 0)
+turnRight(120)
+forward(100)
+turnRight(120)
+forward(100)
+turnRight(120)
+forward(100)
+```

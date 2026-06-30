@@ -1,0 +1,26 @@
+<geometry>
+Goal: Draw a semicircle with a flat diameter line at the bottom and the curved arc rising above it.
+Canvas/scale: 500x500
+Main shapes:
+- Circle with radius 250
+- Line segment from center to bottom of circle
+Drawing order:
+1. Draw the circle
+2. Draw the line segment
+3. Draw the curved arc
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the circle
+circle(250)
+
+// Draw the line segment from center to bottom of circle
+lineTo(0, -250)
+
+// Draw the curved arc
+right(180)
+arc(250, 180)
+```

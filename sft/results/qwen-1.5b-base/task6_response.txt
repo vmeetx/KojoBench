@@ -1,0 +1,32 @@
+<geometry>
+Goal: Draw two triangles side by side, both pointing up. They share one corner at the bottom in the middle. It looks like two mountains joined at the same point, with a small dip between them at the bottom.
+
+Canvas/scale: 500x500
+
+Main shapes:
+- Triangle 1: Top-left corner at (-200, -100), base length 400, height 100
+- Triangle 2: Top-right corner at (200, -100), base length 400, height 100
+
+Drawing order:
+1. Move to (-200, -100)
+2. Draw triangle 1
+3. Move to (200, -100)
+4. Draw triangle 2
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Move to (-200, -100)
+moveTo(-200, -100)
+
+// Draw triangle 1
+triangle(400, 100)
+
+// Move to (200, -100)
+moveTo(200, -100)
+
+// Draw triangle 2
+triangle(400, 100)
+```

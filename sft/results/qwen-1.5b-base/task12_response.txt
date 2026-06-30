@@ -1,0 +1,23 @@
+<geometry>
+Goal: Draw a triangle with one right-angle corner where both legs are equal in length and the diagonal is longer than either leg.
+Canvas/scale: 500x500
+Main shapes:
+- Triangle
+Drawing order:
+1. Move forward 250 units
+2. Turn right 90 degrees
+3. Move forward 250 units
+4. Turn right 90 degrees
+5. Move forward 250 units
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+moveForward(250)
+turnRight(90)
+moveForward(250)
+turnRight(90)
+moveForward(250)
+```

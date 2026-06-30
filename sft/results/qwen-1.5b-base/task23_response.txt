@@ -1,0 +1,34 @@
+<geometry>
+Goal: Draw a staircase shape with three equal steps going from the lower left to the upper right. Each step has one flat horizontal surface going to the right and one vertical surface going straight up, both the same size as each other. The right side of the shape is one straight vertical line and the bottom of the shape is one straight horizontal line.
+
+Canvas/scale: 500x500
+
+Main shapes:
+- Rectangle (width=500, height=100)
+- Rectangle (width=100, height=500)
+- Line (start=(0, 0), end=(500, 100))
+- Line (start=(0, 100), end=(100, 500))
+
+Drawing order:
+1. Draw the first rectangle (width=500, height=100)
+2. Draw the second rectangle (width=100, height=500)
+3. Draw the first line (start=(0, 0), end=(500, 100))
+4. Draw the second line (start=(0, 100), end=(100, 500))
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the first rectangle
+rectangle(500, 100)
+
+// Draw the second rectangle
+rectangle(100, 500)
+
+// Draw the first line
+line(0, 0, 500, 100)
+
+// Draw the second line
+line(0, 100, 100, 500)
+```

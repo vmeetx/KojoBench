@@ -1,0 +1,32 @@
+<geometry>
+Goal: Draw four equal circles arranged in a clover pattern so that all four meet at a single central point, then draw a larger circle centered on that same point that encloses all four smaller circles.
+Canvas/scale: 500x500
+Main shapes:
+- Circle 1
+- Circle 2
+- Circle 3
+- Circle 4
+Drawing order:
+1. Circle 1
+2. Circle 2
+3. Circle 3
+4. Circle 4
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the four smaller circles
+circle(100, 0, 0)
+circle(100, 120, 0)
+circle(100, -120, 0)
+circle(100, 0, 120)
+
+// Calculate the center of the larger circle
+val centerX = 0 + 100 * Math.cos(Math.PI / 4)
+val centerY = 0 + 100 * Math.sin(Math.PI / 4)
+
+// Draw the larger circle
+circle(200, centerX, centerY)
+```

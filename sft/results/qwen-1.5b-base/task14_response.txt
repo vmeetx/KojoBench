@@ -1,0 +1,27 @@
+<geometry>
+Goal: Draw a five-pointed star with five equally spaced sharp points, each connected by a straight line that crosses the inside of the star to the non-adjacent point two positions away, forming a smaller five-sided shape in the center where they all overlap.
+Canvas/scale: 500x500
+Main shapes:
+- Five equally spaced sharp points
+- Smaller five-sided shape formed by the intersections of the crossing lines
+Drawing order:
+1. Draw the five equally spaced sharp points
+2. Draw the smaller five-sided shape formed by the intersections of the crossing lines
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the five equally spaced sharp points
+for (i <- 0 until 5) {
+  forward(100)
+  right(72)
+}
+
+// Draw the smaller five-sided shape formed by the intersections of the crossing lines
+for (i <- 0 until 5) {
+  forward(50)
+  right(72)
+}
+```

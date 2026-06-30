@@ -1,0 +1,42 @@
+<geometry>
+Goal: Draw a shape pointing to the right like an arrow with a rectangular body, a triangular head, and a straight vertical line at the left end.
+Canvas/scale: Canvas size is 500x500 pixels.
+Main shapes:
+- Rectangle (width: 100, height: 50)
+- Triangle (base: 50, height: 100)
+Drawing order:
+1. Draw the rectangle.
+2. Draw the triangle.
+3. Draw the vertical line at the left end.
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the rectangle
+forward(100)
+right(90)
+forward(50)
+right(90)
+forward(100)
+right(90)
+forward(50)
+
+// Draw the triangle
+right(90)
+forward(50)
+right(120)
+forward(50)
+right(90)
+forward(50)
+
+// Draw the vertical line at the left end
+forward(-100)
+right(90)
+forward(50)
+right(90)
+forward(-100)
+right(90)
+forward(50)
+```

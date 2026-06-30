@@ -1,0 +1,26 @@
+<geometry>
+Goal: Draw three concentric circles with increasing radii.
+Canvas/scale: Canvas size is 500x500 pixels.
+Main shapes:
+- Circle with radius 50
+- Circle with radius 100
+- Circle with radius 150
+Drawing order:
+1. Draw the largest circle (radius 150)
+2. Draw the middle circle (radius 100)
+3. Draw the smallest circle (radius 50)
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+// Draw the largest circle
+right(360, 150)
+
+// Draw the middle circle
+right(360, 100)
+
+// Draw the smallest circle
+right(360, 50)
+```

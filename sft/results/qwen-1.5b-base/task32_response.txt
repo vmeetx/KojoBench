@@ -1,0 +1,23 @@
+<geometry>
+Goal: Draw two circles on top of each other with their vertical diameters aligned.
+Canvas/scale: Default scale.
+Main shapes:
+- Circle 1: Centered at (0, -100), radius 50
+- Circle 2: Centered at (0, 0), radius 50
+Drawing order:
+1. Move to (-100, 0)
+2. Draw Circle 1
+3. Move to (0, 0)
+4. Draw Circle 2
+</geometry>
+
+```scala
+clear()
+setSpeed(fast)
+
+moveTo(-100, 0)
+drawCircle(50)
+
+moveTo(0, 0)
+drawCircle(50)
+```

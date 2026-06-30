@@ -1,0 +1,12 @@
+clear()
+setSpeed(fast)
+
+moveTo(0, 0)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
